@@ -10,12 +10,13 @@ This is a listener for receving signals sent by github.com through web hook. It 
 
 ## Usage
 `npm install` to install dependencies
- 
+
 `node server.js` to start the server
 
 or use `forever` to guard the server daemon
 
 `npm install forever -g`
+
 
 `forever start -forever.log -o out.log -e err.log server.js`
 
