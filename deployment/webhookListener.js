@@ -9,11 +9,11 @@ app.post('/', function(req, res) {
    console.log(req.body);
 
    exec('./deploy.sh', function (error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
+      //console.log('stdout: ' + stdout);
+      //console.log('stderr: ' + stderr);
+      //if (error !== null) {
+      // console.log('exec error: ' + error);
+      //}
    });
 });
 
