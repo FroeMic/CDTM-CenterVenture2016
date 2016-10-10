@@ -1,4 +1,2 @@
 // config/db.js
-    module.exports = {
-        url : 'mongodb://localhost/'
-    }
+    module.exports = {url : 'mongodb://localhost/'}
