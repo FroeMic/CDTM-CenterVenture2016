@@ -5,6 +5,11 @@ var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var mongoose       = require('mongoose');
+var passport       = require('passport');
+var cookieParser   = require('cookie-parser');
+var LocalStrategy = require('passport-local').Strategy;
+
 
 // configuration ===========================================
 
@@ -30,6 +35,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
 app.use(methodOverride('X-HTTP-Method-Override'));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/public'));

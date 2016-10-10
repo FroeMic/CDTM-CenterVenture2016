@@ -30,4 +30,11 @@ var Location = require('./models/locationObject');
             res.sendfile('./public/views/index.html'); // load our public/index.html file
         });
 
+        app.get('/login', function(req, res) {
+            res.sendfile('./public/views/login.html'); // load our public/index.html file
+        });
+
+        app.get('*', function(req, res) {
+            res.status(404).sendfile('./public/views/404.html'); // load our public/index.html file
+        });
     };
