@@ -1,3 +1,50 @@
-#mapid {
-    height: 180px;
+
+#menubutton {
+    position: relative;
+    float: right;
+}
+
+.menu-btn {
+    top: 60px;
+    right: 310px;
+}
+
+.main {
+    width : 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+
+.map {
+    min-height: 700px;
+    flex: 1 0 auto;
+}
+
+.sidebar {
+    z-index: 1000;
+    width: 300px;
+    flex: 0 1 auto;
+    padding: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+#sidebartoggle {
+    /* top: 50px; */
+    /* right: 45px; */
+}
+
+.red {
+    background: #ff9170;
+}
+
+/* copied side-nav a */
+.side-nav-fake a {
+    color: rgba(0,0,0,0.87);
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 32px;
 }

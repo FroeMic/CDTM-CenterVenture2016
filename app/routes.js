@@ -26,8 +26,22 @@ var Location = require('./models/locationObject');
 
         // frontend routes =========================================================
         // route to handle all angular requests
+        app.get('/map', function (req, res) {
+            res.sendfile('./public/views/mapview.html');
+        });
+
+        app.get('/map/plugins', function () {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(
+                {
+                    'districts': '',
+                    'more': 'more'
+                }
+            ));
+        });
+
         app.get('/', function(req, res) {
-            res.sendfile('./public/views/index.html'); // load our public/index.html file
+            res.sendfile('./public/views/index.html'); // load our public/mapview.html file
         });
 
     };
