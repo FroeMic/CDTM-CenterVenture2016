@@ -6,11 +6,12 @@ var app            = express();
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
-var cookieParser   = require('cookie-parser');
 var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var session = require('express-session');
 
+var expressHbs = require('express-handlebars');
 
 // configuration ===========================================
 
@@ -59,6 +60,14 @@ passport.deserializeUser(function(obj, cb) {
     cb(null, obj);
 });
 
+// view engine
+app.engine('hbs', expressHbs({
+    extname:'hbs',
+    defaultLayout:'base.hbs',
+    helpers: { }
+}));
+app.set('view engine', 'hbs');
+
 // connect to our mongoDB database
 // (uncomment after you enter in your own credentials in config/db.js)
 // mongoose.connect(db.url);
@@ -78,6 +87,23 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+// session cookies
+var oursession = session({
+    //store: new FileStore(),
+    secret: 'super_secret_lol',
+    saveUninitialized: true,
+    resave: true,
+    cookie: {
+        maxAge: 24 * 3600 * 1000
+    }
+});
+
+app.use(oursession);
+
+// later for auth with socket.io
+// iom.attach(server, oursession, auth);
 
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/public'));
