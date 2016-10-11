@@ -10,7 +10,7 @@ var map;
                 // console.log('datasetclicked', dataset);
                 var datasetId = dataset.name;
                 var actions = {
-                    'districts': loadDistricts
+                    'Districts': loadDistricts
                 };
 
                 if(!(datasetId in actions)) {

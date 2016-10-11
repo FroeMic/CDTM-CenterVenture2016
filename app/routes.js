@@ -36,7 +36,7 @@ var path = require('path');
             res.send(JSON.stringify(
                 [
                     {
-                        name: 'test',
+                        name: 'Test',
                         url: 'test'
                     }
                 ]

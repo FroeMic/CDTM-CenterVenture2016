@@ -39,7 +39,7 @@
   <div class="map" id="mapid"></div>
 
   <ul class="sidebar side-nav-fake" ng-init="datasets=[]" ng-controller="DatasetCtrl">
-    <li ng-init="dataset={name: 'districts', checked: false}">
+    <li ng-init="dataset={name: 'Districts', checked: false}">
       <a class="waves-effect" href="javascript:void(0)">
         <input type="checkbox" ng-attr-id="check-{{dataset.name}}" ng-attr-data-dset="{{dataset.name}}" class="filled-in"
                ng-model="dataset.checked" ng-click="datasetClicked(dataset)"/>
