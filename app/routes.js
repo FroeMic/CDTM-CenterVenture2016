@@ -28,7 +28,12 @@ var passport = require('passport');
         // frontend routes =========================================================
         // route to handle all angular requests
         app.get('/', function(req, res) {
-            res.sendfile('./public/views/base.html'); // load our public/index.html file
+            res.render('index.hbs', { user: req.session.user });
+        });
+
+        app.get('/logout', function (req, res) {
+            req.session.user = undefined;
+            res.redirect('/');
         });
 
         app.get('/auth/facebook',
@@ -37,6 +42,7 @@ var passport = require('passport');
         app.get('/auth/facebook/callback',
             passport.authenticate('facebook', { failureRedirect: '/login' }),
             function(req, res) {
+                req.session.user = req.user;
                 // Successful authentication, redirect home.
                 res.redirect('/');
             });
