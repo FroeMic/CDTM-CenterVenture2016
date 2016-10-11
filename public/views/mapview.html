@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="mapview">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
@@ -38,16 +38,24 @@
 <div class="main">
   <div class="map" id="mapid"></div>
 
-  <ul class="sidebar side-nav-fake">
-    <li>
-      <a class="waves-effect" href="#!">
-        <input type="checkbox" id="check-districts" data-dset="districts" class="filled-in" />
+  <ul class="sidebar side-nav-fake" ng-init="datasets=[]" ng-controller="DatasetCtrl">
+    <li ng-init="dataset={name: 'districts', checked: false}">
+      <a class="waves-effect" href="#!" ng-click="datasetClicked(dataset)">
+        <input type="checkbox" id="check-districts" data-dset="districts" class="filled-in"
+               checked="{{dataset.checked}}" />
         <label for="check-districts">Districts</label>
       </a>
     </li>
     <li><div class="divider"></div></li>
     <li><a class="subheader">More datasets</a></li>
-    <li><a class="waves-effect" data-dset="sample" href="#!">Sample dataset</a></li>
+
+    <li ng-repeat="dataset in datasets">
+      <a class="waves-effect" href="#!" ng-click="datasetClicked(dataset)">
+        <input type="checkbox" id="check-{{dataset.name}}" data-dset="{{dataset.name}}" class="filled-in"
+               checked="{{dataset.checked}}"/>
+        <label for="check-{{dataset.name}}">Districts</label>
+      </a>
+    </li>
   </ul>
 </div>
 
@@ -75,7 +83,7 @@
 <script src="/js/materialize.js"></script>
 <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
 <script src="/js/map.js"></script>
-
 </body>
 </html>

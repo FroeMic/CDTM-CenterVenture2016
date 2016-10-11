@@ -1,5 +1,25 @@
+var map;
+
 (function($){
-    var map;
+    angular.module('mapview', [])
+        .controller('DatasetCtrl', function($scope, $http){
+            $http.get('/map/plugins').then(function(resp) {
+                $scope.datasets = resp.data;
+            });
+            $scope.datasetClicked = function (dataset) {
+                // console.log('datasetclicked', dataset);
+                var datasetId = dataset.name;
+                var actions = {
+                    'districts': loadDistricts
+                };
+
+                if(!(datasetId in actions)) {
+                    console.error('dataset ' + datasetId + ' has no action!');
+                } else {
+                    actions[datasetId](!dataset.checked);
+                }
+            }
+    });
 
     $(function(){
         $('.button-collapse').sideNav({
@@ -26,21 +46,6 @@
             id: 'mapbox.streets'
         }).addTo(map);
 
-        // load additional datasets on toggle
-        $('.side-nav-fake a input').click(function (target) {
-            var element = $(target.toElement);
-            var datasetId = element.data('dset');
-            var actions = {
-                'districts': loadDistricts
-            };
-
-            if(!(datasetId in actions)) {
-                console.error('dataset ' + datasetId + ' has no action!');
-            } else {
-                var enable = element.prop('checked');
-                actions[datasetId](enable);
-            }
-        });
 
     }); // end of document ready
 
@@ -52,7 +57,7 @@
             layers['districts'] = layer;
             layer.addTo(map);
         } else {
-            map.removeLayer(layers['districts'])
+            map.removeLayer(layers['districts']);
             layers['districts'] = undefined;
         }
     }
