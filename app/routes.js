@@ -1,5 +1,6 @@
 // grab the nerd model we just created
 var Location = require('./models/locationObject');
+var passport = require('passport');
 
     module.exports = function(app) {
 
@@ -37,6 +38,16 @@ var Location = require('./models/locationObject');
         app.get('/register', function(req, res) {
             res.sendfile('./public/views/register.html'); // load our public/index.html file
         });
+
+        app.get('/auth/facebook',
+            passport.authenticate('facebook'));
+
+        app.get('/auth/facebook/callback',
+            passport.authenticate('facebook', { failureRedirect: '/login' }),
+            function(req, res) {
+                // Successful authentication, redirect home.
+                res.redirect('/');
+            });
 
         app.get('*', function(req, res) {
             res.status(404).sendfile('./public/views/404.html'); // load our public/index.html file
