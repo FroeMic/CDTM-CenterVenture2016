@@ -48,15 +48,15 @@ def get_data_collection(db):
     return db[DEFAULT_DATA_COLLECTION]
 
 
-def insert_ods_header(db, recordTemplate, locationRecordMapping, valueRecordMapping, data):
-    pass
-
-def insert_dataset(db, recordTemplate, locationRecordMapping, valueRecordMapping, data):
+def insert_ods_header(db, recordTemplate):
     tmp = recordTemplate._asdict()
-    tmp['data'] = []
+    return get_ods_collection(db).insert_one(tmp).inserted_id
+
+
+def insert_dataset(db, ods_id, locationRecordMapping, valueRecordMapping, data):
 
     for blob in data:
-        transformed_blob = {}
+        transformed_blob = { "ods_ref_id": ods_id }
 
         # Transform Location Data
         for target, original in locationRecordMapping._asdict().iteritems():
@@ -72,6 +72,7 @@ def insert_dataset(db, recordTemplate, locationRecordMapping, valueRecordMapping
 
         # Copy remaining values
         transformed_blob.update(blob)
-        tmp['data'].append(transformed_blob)
+        get_data_collection(db).insert_one(transformed_blob).inserted_id
 
-    get_data_collection(db).insert_one(tmp).inserted_id
+    # The operation returns an InsertOneResult object, which includes an attribute inserted_id that contains the _id of the inserted document. 
+    # Access the inserted_id attribute: result.inserted_id

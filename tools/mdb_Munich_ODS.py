@@ -101,8 +101,9 @@ with open(os.path.join(args.dataset, 'dataset_proc.csv')) as file:
             locationMapping = mongohelp.LocationRecordMapping(latitude=row['latitude'], longitude=row['longitude'], district=row['district'])
             valueMapping = mongohelp.ValueRecordMapping(value_description=row['value_description'], value=row['key_value'])
 
-            print locationMapping
-            print valueMapping
+            ods_id = mongohelp.insert_ods_header(db, recordTemplate)
+            mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, data['data'])
+            print "data ", data['name']
 
 # # # Add this new dataset to the ods_collection (check if already inserted)
 # mongohelp.insert_dataset(data_collection, recordTemplate, locationMapping, valueMapping, data['data'])
