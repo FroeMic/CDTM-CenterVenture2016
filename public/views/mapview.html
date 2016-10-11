@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
   <title>CDTM Center Venture 2016</title>
 
-  <title>CDTM Center Venture 2016</title>
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
 
   <!-- CSS  -->
@@ -35,10 +33,10 @@
     <i class="material-icons">menu</i></a>
 </div>
 
-<div class="main">
-  <div class="map" id="mapid"></div>
+<div ng-controller="MapController" class="main">
+  <leaflet center="center"></leaflet>
 
-  <ul class="sidebar side-nav-fake" ng-init="datasets=[]" ng-controller="DatasetCtrl">
+  <ul class="sidebar side-nav-fake" ng-init="datasets=[]">
     <li ng-init="dataset={name: 'Districts', checked: false}">
       <a class="waves-effect" href="javascript:void(0)">
         <input type="checkbox" ng-attr-id="check-{{dataset.name}}" ng-attr-data-dset="{{dataset.name}}" class="filled-in"
@@ -84,6 +82,7 @@
 <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
+<script src="/js/angular-leaflet-directive.min.js"></script>
 <script src="/js/map.js"></script>
 </body>
 </html>

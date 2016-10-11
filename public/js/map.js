@@ -1,8 +1,20 @@
 var map;
 
-(function($){
-    angular.module('mapview', [])
-        .controller('DatasetCtrl', function($scope, $http){
+var app = angular.module("mapview", ['leaflet-directive']);
+app.controller("MapController", [ '$scope', function($scope) {
+    angular.extend($scope, {
+        center: {
+            lat: 40.095,
+            lng: -3.823,
+            zoom: 4
+        },
+        defaults: {
+            scrollWheelZoom: false
+        }
+    });
+}]);
+
+app.controller('DatasetCtrl', function($scope, $http){
             $http.get('/map/plugins').then(function(resp) {
                 $scope.datasets = resp.data;
             });
