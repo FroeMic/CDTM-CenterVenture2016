@@ -28,15 +28,7 @@ var passport = require('passport');
         // frontend routes =========================================================
         // route to handle all angular requests
         app.get('/', function(req, res) {
-            res.sendfile('./public/views/index.html'); // load our public/index.html file
-        });
-
-        app.get('/login', function(req, res) {
-            res.sendfile('./public/views/login.html'); // load our public/index.html file
-        });
-
-        app.get('/register', function(req, res) {
-            res.sendfile('./public/views/register.html'); // load our public/index.html file
+            res.sendfile('./public/views/base.html'); // load our public/index.html file
         });
 
         app.get('/auth/facebook',
@@ -50,6 +42,6 @@ var passport = require('passport');
             });
 
         app.get('*', function(req, res) {
-            res.status(404).sendfile('./public/views/404.html'); // load our public/index.html file
+            res.status(404).sendfile('./public/views/404.html'); // TODO: make compatible with Angular App Routing
         });
     };
