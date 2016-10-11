@@ -48,7 +48,8 @@ def get_data_collection(db):
     return db[DEFAULT_DATA_COLLECTION]
 
 
-def insert_ods_header(db, recordTemplate, locationRecordMapping, valueRecordMapping, data);
+def insert_ods_header(db, recordTemplate, locationRecordMapping, valueRecordMapping, data):
+    pass
 
 def insert_dataset(db, recordTemplate, locationRecordMapping, valueRecordMapping, data):
     tmp = recordTemplate._asdict()
