@@ -56,7 +56,7 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
                     duration: 1.5,
                     easeLinearity: 0.2
                 });
-            }, 3000)
+            }, 1000)
         });
         // console.log('got map', res);
     });
@@ -121,11 +121,20 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
     function markers(data) {
         var layer = L.layerGroup().addTo(map);
         data.forEach(function (val, idx, arr) {
-            var marker = L.marker(val.latlong);
-            var tooltip = val.badge ? (val.badge + ' requests') : val.match ? (val.match + '% match') : '';
-            if(tooltip) {
-                marker.bindTooltip(tooltip);
-            }
+            var tooltip = val.badge ? (val.badge) : val.match ? (((val.match * 100) % 100) + '%') : '';
+            var badge = '<div class="marker-badge"><span class="standalone no-wrap">' + tooltip + '</span></div>';
+            var html = (tooltip ? badge : '') + '<img class="marker-img" src="https://unpkg.com/leaflet@1.0.1/dist/images/marker-icon-2x.png" style="bottom:' + (tooltip ? 11 : 0) + 'px;"/>';
+            var marker = L.marker(val.latlong, {
+                riseOnHover: true,
+                icon: L.divIcon({
+                    className: 'label autosize-label marker',
+                    html: html,
+                    iconSize: [30, tooltip ? 60 : 41],
+                    iconAnchor: [15, tooltip ? 60 : 41]
+                })
+            });
+
+            var marker2 = L.marker(val.latlong).addTo(layer);
             marker.addTo(layer);
         });
         return layer;

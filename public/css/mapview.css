@@ -48,3 +48,66 @@
     line-height: 48px;
     padding: 0 32px;
 }
+
+.fill {
+    width: 100%;
+    height: 100%;
+}
+
+.fill-h {
+    width: 100%;
+}
+
+.fill-v {
+    height: 100%;
+}
+
+.autosize-label {
+    /*width: auto !important;*/
+    /*height: auto !important;*/
+}
+
+.no-wrap {
+    text-wrap: none;
+}
+
+.badge.standalone {
+    right: unset;
+    position: relative;
+}
+
+.marker {
+
+}
+
+.marker-img {
+    position: relative;
+    width: 25px;
+    height: 41px;
+    left: 3px;
+}
+
+.marker-badge {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    z-index: 2;
+    align-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.75);
+    text-align:center;
+    line-height:30px;
+}
+
+.marker-badge span {
+}
+
+.leaflet-tooltip {
+    animation: fadein 0.1s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
