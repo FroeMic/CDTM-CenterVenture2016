@@ -1,7 +1,11 @@
 # CDTM-CenterVenture2016
 
-Web Application of the 2016 CDTM Center Venture.
+Server and Web Application of the **2016 CDTM Center Venture**. ✌️
 
+## Website
+https://aparata.frhlch.at
 
-## Info
-Map-Box Access Token: ```sk.eyJ1IjoiZnJvZW1pYyIsImEiOiJjaXUzeWt4ZTQwMDExMnptcHJrdzk0dWRtIn0.eiizOKQXJ2YJcC7GnGpN5Q```
+**Important:** Git-Workflow
+- Feature/*NAME*: Use feature branches to implement new features. Branch from develop and only merge into develop.
+- Develop: Shared codebase during development.
+- Master: Only merge functional prototypes from develop.

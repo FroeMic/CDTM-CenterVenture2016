@@ -1,0 +1,35 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to adjust colors so you can update
+ * the core  files in the future
+ *
+ *  Used Colors:
+ *  #0d1b2a
+ *  #55a463
+ *  #46c28e
+ *  #9de972
+ *  #8ec553
+ *  #74d278
+ * Made By JG
+ */
+
+
+ .teal {
+  background-color: #0d1b2a !important;
+}
+
+.teal.lighten-1 {
+    background-color: #55a463 !important;
+}
+
+.teal.lighten-2 {
+    background-color: #26a69a !important;
+}
+
+.teal-text {
+    color: #0d1b2a !important;
+}
+
+.teal-text.text-lighten-2 {
+  color: #0d1b2a !important;
+}

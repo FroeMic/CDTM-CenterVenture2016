@@ -5,6 +5,11 @@ var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var mongoose       = require('mongoose');
+var passport       = require('passport');
+var cookieParser   = require('cookie-parser');
+var LocalStrategy = require('passport-local').Strategy;
+
 
 // configuration ===========================================
 
@@ -12,7 +17,7 @@ var methodOverride = require('method-override');
 var db = require('./config/db');
 
 // set our port
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 1337;
 
 // connect to our mongoDB database
 // (uncomment after you enter in your own credentials in config/db.js)
@@ -31,8 +36,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
 app.use(methodOverride('X-HTTP-Method-Override'));
 
+
 // static map content
 app.use('/maps/public', express.static(__dirname + '/data/public'));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/public'));
