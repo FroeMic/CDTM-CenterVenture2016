@@ -37,7 +37,26 @@ var path = require('path');
                 [
                     {
                         name: 'Test',
-                        url: 'test'
+                        url: '/dummy/pois'
+                    }
+                ]
+            ));
+        });
+
+        app.get('/dummy/pois', function (req, res) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(
+                [
+                    {
+                        latlong: [48.143673, 11.558043],
+                        badge: 80
+                    },
+                    {
+                        latlong: [48.139498, 11.566090],
+                        match: 0.95
+                    },
+                    {
+                        latlong: [48.201509, 11.608744]
                     }
                 ]
             ));
