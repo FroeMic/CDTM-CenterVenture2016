@@ -106,9 +106,9 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
                 $http.get(url).then(function (response) {
                     data.push({
                         srcUrl: url,
-                        data: response.data
+                        data: response.data,
+                        layer: then(response.data)
                     });
-                    then(data[data.length - 1].data);
                 });
             }
         } else {
