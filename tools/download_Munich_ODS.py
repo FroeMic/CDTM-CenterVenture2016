@@ -9,6 +9,9 @@ import pprint
 import argparse
 import errno
 import os
+import io
+
+import mongodb_helpers as mongohelp
 
 # DON'T CHANGE
 MUC_ODS_URL = 'https://www.opengov-muenchen.de/api/action/'
@@ -25,37 +28,37 @@ def mkdir_p(path):
 
 
 def make_datastring(id_string):
-	return urllib.quote(json.dumps({'id': id_string}))
+    return urllib.quote(json.dumps({'id': id_string}))
 
 
 def make_request(req, id_string):
-	response = urllib2.urlopen(MUC_ODS_URL + req, make_datastring(id_string))
-	assert response.code == 200
+    response = urllib2.urlopen(MUC_ODS_URL + req, make_datastring(id_string))
+    assert response.code == 200
 
-	return response
+    return response
 
 
 def get_results(req, id_string=""):
-	res = make_request(req, id_string)
-	response_dict = json.loads(res.read())
-	assert response_dict['success'] is True
-	return response_dict['result']
+    res = make_request(req, id_string)
+    response_dict = json.loads(res.read())
+    assert response_dict['success'] is True
+    return response_dict['result']
 
 
 def create_group_folders(base_path):
-	groups = get_results("group_list")
-	for group in groups:
-		mkdir_p(os.path.join(base_path, group))
+    groups = get_results("group_list")
+    for group in groups:
+        mkdir_p(os.path.join(base_path, group))
 
-	return groups
+    return groups
 
 
 def get_group_packages(group):
-	return get_results("group_show", id_string=group)
+    return get_results("group_show", id_string=group)
 
 
 def get_package(group):
-	return get_results("package_show", id_string=group)
+    return get_results("package_show", id_string=group)
 
 
 def write_json(data, json_file, style=""):
@@ -67,13 +70,23 @@ def write_json(data, json_file, style=""):
 
 
 def parse_csv_from_url(url):
-	csv_rows = []
-	response = urllib2.urlopen(url)
-	reader = csv.DictReader(response, delimiter='\t')
+    csv_rows = []
+    response = urllib2.urlopen(url)
+    data = response.read()
+    try:
+        dialect = csv.Sniffer().sniff(data[:1024])
+        print "Dialect Found: ", dialect.delimiter
+        reader = csv.DictReader(data.splitlines(), delimiter=dialect.delimiter)
         title = reader.fieldnames
         for row in reader:
             csv_rows.extend([{title[i]:row[title[i]] for i in range(len(title))}])
-	return csv_rows
+
+        return csv_rows
+    except:
+        print "fuck up..."
+        return None
+
+
 
 
 # Command-Line Arguments
@@ -87,30 +100,18 @@ args = parser.parse_args()
 # 1) Get all group_names and create subfolders to store json files
 groups = create_group_folders(args.path)
 
-# 2) Iterate over all groups, and packages, and convert packages to json format with meta data
+# # 2) Iterate over all groups, and packages, and convert packages to json format with meta data
 for group in groups:
-	for package in get_group_packages(group)["packages"]:
-		data = get_package(package["name"])["resources"]
-		for blob in data:
-			if blob["format"] == "CSV":
-				csv_data = parse_csv_from_url(blob["url"])
-				json_file = os.path.join(args.path, "geo", package["name"] + ".json")
-				print json_file
-				write_json(csv_data, json_file, "pretty")
-		# break
+    for package in get_group_packages(group)["packages"]:
+        data = get_package(package["name"])["resources"]
+        # data = get_package(package["name"])
+        # pprint.pprint(data)
 
+        for blob in data:
+            if blob["format"] == "CSV":
+                csv_data = parse_csv_from_url(blob["url"])
+                if csv_data is not None:
+                    json_file = os.path.join(args.path, group, package["name"] + ".json")
+                    print json_file
+                    write_json(csv_data, json_file, "pretty")
 
-
-# pprint.pprint(get_datasets_for_group("soziales"))
-
-
-
-# res = makeRequest("package_show")
-
-# # Use the json module to load CKAN's response into a dictionary.
-# response_dict = json.loads(res.read())
-
-# # Check the contents of the response.
-# assert response_dict['success'] is True
-# result = response_dict['result']
-# pprint.pprint(response_dict)

@@ -5,9 +5,27 @@ var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
     name : {type : String, default: ''},
     description: {type : String, default: ''},
-    lat: {type : Number},
-    long: {type : Number},
-    district: {type : Number}
+    url_csv: {type : String, default: ''},
+    loc_type: {type : String, default: ''}, // either coord, district, or?
+    data_type: {type: String, default: ''},
+	author: {type : String, default: ''},
+	author_email: {type : String, default: ''},
+	license_id: {type : String, default: ''},
+	license_title: {type : String, default: ''},
+	license_url: {type : String, default: ''},
+	maintainer: {type : String, default: ''},
+	maintainer_email: {type : String, default: ''},
+	metadata_created: {type : String, default: ''},
+	metadata_modified: {type : String, default: ''},
+	image: {type : String, default: ''},
+	data: [{
+		        // text: String,
+		        location: {
+	                latitude: {type : Number},
+				    longitude: {type : Number},
+				    district: {type : Number},
+		        }
+	    }]
 });
 
 // define our nerd model
