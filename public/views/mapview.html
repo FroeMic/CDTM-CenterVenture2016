@@ -34,7 +34,7 @@
 </div>
 
 <div ng-controller="MapController" class="main">
-  <leaflet center="center"></leaflet>
+  <leaflet center="center" class="map" tiles="tiles" id="map"></leaflet>
 
   <ul class="sidebar side-nav-fake" ng-init="datasets=[]">
     <li ng-init="dataset={name: 'Districts', checked: false}">
