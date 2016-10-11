@@ -16,7 +16,7 @@ var map;
                 if(!(datasetId in actions)) {
                     console.error('dataset ' + datasetId + ' has no action!');
                 } else {
-                    actions[datasetId](!dataset.checked);
+                    actions[datasetId](dataset.checked);
                 }
             }
     });
