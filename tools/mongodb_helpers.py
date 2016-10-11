@@ -25,16 +25,9 @@ RecordTemplate = namedtuple('Record',
                              'metadata_modified',
                              'image'])
 
+
 LocationRecordMapping = namedtuple('LocationRecordMapping', 'latitude, longitude, district')
 ValueRecordMapping = namedtuple('ValueMapping', 'value_description', 'value')
-
-
-# class locationType(Enum):
-#     district = 1
-#     gcs_coordinates = 2
-#     mixed = 3
-#     undefined = 99
-
 
 
 def connect_mongodb(uri=""):
