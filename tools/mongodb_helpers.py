@@ -48,7 +48,9 @@ def get_data_collection(db):
     return db[DEFAULT_DATA_COLLECTION]
 
 
-def insert_dataset(collection, recordTemplate, locationRecordMapping, valueRecordMapping, data):
+def insert_ods_header(db, recordTemplate, locationRecordMapping, valueRecordMapping, data);
+
+def insert_dataset(db, recordTemplate, locationRecordMapping, valueRecordMapping, data):
     tmp = recordTemplate._asdict()
     tmp['data'] = []
 
@@ -71,4 +73,4 @@ def insert_dataset(collection, recordTemplate, locationRecordMapping, valueRecor
         transformed_blob.update(blob)
         tmp['data'].append(transformed_blob)
 
-    collection.insert_one(tmp).inserted_id
+    get_data_collection(db).insert_one(tmp).inserted_id
