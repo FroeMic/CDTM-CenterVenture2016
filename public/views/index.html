@@ -38,10 +38,15 @@
         <br><br>
         <h1 class="header center teal-text text-lighten-2">Parallax Template</h1>
         <div class="row center">
-          <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-        </div>
-        <div class="row center">
-          <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
+          <search>
+            <div class="search--image"">
+              <div class="row search--container">
+                <div class="large-12 medium-12 small-12 columns">
+                  <input type="text" class="search--input text-shadow ng-pristine ng-valid ng-touched" ng-model="query" ng-focus="truncate();" ng-blur="reinsertPlaceholder()" enter-press="commitSearch()">
+                </div>
+              </div>
+            </div>
+          </search>
         </div>
         <br><br>
 
@@ -49,7 +54,6 @@
     </div>
     <div class="parallax"><img src="/img/background1.jpg" alt="Unsplashed background img 1"></div>
   </div>
-
 
   <div class="container">
     <div class="section">
