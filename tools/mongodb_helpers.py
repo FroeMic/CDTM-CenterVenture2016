@@ -12,7 +12,6 @@ DEFAULT_ODS_COLLECTION = 'open_datasets'
 RecordTemplate = namedtuple('Record',
                             ['name',
                              'description',
-                             'location_type',
                              'url_csv',
                              'license_id',
                              'license_title',
@@ -27,7 +26,7 @@ RecordTemplate = namedtuple('Record',
 
 
 LocationRecordMapping = namedtuple('LocationRecordMapping', 'latitude, longitude, district')
-ValueRecordMapping = namedtuple('ValueMapping', 'value_description', 'value')
+ValueRecordMapping = namedtuple('ValueMapping', 'value_description, value')
 
 
 def connect_mongodb(uri=""):
@@ -47,5 +46,28 @@ def get_ods_collection(db):
     return db[DEFAULT_ODS_COLLECTION]
 
 
-def insert_dataset(collection, RecordTemplate, LocationRecordMapping, ValueMapping, AdditionalData={}):
-    pass
+def insert_dataset(collection, recordTemplate, locationRecordMapping, valueRecordMapping, data):
+    tmp = recordTemplate._asdict()
+    tmp['data'] = []
+
+    for blob in data:
+        transformed_blob = {}
+
+        # Transform Location Data
+        for target, original in locationRecordMapping:
+            value = blob.pop(original, None)
+            if value:
+                transformed_blob[target] = value
+
+        # Transform Key Value Data
+        for target, original in valueRecordMapping:
+            value = blob.pop(original, None)
+            if value:
+                transformed_blob[target] = value
+
+        # Copy remaining values
+        transformed_blob.update(blob)
+
+        tmp['data'].append(transformed_blob)
+
+    collection.insert_one(tmp).inserted_id

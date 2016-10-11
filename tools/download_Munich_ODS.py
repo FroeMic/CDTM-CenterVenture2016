@@ -11,8 +11,6 @@ import errno
 import os
 import io
 
-import mongodb_helpers as mongohelp
-
 # DON'T CHANGE
 MUC_ODS_URL = 'https://www.opengov-muenchen.de/api/action/'
 
@@ -103,9 +101,26 @@ groups = create_group_folders(args.path)
 # # 2) Iterate over all groups, and packages, and convert packages to json format with meta data
 for group in groups:
     for package in get_group_packages(group)["packages"]:
-        data = get_package(package["name"])["resources"]
-        # data = get_package(package["name"])
-        # pprint.pprint(data)
+        package_info = get_package(package["name"])
+        pprint.pprint(package_info)
+
+        info =  {
+                    'name': package_info['title'],
+                    'description': ,
+                    'url_csv': ,
+                    'license_id': ,
+                    'license_title': ,
+                    'license_url': ,
+                    'author': ,
+                    'author_email': ,
+                    'maintainer': ,
+                    'maintainer_email': ,
+                    'metadata_created': ,
+                    'metadata_modified': ,
+                    'image'
+                }
+
+        data = package_info["resources"]
 
         for blob in data:
             if blob["format"] == "CSV":
