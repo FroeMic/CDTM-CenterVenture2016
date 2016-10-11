@@ -8,6 +8,7 @@ DEFAULT_PORT = 27017
 
 DEFAULT_DB = 'aparata_db'
 DEFAULT_ODS_COLLECTION = 'open_datasets'
+DEFAULT_DATA_COLLECTION = 'open_datasets_data'
 
 RecordTemplate = namedtuple('Record',
                             ['name',
@@ -21,8 +22,7 @@ RecordTemplate = namedtuple('Record',
                              'maintainer',
                              'maintainer_email',
                              'metadata_created',
-                             'metadata_modified',
-                             'image'])
+                             'metadata_modified'])
 
 
 LocationRecordMapping = namedtuple('LocationRecordMapping', 'latitude, longitude, district')
@@ -41,9 +41,11 @@ def connect_mongodb(uri=""):
 def get_db(client):
     return client[DEFAULT_DB]
 
-
 def get_ods_collection(db):
     return db[DEFAULT_ODS_COLLECTION]
+
+def get_data_collection(db):
+    return db[DEFAULT_DATA_COLLECTION]
 
 
 def insert_dataset(collection, recordTemplate, locationRecordMapping, valueRecordMapping, data):
@@ -54,20 +56,19 @@ def insert_dataset(collection, recordTemplate, locationRecordMapping, valueRecor
         transformed_blob = {}
 
         # Transform Location Data
-        for target, original in locationRecordMapping:
+        for target, original in locationRecordMapping._asdict().iteritems():
             value = blob.pop(original, None)
             if value:
                 transformed_blob[target] = value
 
         # Transform Key Value Data
-        for target, original in valueRecordMapping:
+        for target, original in valueRecordMapping._asdict().iteritems():
             value = blob.pop(original, None)
             if value:
                 transformed_blob[target] = value
 
         # Copy remaining values
         transformed_blob.update(blob)
-
         tmp['data'].append(transformed_blob)
 
     collection.insert_one(tmp).inserted_id

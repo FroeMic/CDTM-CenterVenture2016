@@ -102,23 +102,8 @@ groups = create_group_folders(args.path)
 for group in groups:
     for package in get_group_packages(group)["packages"]:
         package_info = get_package(package["name"])
-        pprint.pprint(package_info)
+        # pprint.pprint(package_info)
 
-        info =  {
-                    'name': package_info['title'],
-                    'description': ,
-                    'url_csv': ,
-                    'license_id': ,
-                    'license_title': ,
-                    'license_url': ,
-                    'author': ,
-                    'author_email': ,
-                    'maintainer': ,
-                    'maintainer_email': ,
-                    'metadata_created': ,
-                    'metadata_modified': ,
-                    'image'
-                }
 
         data = package_info["resources"]
 
@@ -126,7 +111,26 @@ for group in groups:
             if blob["format"] == "CSV":
                 csv_data = parse_csv_from_url(blob["url"])
                 if csv_data is not None:
+                    info =  {
+                                'name': package_info['title'],
+                                'description': blob['description'],
+                                'url_csv': blob["url"],
+                                'license_id': package_info['license_id'],
+                                'license_title': package_info['license_title'],
+                                'license_url': package_info['license_url'],
+                                'author': package_info['author'],
+                                'author_email': package_info['author_email'],
+                                'maintainer': package_info['maintainer'],
+                                'maintainer_email': package_info['maintainer_email'],
+                                'metadata_created': package_info['metadata_created'],
+                                'metadata_modified': package_info['metadata_modified'],
+                                'data': None
+                            }
+
+                    info['data'] = csv_data
                     json_file = os.path.join(args.path, group, package["name"] + ".json")
                     print json_file
-                    write_json(csv_data, json_file, "pretty")
+                    write_json(info, json_file, "pretty")
+
+                    break # dont look further...yeaah hacky TODO
 
