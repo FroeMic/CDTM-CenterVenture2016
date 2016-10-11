@@ -48,6 +48,11 @@ cvApp.config(function($routeProvider) {
 cvApp.controller('mainController', function($scope) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+
+    angular.element(document).ready(function () {
+        $('.button-collapse').sideNav();
+        $('.parallax').parallax();
+    });
 });
 
 cvApp.controller('aboutController', function($scope) {
