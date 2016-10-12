@@ -40,7 +40,10 @@ var passport = require('passport');
             passport.authenticate('facebook'));
 
         app.get('/auth/facebook/callback',
-            passport.authenticate('facebook', { failureRedirect: '/login' }),
+            passport.authenticate('facebook', {
+                failureRedirect: '/login',
+                scope: ['public_profile', 'user_friends']
+            }),
             function(req, res) {
                 req.session.user = req.user;
                 // Successful authentication, redirect home.

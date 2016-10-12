@@ -31,7 +31,8 @@ var port = process.env.PORT || 1337;
 passport.use(new FacebookStrategy({
         clientID: "1072223219560634",
         clientSecret: "7f957acd6b1360bb73460fd8e36b0557",
-        callbackURL: 'http://localhost:1337/auth/facebook/callback'
+        callbackURL: 'http://localhost:1337/auth/facebook/callback',
+        profileFields: ['id', 'displayName', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified', 'picture']
     },
     function(accessToken, refreshToken, profile, cb) {
         // In this example, the user's Facebook profile is supplied as the user

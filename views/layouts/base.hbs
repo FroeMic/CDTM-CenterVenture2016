@@ -22,9 +22,9 @@
         <ul class="right hide-on-med-and-down valign-wrapper" style="height: 100%;">
             <li class="valign">
                 {{#if user}}
-                    <a href="/logout" class="btn waves-effect waves-light teal lighten-1">Logout {{user.displayName}}</a>
+                    <a href="/logout" target="_self" class="btn waves-effect waves-light teal lighten-1">Logout {{user.displayName}}</a>
                 {{else}}
-                    <a href="/auth/facebook" class="btn waves-effect waves-light teal lighten-1">Login</a>
+                    <a href="/auth/facebook" target="_self" class="btn waves-effect waves-light teal lighten-1">Login</a>
                 {{/if}}
             </li>
         </ul>
