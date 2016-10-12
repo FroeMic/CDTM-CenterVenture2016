@@ -70,9 +70,55 @@ p {
 
 .icon-block {
   padding: 0 15px;
+  margin-top: 20px;
 }
 .icon-block .material-icons {
   font-size: inherit;
+}
+
+
+.search--image {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: height .5s;
+  height: calc(50vh)
+}
+
+.search--image .search--container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(15vh);
+  transition: bottom .5s
+}
+
+.search--image .search--container .search--input {
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  width: calc(100% - 60px);
+  float: right;
+  height: 70px;
+  font-size: 32pt;
+  font-weight: 300;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0);
+  color: #fff;
+  position: relative
+}
+
+.search--image .search--container .search--input * {
+  position: relative;
+  top: 0
+}
+
+.search--image .search--container .search--input:focus {
+  background-color: rgba(255, 255, 255, .5)
+}
+
+footer img{
+  margin-top: 20px;
 }
 
 footer.page-footer {
