@@ -63,7 +63,12 @@ cvApp.config(function($routeProvider) {
 cvApp.directive("personalityTest", function () {
    return {
       templateUrl: "/views/personalityTest.html",
-      controller: "personalityTestController"
+      controller: "personalityTestController",
+      link: function(scope, elem, attr) {
+        angular.element(document).ready(function(){
+          $('select').material_select();
+        });
+      }
    };
 });
 
@@ -96,6 +101,8 @@ cvApp.controller('mainController', function($scope, $location, $http) {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
         $('ul.tabs').tabs();
+        $('select').material_select();
+
     });
 });
 
@@ -107,8 +114,8 @@ cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
 
-cvApp.controller('personalityTestController', function($scope) {
-  $scope.message = 'personalityTestController message thingy.'
+cvApp.controller('personalityTestController', function($scope, $timeout) {
+  $scope.currentSection = 1;
 
   $scope.survey = {
     title: "Welcome to XXX",
@@ -116,34 +123,45 @@ cvApp.controller('personalityTestController', function($scope) {
       {
         title: "Intro",
         description: "Please give us some information about yourself, so we can find your perfect flatmate.",
+        number: 1,
         questions: [
           {
-            title: "firstname",
-            question: "Firstname",
+            title: "Firstname",
+            question: "My Firstname",
             questionType: "TEXT",
             answerOptions: null
           },
           {
-            title: "lastname",
-            question: "Lastname",
+            title: "Lastname",
+            question: "My Lastname",
             questionType: "TEXT",
             answerOptions: null
           },
           {
-            title: "gender",
-            question: "Gender",
+            title: "Gender",
+            question: "My Gender",
             questionType: "CHOICE",
             answerOptions: [
               {
                 value: 0,
                 text: "female",
                 iconUrl: "/img/icons/survey/female.png"
+              },
+              {
+                value: 0,
+                text: "male",
+                iconUrl: "/img/icons/survey/male.png"
+              },
+              {
+                value: 0,
+                text: "other",
+                iconUrl: "/img/icons/survey/unicorn.png"
               }
             ]
           },
           {
-            title: "occupation",
-            question: "Occupation",
+            title: "Occupation",
+            question: "My Occupation",
             questionType: "TEXT",
             answerOptions: null
           }
@@ -157,11 +175,21 @@ cvApp.controller('personalityTestController', function($scope) {
     $scope.needsPersonalityTest = false;
   }
 
-  angular.element(document).ready(function () {
-      $('.button-collapse').sideNav();
-      $('.parallax').parallax();
+  $scope.nextSection = function() {
+    console.log($scope.currentSection);
+    $scope.currentSection = $scope.currentSection + 1;
+  }
+
+
+  $timeout(initMaterialize, 0);
+
+  function initMaterialize() {
+    $(document).ready(function(){
+      $('select').material_select();
       $('ul.tabs').tabs();
-  });
+    });
+}
+
 });
 
 cvApp.controller('offerCreateController', function($scope) {

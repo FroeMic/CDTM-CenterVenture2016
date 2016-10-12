@@ -3,19 +3,55 @@
   <div class="col s12 m10 l8">
 
     <div class="content" style="">
-      <div class="container" ng-repeat="section in survey.sections">
-        <h1>{{section.title}}</h1>
-        <div class=""style="">{{section.description}}</div>
-        <div class="" ng-repeat="question in section.questions">
+      <div hide ng-show="section.number==currentSection" class="container" ng-repeat="section in survey.sections">
+
+        <h2>{{section.title}}</h2>
+        <div class="section-description">{{section.description}}</div>
+        <br>
+
+        <form class="" ng-repeat="question in section.questions">
+            <!-- TEXT Question -->
             <div hide ng-show="question.questionType=='TEXT'">
-              <h4>{{question.question}}</h4>
-              <input placeholder="{{question.title}}" type="text">
+              <div class="question-title">{{question.question}}</div>
+              <input placeholder="{{question.title}}" type="text"  label="test" ng-model="question.answer">
             </div>
+
+            <!-- CHOICE Question -->
+            <div hide ng-show="question.questionType=='CHOICE'">
+              <div class="question-title">{{question.question}}</div>
+
+                <div class="input-field col s12">
+                    <select class="icons">
+                        <option value="" disabled selected>Gender</option>
+                        <option ng-repeat="answerOption in question.answerOptions" value="{{answerOption.value}}" data-icon="{{answerOption.iconUrl}}" class="left">{{answerOption.text}}</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDER Question -->
+            <div hide ng-show="question.questionType=='SLIDER'">
+
+            </div>
+
+            <!-- LIKERT Question -->
+            <div hide ng-show="question.questionType=='LIKERT'">
+
+            </div>
+
+            <div class="container right-align">
+              <div class="btn" ng-click="nextSection()">
+                <span hide ng-show="survey.sections.length==currentSection">Finish</span>
+                <span hide ng-show="survey.sections.length!=currentSection">Next</span>
+              </div>
+            </div>
+        </form>
+
+
+
         </div>
+
       </div>
-
-    </div>
-
   </div>
   <div class="col s12 m1 l2"></div>
 </div>

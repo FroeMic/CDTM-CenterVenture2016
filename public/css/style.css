@@ -29,6 +29,10 @@ html, body {
   cursor: pointer;
 }
 
+.invisible {
+  display: none !important;
+}
+
 nav ul a,
 nav .brand-logo {
   color: #444;
@@ -130,9 +134,22 @@ personality-test .dim {
 }
 
 personality-test .content {
-  height:90vh;
-  margin-top: 5vh;
-  padding: 10px 0;
+  height: 94vh;
+  margin-top: 3vh;
+  padding: 10px 0 30px 0;
   background: white;
   overflow: scroll;
+}
+
+personality-test .section-description {
+  font-size: 14pt;
+  color: rgba(0,0,0,0.6);
+}
+
+personality-test .question-title {
+  font-size: 12pt;
+}
+
+personality-test .input-field {
+  padding: 0 !important;
 }
