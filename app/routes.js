@@ -1,5 +1,6 @@
 // grab the nerd model we just created
 var Location = require('./models/locationObject');
+var passport = require('passport');
 
     module.exports = function(app) {
 
@@ -27,14 +28,26 @@ var Location = require('./models/locationObject');
         // frontend routes =========================================================
         // route to handle all angular requests
         app.get('/', function(req, res) {
-            res.sendfile('./public/views/index.html'); // load our public/index.html file
+            res.render('index.hbs', { user: req.session.user });
         });
 
-        app.get('/login', function(req, res) {
-            res.sendfile('./public/views/login.html'); // load our public/index.html file
+        app.get('/logout', function (req, res) {
+            req.session.user = undefined;
+            res.redirect('/');
         });
+
+        app.get('/auth/facebook',
+            passport.authenticate('facebook'));
+
+        app.get('/auth/facebook/callback',
+            passport.authenticate('facebook', { failureRedirect: '/login' }),
+            function(req, res) {
+                req.session.user = req.user;
+                // Successful authentication, redirect home.
+                res.redirect('/');
+            });
 
         app.get('*', function(req, res) {
-            res.status(404).sendfile('./public/views/404.html'); // load our public/index.html file
+            res.status(404).sendfile('./public/views/404.html'); // TODO: make compatible with Angular App Routing
         });
     };

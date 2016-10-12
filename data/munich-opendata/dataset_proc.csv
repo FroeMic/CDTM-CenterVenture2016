@@ -1,0 +1,10 @@
+dataset	latitude	longitude	district	value_description	key_value
+wirtschaft-arbeit/maerkte.json	latitude	longitude	-1	rubrik	adresse
+wirtschaft-arbeit/indikatorenatlas-2014-arbeitsmarkt-sozialversicherungspflichtig-beschaeftigtendichte-83r65mct.json	-1	-1	NUMMER	INDIKATOR_BEZEICHNUNG	INDIKATOR_WERT
+wirtschaft-arbeit/indikatorenatlas-2014-arbeitsmarkt-arbeitslosendichte-83r65mct.json	-1	-1	NUMMER	INDIKATOR_BEZEICHNUNG	INDIKATOR_WERT
+geo/behindertenparkplaetze.json	latitude	longitude	-1	anzeigename	bezeichnung
+geo/oeffentliche-spielplaetze-muenchen.json	latitude	longitude	-1	service_bezeichnung	bezeichnung
+geo/offentliche-toiletten-der-landeshauptstadt-muenchen.json	latitude	longitude	-1	service_bezeichnung	bezeichnung
+geo/points-of-interest-an-der-sudlichen-isar.json	latitude	longitude	-1	type	title
+politik-wahlen/indikatorenatlas-2014-wahlen-wahlbeteiligung-83r65mct.json	-1	-1	INDIKATOR_BEZEICHNUNG	INDIKATOR_WERT
+gesundheit/indikatorenatlas-2014-aerzte-aerztedichte-83r65mct.json	-1	-1	INDIKATOR_BEZEICHNUNG	INDIKATOR_WERT
