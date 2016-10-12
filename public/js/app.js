@@ -30,8 +30,8 @@ cvApp.config(function($routeProvider) {
         })
 
         .when('/offer', {
-            templateUrl : '../views/offer.html',
-            controller  : 'offerController'
+            templateUrl : '../views/offer_create.html',
+            controller  : 'offerCreateController'
         })
 
         .when('/offer/:offer_id', {
@@ -78,7 +78,7 @@ cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
 
-cvApp.controller('offerController', function($scope) {
+cvApp.controller('offerCreateController', function($scope) {
 });
 
 cvApp.controller('offerDetailController', function($scope, $routeParams) {
