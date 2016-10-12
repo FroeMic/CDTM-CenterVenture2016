@@ -36,7 +36,8 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
         var datasetId = dataset.name;
         var actions = {
             'Districts': loadDistricts,
-            'Test': loadUrl.bind(undefined, dataset.url, markers)
+            'Test': loadUrl.bind(undefined, dataset.url, markers),
+            'Rents': loadUrl.bind(undefined, dataset.url, rent)
         };
 
         if(!(datasetId in actions)) {
@@ -67,19 +68,7 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             var customLayer = L.geoJson(null, {
                 // http://leafletjs.com/reference.html#geojson-style
                 onEachFeature: function (feature, layer) {
-                    console.log('f,l:', feature, layer);
-                    // var label = L.marker(layer.getBounds().getCenter(), {
-                    //     icon: L.divIcon({
-                    //         className: 'label',
-                    //         html: feature.properties.name,
-                    //         iconSize: [100, 40]
-                    //     })
-                    // }).addTo(map);
-                    // layer.on('remove', function (ev) {
-                    //     label.remove();
-                    // });
-
-                    layer.bindTooltip(feature.properties.name);
+                    layer.bindTooltip(feature.properties.description + " " + feature.properties.name);
                 }
             });
 
@@ -139,6 +128,55 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
         });
         return layer;
     }
+
+    function rent(data) {
+        return coloredArea(data, '€');
+    }
+
+    function coloredArea(data, suffix) {
+        // we expect data to be an array of { district: <id>, value: <v>  ... } objects, then pull in
+        // district kml and color features based on values
+        var values = data.map(function (x) {
+            return x.rent;
+        });
+        var max = Math.max.apply(null, values);
+        var min = Math.min.apply(null, values);
+
+        function color(value) {
+            var normalized = (value - min) / (max - min);
+            var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026' ];
+            var idx = Math.round(normalized * colors.length);
+            return colors[Math.max(0, Math.min(colors.length - 1, idx))];
+        }
+
+        var valueMap = {};
+        data.forEach(function (x, idx, arr) {
+            valueMap[x._id] = x.rent;
+        });
+
+        // pull districts (stolen from loadDistricts())
+        var customLayer = L.geoJson(null, {
+            // http://leafletjs.com/reference.html#geojson-style
+            onEachFeature: function (feature, layer) {
+                var value = valueMap[parseInt(feature.properties.description)];
+                var formatted = Math.round(value);
+                layer.bindTooltip(feature.properties.name + ': <strong>' + formatted + suffix + '</strong>');
+            },
+            style: function (feature) {
+                var value = valueMap[parseInt(feature.properties.description)];
+                return {
+                    weight: 2,
+                    opacity: 0.7,
+                    color: 'white',
+                    dashArray: '3',
+                    fillOpacity: 0.5,
+                    fillColor: color(value)
+                };
+            }
+        });
+
+        return omnivore.kml('/maps/public/munich-districts.kml', null, customLayer).addTo(map);
+    }
 }]);
 
 
@@ -155,16 +193,6 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             }
             $('#menu-btn').css('right', (invisible ? 310 : 10) + 'px');
         });
-        // map = L.map('mapid').setView([48.143763, 11.557979], 12);
-        // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQ5cHZwaTAwMjAyeW1wMXA4Y3QwZjYifQ.eBlCPEZnuSx7uGlM5A1aFQ', {
-        //     maxZoom: 18,
-        //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-        //     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        //     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        //     id: 'mapbox.streets'
-        // }).addTo(map);
-
-
     }); // end of document ready
 
 })(jQuery); // end of jQuery name space

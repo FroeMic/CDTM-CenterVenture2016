@@ -10,7 +10,6 @@ import argparse
 import errno
 import os
 
-import menu
 import io
 
 import mongodb_helpers as mongohelp
