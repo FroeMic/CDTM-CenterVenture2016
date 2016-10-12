@@ -2,9 +2,8 @@
   <div class="col s12 m1 l2"></div>
   <div class="col s12 m10 l8">
 
-    <div class="content" style="">
+    <div id="survey-form" class="content" style="">
       <div hide ng-show="section.number==currentSection" class="container" ng-repeat="section in survey.sections">
-
         <h2>{{section.title}}</h2>
         <div class="section-description">{{section.description}}</div>
         <br>
@@ -13,18 +12,17 @@
             <!-- TEXT Question -->
             <div hide ng-show="question.questionType=='TEXT'">
               <div class="question-title">{{question.question}}</div>
-              <input placeholder="{{question.title}}" type="text"  label="test" ng-model="question.answer">
+              <input placeholder="{{question.title}}" type="text" ng-model="question.answer">
             </div>
 
             <!-- CHOICE Question -->
             <div hide ng-show="question.questionType=='CHOICE'">
-
               <div class="question-title">{{question.question}}</div>
               <div hide ng-show="question.imageUrl != null && question.imageUrl != undefined && question.imageUrl != ''">
                 <img class="materialboxed" height="300px" width="100%" ng-attr-src="{{question.imageUrl}}">
               </div>
               <div class="input-field col s12">
-                  <select class="icons">
+                  <select class="icons" ng-model="question.answer">
                       <option value="" disabled selected>Please Select</option>
                       <option ng-repeat="answerOption in question.answerOptions" value="{{answerOption.value}}" data-icon="{{answerOption.iconUrl}}" class="left">{{answerOption.text}}</option>
                   </select>
@@ -34,9 +32,7 @@
             <!-- LIKERT Question -->
             <div hide ng-show="question.questionType=='LIKERT'">
               <div class="question-title">{{question.question}}</div>
-              <div>{{question.answer}}</div>
                 <div class="center-align likert-line" ng-repeat="answer in question.answerOptions" style="display:inline-block; width: 19.9%;">
-                  <div>{{answer.value}}</div>
                   <input name="group1" type="radio" id="{{section.number + '-' + question.number + '-' + answer.value + '-' +'likert'}}" value={{answer.value}} ng-model="question.answer"/>
                   <label for="{{section.number + '-' + question.number + '-' + answer.value + '-' +'likert'}}"></label>
                   <div style="color: rgba(0,0,0,0.0.6)">{{answer.text}}</div>

@@ -8,6 +8,20 @@
 var cvApp = angular.module('cvApp', ['ngRoute']);
 var HOSTSTRING = ""
 
+function shake(element) {
+  try {
+    element.classList.add('shake');
+    element.classList.add('animated');
+    setTimeout(function () {
+      element.classList.remove('shake');
+      element.classList.remove('animated');
+    }, 1000);
+  }
+  catch(err) {
+    // ignore
+  }
+}
+
 // configure our routes
 cvApp.config(function($routeProvider) {
     $routeProvider
@@ -123,7 +137,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout) {
   }
 
   $scope.survey = {
-    title: "Welcome to XXX",
+    title: "Welcome to Flatling 😃",
     sections: [
       {
         title: "Intro",
@@ -745,12 +759,28 @@ cvApp.controller('personalityTestController', function($scope, $timeout) {
   }
 
   $scope.nextSection = function() {
-    if ($scope.currentSection < $scope.survey.sections.length) {
-      $scope.currentSection = $scope.currentSection + 1;
+    // Sanity checking.
+    var sane = true;
+    $scope.survey.sections[$scope.currentSection - 1].questions.forEach(function(question) {
+      sane = sane && question.answer != undefined  && question.answer != null;
+      if (question.questionType=="TEXT") {
+        sane = sane && question.answer != '';
+      } else if (question.questionType=="CHOICE") {
+        // TODO
+      } else if (question.questionType=="LIKERT") {
+        // TODO
+      }
+    });
+    if (sane) {
+      if ($scope.currentSection < $scope.survey.sections.length) {
+        $scope.currentSection = $scope.currentSection + 1;
+      } else {
+        // TODO: Post to REST API.
+        $scope.finishTest()
+      }
     } else {
-      // TODO: Sanity checking.
-      // TODO: Post to REST API.
-      $scope.finishTest()
+      // TODO: visualize wrong input
+      shake(document.getElementById('survey-form'));
     }
   }
 
