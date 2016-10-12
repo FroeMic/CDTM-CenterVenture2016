@@ -17,7 +17,7 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             scrollWheelZoom: false
         },
         tiles: {
-            url: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQ5cHZwaTAwMjAyeW1wMXA4Y3QwZjYifQ.eBlCPEZnuSx7uGlM5A1aFQ',
+            url: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q',
             options: {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -37,7 +37,8 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
         var actions = {
             'Districts': loadDistricts,
             'Test': loadUrl.bind(undefined, dataset.url, markers),
-            'Rents': loadUrl.bind(undefined, dataset.url, rent)
+            'Rents': loadUrl.bind(undefined, dataset.url, rent),
+            'Playgrounds': cluster.bind(undefined, dataset.url, 'playgrounds')
         };
 
         if(!(datasetId in actions)) {
@@ -107,6 +108,20 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
         }
     }
 
+    function cluster(url, id, create) {
+        if(create) {
+            map.addSource("earthquakes", {
+                type: "geojson",
+                data: url,
+                cluster: true,
+                clusterMaxZoom: 14,
+                clusterRadius: 50
+            });
+        } else {
+            map.removeSource(id);
+        }
+    }
+
     function markers(data) {
         var layer = L.layerGroup().addTo(map);
         data.forEach(function (val, idx, arr) {
@@ -122,8 +137,9 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
                     iconAnchor: [15, tooltip ? 60 : 41]
                 })
             });
-
-            var marker2 = L.marker(val.latlong).addTo(layer);
+            if(val.popup) {
+                marker.bindPopup(val.popup);
+            }
             marker.addTo(layer);
         });
         return layer;
