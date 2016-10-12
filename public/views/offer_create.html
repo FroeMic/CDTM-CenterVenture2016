@@ -8,7 +8,7 @@
                 <div class="section">
                   <h5>Street Address</h5>
                 </div>
-                <div id="address-group" class="input-field col s12 form-group">
+                <div class="input-field col s12 form-group">
                   <input id="address" type="text" class="validate form-control" ng-model="formData.address">
                   <label for="address">Street Address</label>
                 </div>
@@ -20,28 +20,28 @@
                 </div>
               </div>
               <div class="row">
-                <div class="input-field col s12 m12 l6">
-                  <input id="price" type="number" class="validate">
+                <div class="input-field col s12 m12 l6 form-group">
+                  <input id="price" type="number" class="validate form-control" ng-model="formData.price">
                   <label for="price">Price (€) including utilities</label>
                 </div>
-                <div class="input-field col s12 m12 l6">
-                  <input id="deposit" type="number" class="validate">
+                <div class="input-field col s12 m12 l6 form-group">
+                  <input id="deposit" type="number" class="validate form-control" ng-model="formData.deposit">
                   <label for="deposit">Deposit (€)</label>
                 </div>
               </div>
               <div class="row">
-                <div class="input-field col s12 m12 l6">
-                  <input id="size_room" type="number" class="validate">
+                <div class="input-field col s12 m12 l6 form-group">
+                  <input id="size_room" type="number" class="validate form-control" ng-model="formData.size_room">
                   <label for="size_room">Room Size (m<sup>2</sup>)</label>
                 </div>
-                <div class="input-field col s12 m12 l6">
-                  <input id="size_apartment" type="number" class="validate">
+                <div class="input-field col s12 m12 l6 form-group">
+                  <input id="size_apartment" type="number" class="validate form-control" ng-model="formData.size_apartment">
                   <label for="size_apartment">Apartment Size (m<sup>2</sup>)</label>
                 </div>
               </div>
               <div class="row">
-                <div class="input-field col s12">
-                  <select>
+                <div class="input-field col s12 form-group">
+                  <select id="room_type" class="form-control" ng-model="formData.room_type">
                     <option value="" disabled selected>Choose your option</option>
                     <option value="1">Shared room</option>
                     <option value="2">Private room</option>
@@ -52,73 +52,68 @@
             </div>
 
               <div class="row">
-                <div class="input-field col s12 m12 l4">
-                  <input id="startdate" type="text" type="date" class="datepicker">
+                <div class="input-field col s12 m12 l4 form-group">
+                  <input id="startdate" type="text" class="datepicker form-control" ng-model="formData.startdate">
                   <label for="startdate">Available from</label>
                 </div>
-                <div class="col s12 m12 l4" style="margin-top:30px;">
-                  <input type="checkbox" class="filled-in" id="checkbox_shortterm"/>
+                <div class="col s12 m12 l4 form-group" style="margin-top:30px;">
+                  <input id="checkbox_shortterm" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_shortterm">
                   <label for="checkbox_shortterm">Short Term?</label>
                 </div>
-                <div class="input-field col s12 m12 l4">
-                  <input id="enddate" type="text" class="datepicker">
+                <div class="input-field col s12 m12 l4 form-group">
+                  <input id="enddate" type="text" class="datepicker form-control" ng-model="formData.enddate">
                   <label for="enddate">To</label>
                 </div>
               </div>
+
               <div class="row">
-                <div class="input-field col s12">
-                  <input id="password" type="password" class="validate">
-                  <label for="password">Password</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s12 m6 l4">
-                  <input type="checkbox" class="filled-in" id="checkbox_furnitured"/>
+                <div class="col s12 m6 l4 form-group">
+                  <input id="checkbox_furnitured" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_furnitured"/>
                   <label for="checkbox_furnitured">Furnitured</label>
                 </div>
-                <div class="col s12 m6 l4">
-                  <input type="checkbox" class="filled-in" id="checkbox_kitchen"/>
+                <div class="col s12 m6 l4 form-group">
+                  <input id="checkbox_kitchen" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_kitchen" />
                   <label for="checkbox_kitchen">Equipped Kitchen</label>
                 </div>
-                <div class="col s12 m6 l4">
-                  <input type="checkbox" class="filled-in" id="checkbox_washing_machine"/>
+                <div class="col s12 m6 l4 form-group">
+                  <input id="checkbox_washing_machine" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_washing_machine" />
                   <label for="checkbox_washing_machine">Washing machine</label>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col s12 m6 l4">
-                  <input type="checkbox" class="filled-in" id="checkbox_barrier_free"/>
+                <div class="col s12 m6 l4 form-group">
+                  <input id="checkbox_barrier_free"type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_barrier_free"/>
                   <label for="checkbox_barrier_free">Barrier-free</label>
                 </div>
-                <div class="col s12 m4 l4">
-                  <input type="checkbox" class="filled-in" id="checkbox_pets"/>
+                <div class="col s12 m4 l4 form-group">
+                  <input id="checkbox_pets" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_pets"/>
                   <label for="checkbox_pets">Pets allowed/label>
                 </div>
-                <div class="col s12 m6 l4">
-                  <input type="checkbox" class="filled-in" id="checkbox_smoking"/>
+                <div class="col s12 m6 l4 form-group">
+                  <input id="checkbox_smoking" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_smoking"/>
                   <label for="checkbox_smoking">Smoking allowed</label>
                 </div>
               </div>
 
               <div class="row">
-                <div class="input-field col s12 m12 l4">
-                  <input id="nr_of_roommates" type="number" class="validate">
+                <div class="input-field col s12 m12 l4 form-group">
+                  <input id="nr_of_roommates" type="number" class="validate" ng-model="formData.nr_of_roommates">
                   <label for="nr_of_roommates">Number of Roommates:</label>
                 </div>
-                <div class="col s12 m6 l4" style="margin-top:30px;">
-                  <input type="checkbox" class="filled-in" id="male_roommates"/>
+                <div class="col s12 m6 l4 form-group" style="margin-top:30px;">
+                  <input id="male_roommates" type="checkbox" class="filled-in form-control" ng-model="formData.male_roommates"/>
                   <label for="male_roommates"> Male</label>
                 </div>
-                <div class="col s12 m6 l4" style="margin-top:30px;">
-                  <input type="checkbox" class="filled-in" id="female_roommates"/>
+                <div class="col s12 m6 l4 form-group" style="margin-top:30px;">
+                  <input id="female_roommates" type="checkbox" class="filled-in form-control" ng-model="formData.female_roommates"/>
                   <label for="female_roommates"> Female</label>
                 </div>
               </div>
 
               <div class="row">
-                <div class="input-field col s12">
-                  <textarea id="comments" class="materialize-textarea" length="500" style="height:22px;"></textarea>
+                <div class="input-field col s12 form-group">
+                  <textarea id="comments" class="materialize-textarea form-control" ng-model="formData.comments" length="500" style="height:22px;"></textarea>
                   <label for="comments">Optional Description:</label>
                 </div>
               </div>
@@ -129,15 +124,15 @@
                     <span>Pictures</span>
                     <input type="file" multiple>
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" placeholder="Upload one or more Pictures of your apartment">
+                  <div class="file-path-wrapper form-group">
+                    <input id="uploads" class="file-path validate form-control"  ng-model="formData.uploads" type="text" placeholder="Upload one or more Pictures of your apartment">
                   </div>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col s12 right-align">
-                  <button type=""submit">
+                  <button type="submit">
                   <div class="btn">
                     <span>Post Offer</span>
                   </div>
