@@ -141,7 +141,11 @@ cvApp.controller('offerDetailController', function($scope, $routeParams) {
     $scope.offer_id = $routeParams.offer_id;
 });
 
-cvApp.controller('offerListController', function($scope) {
+cvApp.controller('offerListController', function($scope, $http) {
+    $http.get('/rooms').
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
 });
 
 cvApp.controller('loginController', function($scope) {
