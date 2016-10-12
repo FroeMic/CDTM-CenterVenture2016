@@ -1,15 +1,12 @@
 <h1>Should Show</h1>
 <div id="loginModal" class="overlay noScroll" style="background: rgba(0,0,0,0.5);">
   <div class="container" style="background: rgba(255,255,255,1.0); margin-top: 5vh;">
-    <div class="card row" style="height: 90vh; padding: 10px 0;">
+    <div class="card row" style="height: 90vh; padding: 10px 0; background: rgb(250,250,250);">
       <div class="col s1"></div>
-      <div class="col s10">
+      <div class="col s10 row">
         <h4>Aparata</h4>
         <h5>Please sign in or register to proceed.</h5>
-
-        <a class="col s12" ng-click="authenticateWithFacebook">
-          test
-        </a>
+        <img ng-click="authenticateWithFacebook()" class="clickable" src="/img/fb.png" alt="Login with Facebook" style="width: 100%;"/>
       </div>
       <div class="col s1"></div>
     </div>

@@ -78,7 +78,8 @@ cvApp.controller('contactController', function($scope) {
 cvApp.controller('loginController', function($scope) {
   $scope.authenticateWithFacebook = function() {
     console.log("authenticate");
-    $('#loginModal').closeModal();
+    // if sucess dismiss overlay
+    $scope.showLoginModal = false
   }
 });
 
