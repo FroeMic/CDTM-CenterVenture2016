@@ -10,7 +10,6 @@ import argparse
 import errno
 import os
 
-import menu
 import io
 
 import mongodb_helpers as mongohelp
@@ -72,7 +71,7 @@ parser.add_argument('--dataset_dir', '-d', type=str,
 args = parser.parse_args()
 
 # Load Json Data
-with open(os.path.join(args.dataset_dir, "ods.json")) as file:
+with open(os.path.join(args.dataset_dir, "cfg.json")) as file:
     cfg = json.load(file)
 
 # Mappings and Record Data Template

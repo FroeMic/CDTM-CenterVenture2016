@@ -1,3 +1,5 @@
 .idea/
 node_modules
 deployment/node_modules
+data/munich-opendata/
+*.pyc
