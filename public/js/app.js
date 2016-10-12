@@ -29,6 +29,11 @@ cvApp.config(function($routeProvider) {
             controller  : 'contactController'
         })
 
+        .when('/offer/:offer_id', {
+            templateUrl : '../views/offer_detail.html',
+            controller  : 'offerDetailController'
+        })
+
         // route for the contact page
         .when('/login', {
             templateUrl : '../views/login.html',
@@ -61,6 +66,10 @@ cvApp.controller('aboutController', function($scope) {
 
 cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
+});
+
+cvApp.controller('offerDetailController', function($scope, $routeParams) {
+    $scope.offer_id = $routeParams.offer_id;
 });
 
 cvApp.controller('loginController', function($scope) {
