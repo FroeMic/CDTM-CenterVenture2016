@@ -63,47 +63,37 @@ def config_ValueMapping(rawDict):
     return mongohelp.ValueRecordMapping(**valueMapDict)
 
 
-# Command-Line Arguments
-parser = argparse.ArgumentParser(description='Munich OpenData-Set Downloader')
-parser.add_argument('--dataset', '-d', type=str,
-                    help='Base folder of crawled munich dataset', required=True)
+def import_muc_ods(path):
+  # Connect MongoDB
+  client = mongohelp.connect_mongodb()
+  db = mongohelp.get_db(client)
 
-args = parser.parse_args()
+  data_collection = mongohelp.get_ods_collection(db)
+  ods_collection = mongohelp.get_data_collection(db)
 
-# Connect MongoDB
-client = mongohelp.connect_mongodb()
-db = mongohelp.get_db(client)
+  # Load Json Data
+  with open(os.path.join(path, 'dataset_proc.csv')) as file:
+      reader = csv.DictReader(file, delimiter='\t')
+      for row in reader:
+          with open(os.path.join(path, row['dataset'])) as file:
+              data = json.load(file)
 
-data_collection = mongohelp.get_ods_collection(db)
-ods_collection = mongohelp.get_data_collection(db)
+              recordTemplate = mongohelp.RecordTemplate(name=data["name"],
+                                                        description=data["description"],
+                                                        url_csv=data["url_csv"],
+                                                        license_id=data["license_id"],
+                                                        license_title=data["license_title"],
+                                                        license_url=data["license_url"],
+                                                        author=data["author"],
+                                                        author_email=data["author_email"],
+                                                        maintainer=data["maintainer"],
+                                                        maintainer_email=data["maintainer_email"],
+                                                        metadata_created=data["metadata_created"],
+                                                        metadata_modified=data["metadata_modified"])
 
-# Load Json Data
-with open(os.path.join(args.dataset, 'dataset_proc.csv')) as file:
-    reader = csv.DictReader(file, delimiter='\t')
-    for row in reader:
-        with open(os.path.join(args.dataset, row['dataset'])) as file:
-            data = json.load(file)
+              locationMapping = mongohelp.LocationRecordMapping(latitude=row['latitude'], longitude=row['longitude'], district=row['district'])
+              valueMapping = mongohelp.ValueRecordMapping(value_description=row['value_description'], value=row['key_value'])
 
-            recordTemplate = mongohelp.RecordTemplate(name=data["name"],
-                                                      description=data["description"],
-                                                      url_csv=data["url_csv"],
-                                                      license_id=data["license_id"],
-                                                      license_title=data["license_title"],
-                                                      license_url=data["license_url"],
-                                                      author=data["author"],
-                                                      author_email=data["author_email"],
-                                                      maintainer=data["maintainer"],
-                                                      maintainer_email=data["maintainer_email"],
-                                                      metadata_created=data["metadata_created"],
-                                                      metadata_modified=data["metadata_modified"])
-
-            locationMapping = mongohelp.LocationRecordMapping(latitude=row['latitude'], longitude=row['longitude'], district=row['district'])
-            valueMapping = mongohelp.ValueRecordMapping(value_description=row['value_description'], value=row['key_value'])
-
-            ods_id = mongohelp.insert_ods_header(db, recordTemplate)
-            mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, data['data'])
-            print "data ", data['name']
-
-# # # Add this new dataset to the ods_collection (check if already inserted)
-# mongohelp.insert_dataset(data_collection, recordTemplate, locationMapping, valueMapping, data['data'])
-
+              ods_id = mongohelp.insert_ods_header(db, recordTemplate)
+              mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, data['data'])
+              print "data ", data['name']

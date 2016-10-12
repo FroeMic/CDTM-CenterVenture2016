@@ -63,38 +63,32 @@ def config_ValueMapping(rawDict):
     return mongohelp.ValueRecordMapping(**valueMapDict)
 
 
-# Command-Line Arguments
-parser = argparse.ArgumentParser(description='Munich OpenData-Set Downloader')
-parser.add_argument('--dataset_dir', '-d', type=str,
-                    help='Folder of dataset (csv) and config to parse into mongodb', required=True)
+def import_ods(path):
+    # Load Json Data
+    with open(os.path.join(path, "cfg.json")) as file:
+        cfg = json.load(file)
 
-args = parser.parse_args()
-
-# Load Json Data
-with open(os.path.join(args.dataset_dir, "ods.json")) as file:
-    cfg = json.load(file)
-
-# Mappings and Record Data Template
-recordTemplate = mongohelp.RecordTemplate(**cfg['recordTemplate'])
-locationMapping = mongohelp.LocationRecordMapping(**cfg['locationMapping'])
-valueMapping = mongohelp.ValueRecordMapping(**cfg['valueMapping'])
+    # Mappings and Record Data Template
+    recordTemplate = mongohelp.RecordTemplate(**cfg['recordTemplate'])
+    locationMapping = mongohelp.LocationRecordMapping(**cfg['locationMapping'])
+    valueMapping = mongohelp.ValueRecordMapping(**cfg['valueMapping'])
 
 
-with open(os.path.join(args.dataset_dir, "ods.csv")) as file:
-    reader = csv.DictReader(file, delimiter='\t')
-    title = reader.fieldnames
-    # print title
-    csv_rows = []
-    for row in reader:
-        csv_rows.extend([{title[i]:row[title[i]] for i in range(len(title))}])
+    with open(os.path.join(path, "ods.csv")) as file:
+        reader = csv.DictReader(file, delimiter='\t')
+        title = reader.fieldnames
+        # print title
+        csv_rows = []
+        for row in reader:
+            csv_rows.extend([{title[i]:row[title[i]] for i in range(len(title))}])
 
 
-# Connect DB
-client = mongohelp.connect_mongodb()
-db = mongohelp.get_db(client)
+    # Connect DB
+    client = mongohelp.connect_mongodb()
+    db = mongohelp.get_db(client)
 
-data_collection = mongohelp.get_ods_collection(db)
-ods_collection = mongohelp.get_data_collection(db)
+    data_collection = mongohelp.get_ods_collection(db)
+    ods_collection = mongohelp.get_data_collection(db)
 
-ods_id = mongohelp.insert_ods_header(db, recordTemplate)
-mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, csv_rows)
+    ods_id = mongohelp.insert_ods_header(db, recordTemplate)
+    mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, csv_rows)

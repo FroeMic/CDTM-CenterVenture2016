@@ -29,19 +29,47 @@ cvApp.config(function($routeProvider) {
             controller  : 'contactController'
         })
 
-        // route for the contact page
+        .when('/profile', {
+            templateUrl : '../views/profile.html',
+            controller  : 'profileController'
+        })
+
+        .when('/offer', {
+            templateUrl : '../views/offer_create.html',
+            controller  : 'offerCreateController'
+        })
+
+        .when('/offer/:offer_id', {
+            templateUrl : '../views/offer_detail.html',
+            controller  : 'offerDetailController'
+        })
+
+        .when('/offers', {
+            templateUrl : '../views/offer_list.html',
+            controller  : 'offerListController'
+        })
+
+        .when('/bookmarks', {
+            templateUrl : '../views/bookmarks.html',
+            controller  : 'bookmarksController'
+        })
+
+        .when('/messages', {
+            templateUrl : '../views/messages.html',
+            controller  : 'messagesController'
+        })
+
+        // route for the login page
         .when('/login', {
             templateUrl : '../views/login.html',
             controller  : 'loginController'
         })
 
-        // route for the contact page
+        // route for the register page
         .when('/register', {
             templateUrl : '../views/register.html',
             controller  : 'registerController'
         });
-
-
 });
 
 // create the controller and inject Angular's $scope
@@ -61,6 +89,35 @@ cvApp.controller('aboutController', function($scope) {
 
 cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
+});
+
+cvApp.controller('profileController', function($scope) {
+});
+
+cvApp.controller('bookmarksController', function($scope) {
+});
+
+cvApp.controller('messagesController', function($scope) {
+});
+
+cvApp.controller('offerCreateController', function($scope) {
+    angular.element(document).ready(function () {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15 // Creates a dropdown of 15 years to control year
+        });
+        $(document).ready(function() {
+            $('input#input_text, textarea#comments').characterCounter();
+        });
+    });
+});
+
+cvApp.controller('offerDetailController', function($scope, $routeParams) {
+    $scope.offer_id = $routeParams.offer_id;
+});
+
+cvApp.controller('offerListController', function($scope) {
 });
 
 cvApp.controller('loginController', function($scope) {
