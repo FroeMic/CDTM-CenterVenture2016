@@ -2,6 +2,7 @@
 var Location = require('./models/locationObject');
 var passport = require('passport');
 var path = require('path');
+var auth = require('./auth');
 
 module.exports = function(app) {
 
@@ -92,6 +93,7 @@ module.exports = function(app) {
         res.render('index.hbs', {user: req.session.user});
     });
 
+    app.use('/logout', auth.loginRequired);
     app.get('/logout', function (req, res) {
         req.session.user = undefined;
         res.redirect('/');
