@@ -46,8 +46,6 @@ cvApp.config(function($routeProvider) {
             templateUrl : '../views/register.html',
             controller  : 'registerController'
         });
-
-
 });
 
 // create the controller and inject Angular's $scope
@@ -70,6 +68,18 @@ cvApp.controller('contactController', function($scope) {
 });
 
 cvApp.controller('offerController', function($scope) {
+  angular.element(document).ready(function () {
+    $('select').material_select();
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15 // Creates a dropdown of 15 years to control year
+      });
+    $(document).ready(function() {
+      $('input#input_text, textarea#comments').characterCounter();
+      });
+
+
+  });
 });
 
 cvApp.controller('loginController', function($scope) {
