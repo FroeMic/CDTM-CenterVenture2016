@@ -18,34 +18,38 @@
 
             <!-- CHOICE Question -->
             <div hide ng-show="question.questionType=='CHOICE'">
+
               <div class="question-title">{{question.question}}</div>
-
-                <div class="input-field col s12">
-                    <select class="icons">
-                        <option value="" disabled selected>Gender</option>
-                        <option ng-repeat="answerOption in question.answerOptions" value="{{answerOption.value}}" data-icon="{{answerOption.iconUrl}}" class="left">{{answerOption.text}}</option>
-                    </select>
-                </div>
+              <div hide ng-show="question.imageUrl != null && question.imageUrl != undefined && question.imageUrl != ''">
+                <img class="materialboxed" height="300px" width="100%" ng-attr-src="{{question.imageUrl}}">
               </div>
-            </div>
-
-            <!-- SLIDER Question -->
-            <div hide ng-show="question.questionType=='SLIDER'">
-
+              <div class="input-field col s12">
+                  <select class="icons">
+                      <option value="" disabled selected>Please Select</option>
+                      <option ng-repeat="answerOption in question.answerOptions" value="{{answerOption.value}}" data-icon="{{answerOption.iconUrl}}" class="left">{{answerOption.text}}</option>
+                  </select>
+              </div>
             </div>
 
             <!-- LIKERT Question -->
             <div hide ng-show="question.questionType=='LIKERT'">
+              <div class="question-title">{{question.question}}</div>
+              <div>{{question.answer}}</div>
+                <div class="center-align likert-line" ng-repeat="answer in question.answerOptions" style="display:inline-block; width: 19.9%;">
+                  <div>{{answer.value}}</div>
+                  <input name="group1" type="radio" id="{{section.number + '-' + question.number + '-' + answer.value + '-' +'likert'}}" value={{answer.value}} ng-model="question.answer"/>
+                  <label for="{{section.number + '-' + question.number + '-' + answer.value + '-' +'likert'}}"></label>
+                  <div style="color: rgba(0,0,0,0.0.6)">{{answer.text}}</div>
+                </div>
 
-            </div>
-
-            <div class="container right-align">
-              <div class="btn" ng-click="nextSection()">
-                <span hide ng-show="survey.sections.length==currentSection">Finish</span>
-                <span hide ng-show="survey.sections.length!=currentSection">Next</span>
-              </div>
             </div>
         </form>
+        <div class="right-align">
+          <div class="btn" ng-click="nextSection()">
+            <span hide ng-show="survey.sections.length==currentSection">Finish</span>
+            <span hide ng-show="survey.sections.length!=currentSection">Next</span>
+          </div>
+        </div>
 
 
 

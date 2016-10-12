@@ -147,9 +147,20 @@ personality-test .section-description {
 }
 
 personality-test .question-title {
-  font-size: 12pt;
+  font-size: 11pt;
+  font-weight: 800;
 }
 
 personality-test .input-field {
   padding: 0 !important;
+  color: rgba(0,0,0,0.8);
+}
+
+personality-test .materialboxed {
+  margin: 20px 0;
+}
+
+
+personality-test .likert-line {
+  margin: 10px 0 20px 0;
 }
