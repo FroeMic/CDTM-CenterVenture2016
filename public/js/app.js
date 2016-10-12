@@ -6,6 +6,7 @@
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
 var cvApp = angular.module('cvApp', ['ui.materialize', 'ngRoute']);
+var HOSTSTRING = ""
 
 // configure our routes
 cvApp.config(function($routeProvider) {
@@ -67,14 +68,24 @@ cvApp.directive("personalityTest", function () {
 });
 
 // create the controller and inject Angular's $scope
-cvApp.controller('mainController', function($scope) {
+cvApp.controller('mainController', function($scope, $location, $http) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
-    $scope.showLoginModal = false;
+    $scope.user = null;
 
-    $scope.showLogin = function() {
-      $scope.showLoginModal = true;
-  };
+    // globally available
+    HOSTSTRING = "http://" + $location.host()+":"+$location.port()
+
+      $http.get(HOSTSTRING + '/user')
+           .then(
+               function(response){
+                 // success callback
+                 $scope.user = response.data
+               },
+               function(response){
+                 // failure callback
+              }
+            );
 
     angular.element(document).ready(function () {
         $('.button-collapse').sideNav();
@@ -92,7 +103,7 @@ cvApp.controller('contactController', function($scope) {
 
 cvApp.controller('personalityTestController', function($scope) {
   $scope.message = 'personalityTestController message thingy.'
-}
+});
 
 cvApp.controller('offerCreateController', function($scope) {
 

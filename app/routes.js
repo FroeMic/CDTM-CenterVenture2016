@@ -44,6 +44,13 @@ module.exports = function(app) {
         ));
     });
 
+    app.get('/user', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(
+              req.session.user
+        ));
+    });
+
     app.get('/dummy/pois', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(
