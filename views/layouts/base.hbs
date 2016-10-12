@@ -18,24 +18,22 @@
 <body ng-controller="mainController">
 <nav class="white" role="navigation">
     <ul id="nav-mobile" class="dropdown-content">
-        <li><a href="#offers"><i class="fa fa-shield"></i> Offers</a></li>
+        <li><a>Make Offer</a></li>
+        <li><a href="#offers">View Offers</a></li>
         <li class="divider"></li>
-        <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
-        <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
+        <li><a href="/logout" target="_self">Logout {{user.displayName}}</a></li>
     </ul>
     <div class="nav-wrapper container">
         <img src="img/logo.png" style="height:60px;"><a id="logo-container" href="#/" class="brand-logo"> Aparata Test</a>
-        <ul class="right hide-on-med-and-down valign-wrapper" style="height: 100%;">
+        <ul class="right valign-wrapper" style="height: 100%;">
             <li class="valign">
                 {{#if user}}
                     <li><a class="dropdown-button" href="#!" data-activates="nav-mobile"><i class="material-icons">menu</i></a></li>
-                    <a href="/logout" target="_self" class="btn waves-effect waves-light teal lighten-1">Logout {{user.displayName}}</a>
                 {{else}}
                     <a href="/auth/facebook" target="_self" class="btn waves-effect waves-light teal lighten-1">Login</a>
                 {{/if}}
             </li>
         </ul>
-        <a href="#!" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
 </nav>
 
@@ -54,7 +52,12 @@
                 <p class="grey-text text-lighten-4">This first prototype of Aparata was developed in a five day hackathon at the Munich Center for Digital Technology and Management (<a class="white-text" href="http://www.cdtm.de">www.cdtm.de</a> ). CDTM is a joint institution of Ludwig Maxmilian University and the Technical University Munich and a Center for interdisciplinary research, education and entrepreneurship.</p>
             </div>
             <div class="col s4">
-
+                <ul>
+                    <li><a class="white-text" href="#about">About</a></li>
+                    <li><a class="white-text" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col s4">
                 <a href="http://www.cdtm.de"><img src="img/CDTM.png" style="height:40px;"></a>
             </div>
         </div>
