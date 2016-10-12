@@ -44,10 +44,41 @@ cvApp.config(function($routeProvider) {
 
 });
 
+cvApp.directive("loginModal", function () {
+   return {
+      templateUrl: "/views/loginModal.html",
+      controller: "loginController"
+   };
+});
+
 // create the controller and inject Angular's $scope
 cvApp.controller('mainController', function($scope) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+    $scope.showLoginModal = false;
+
+    $scope.showLogin = function() {
+      $scope.showLoginModal = true;
+      // just in time configure modal
+      $('#loginModal').leanModal({
+          dismissible: false, // Modal can be dismissed by clicking outside of the modal
+          opacity: .5, // Opacity of modal background
+          in_duration: 300, // Transition in duration
+          out_duration: 200, // Transition out duration
+          starting_top: '4%', // Starting top style attribute
+          ending_top: '10%', // Ending top style attribute
+          ready: function() {
+            console.log('Modal opened');
+          }, // Callback for Modal open
+          complete: function() {
+            console.log('Modal closed');
+          } // Callback for Modal close
+        });
+
+        // trigger it
+        $('#loginModal').openModal();
+
+  };
 
     angular.element(document).ready(function () {
         $('.button-collapse').sideNav();
@@ -64,6 +95,10 @@ cvApp.controller('contactController', function($scope) {
 });
 
 cvApp.controller('loginController', function($scope) {
+  $scope.authenticateWithFacebook = function() {
+    console.log("authenticate");
+    $('#loginModal').closeModal();
+  }
 });
 
 cvApp.controller('registerController', function($scope) {
