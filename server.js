@@ -9,7 +9,7 @@ var mongoose       = require('mongoose');
 var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var session = require('express-session');
+var session        = require('express-session');
 
 var expressHbs = require('express-handlebars');
 
@@ -71,7 +71,12 @@ app.set('view engine', 'hbs');
 
 // connect to our mongoDB database
 // (uncomment after you enter in your own credentials in config/db.js)
-// mongoose.connect(db.url);
+mongoose.connect(db.url);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    // we're connected!
+});
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json
