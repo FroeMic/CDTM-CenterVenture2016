@@ -16,7 +16,7 @@ var expressHbs = require('express-handlebars');
 // configuration ===========================================
 
 // config files
-var db = require('./config/db');
+var db_setts = require('./config/db');
 
 // set our port
 var port = process.env.PORT || 1337;
@@ -71,12 +71,15 @@ app.set('view engine', 'hbs');
 
 // connect to our mongoDB database
 // (uncomment after you enter in your own credentials in config/db.js)
-mongoose.connect(db.url);
+mongoose.connect(db_setts.url);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     // we're connected!
+    // console.log('db open', db);
 });
+
+app.mongo = db;
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json
