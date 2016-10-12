@@ -28,6 +28,7 @@
         <ul class="right valign-wrapper" style="height: 100%;">
             <li class="valign">
                 {{#if user}}
+                    <li class="black-text">Welcome, {{user.displayName}}!</li>
                     <li><a class="dropdown-button" href="#!" data-activates="nav-mobile"><i class="material-icons">menu</i></a></li>
                 {{else}}
                     <a href="/auth/facebook" target="_self" class="btn waves-effect waves-light teal lighten-1">Login</a>
