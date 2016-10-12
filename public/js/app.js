@@ -78,8 +78,12 @@ cvApp.controller('contactController', function($scope) {
 cvApp.controller('loginController', function($scope) {
   $scope.authenticateWithFacebook = function() {
     console.log("authenticate");
-    // if sucess dismiss overlay
-    $scope.showLoginModal = false
+    // check login status
+
+    // if not logged in open facebook
+    window.open('/auth/facebook', '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+
+    // if successful dismiss overlay
   }
 });
 
