@@ -42,6 +42,10 @@ module.exports = function(app) {
                     url: '/map/rentniveau'
                 },
                 {
+                    name: 'Playgrounds',
+                    url: '/map/playgrounds'
+                },
+                {
                     name: 'Test',
                     url: '/dummy/pois'
                 }
@@ -53,7 +57,6 @@ module.exports = function(app) {
     var RentModel = require('./models/rentNiveau');
     var DatasetModel = require('./models/dataset');
     app.get('/map/rentniveau', function (req, res) {
-        var url = 'http://data.ub.uni-muenchen.de/2/1/miete03.asc';
         DatasetModel.findOne({url_csv: 'http://data.ub.uni-muenchen.de/2/1/miete03.asc'}, function (err, dataset) {
             var refId = dataset._id;
             RentModel.aggregate([
@@ -63,6 +66,47 @@ module.exports = function(app) {
                 if(err) {
                     console.error(err);
                 }
+
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify(data));
+            });
+        });
+    });
+
+    function toGeoJSON(points) {
+        var root = {
+            "type": "FeatureCollection",
+            "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }
+        };
+        root.features = points.map(function (x) {
+            var coords = x.latlong ? x.latlong : [x.latitude, x.longitude];
+            return {
+                type: 'Feature',
+                properties: x.properties,
+                geometry: { type: "Point", "coordinates": coords }
+            }
+        });
+        return root;
+    }
+
+    var POIModel = require('./models/POI');
+    app.get('/map/playgrounds', function (req, res) {
+        DatasetModel.findOne({url_csv: 'https://www.opengov-muenchen.de/dataset/0760ce3a-fef8-43e4-888f-8cc92fdf56de/resource/845ce3bd-ea80-4623-b51d-a30680175c22/download/spielplaetzemuenchenohneleerespalten2016-06-13.csv'}, function (err, dataset) {
+            var refId = dataset._id;
+            POIModel.find({ ods_ref_id: refId }, function (err, data) {
+                if(err) {
+                    console.error(err);
+                }
+
+                data = data.map(function (x, idx, arr) {
+                    return {
+                        latlong: x.latlong(),
+                        properties: {
+                            name: x.value,
+                            age: x.altersgruppe
+                        }
+                    }
+                });
 
                 res.setHeader('Content-Type', 'application/json');
                 res.send(JSON.stringify(data));

@@ -3,7 +3,7 @@
 Server and Web Application of the **2016 CDTM Center Venture**. ✌️
 
 ## Website
-https://aparata.frhlch.at
+http://flatling.de
 
 **Important:** Git-Workflow
 - Feature/*NAME*: Use feature branches to implement new features. Branch from develop and only merge into develop.
