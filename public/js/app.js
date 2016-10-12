@@ -29,7 +29,7 @@ cvApp.config(function($routeProvider) {
             controller  : 'contactController'
         })
 
-        .when('profile', {
+        .when('/profile', {
             templateUrl : '../views/profile.html',
             controller  : 'profileController'
         })
@@ -47,6 +47,16 @@ cvApp.config(function($routeProvider) {
         .when('/offers', {
             templateUrl : '../views/offer_list.html',
             controller  : 'offerListController'
+        })
+
+        .when('/bookmarks', {
+            templateUrl : '../views/bookmarks.html',
+            controller  : 'bookmarksController'
+        })
+
+        .when('/messages', {
+            templateUrl : '../views/messages.html',
+            controller  : 'messagesController'
         })
 
         // route for the login page
@@ -84,6 +94,11 @@ cvApp.controller('contactController', function($scope) {
 cvApp.controller('profileController', function($scope) {
 });
 
+cvApp.controller('bookmarksController', function($scope) {
+});
+
+cvApp.controller('messagesController', function($scope) {
+});
 
 cvApp.controller('offerCreateController', function($scope) {
     angular.element(document).ready(function () {
