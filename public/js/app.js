@@ -44,10 +44,10 @@ cvApp.config(function($routeProvider) {
 
 });
 
-cvApp.directive("loginModal", function () {
+cvApp.directive("personalityTest", function () {
    return {
-      templateUrl: "/views/loginModal.html",
-      controller: "loginController"
+      templateUrl: "/views/personalityTest.html",
+      controller: "personalityTestController"
    };
 });
 
@@ -75,16 +75,12 @@ cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
 
+cvApp.controller('personalityTestController', function($scope) {
+  $scope.message = 'personalityTestController message thingy.'
+});
+
 cvApp.controller('loginController', function($scope) {
-  $scope.authenticateWithFacebook = function() {
-    console.log("authenticate");
-    // check login status
-
-    // if not logged in open facebook
-    window.open('/auth/facebook', '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
-
-    // if successful dismiss overlay
-  }
+  $scope.message = 'Login Controller message thingy.';
 });
 
 cvApp.controller('registerController', function($scope) {

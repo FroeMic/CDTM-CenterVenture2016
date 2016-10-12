@@ -24,7 +24,7 @@
                 {{#if user}}
                     <a href="/logout" class="btn waves-effect waves-light teal lighten-1">Logout {{user.displayName}}</a>
                 {{else}}
-                    <a ng-click="showLogin()" class="btn waves-effect waves-light teal lighten-1">Login</a>
+                    <a href="/auth/facebook" class="btn waves-effect waves-light teal lighten-1">Login</a>
                 {{/if}}
             </li>
         </ul>
@@ -39,7 +39,7 @@
     </div>
 </nav>
 
-<login-modal hide ng-show="showLoginModal"></login-modal>
+<personality-test hide ng-show="showLoginModal"></personality-test>
 
 <div ng-view></div>
 
