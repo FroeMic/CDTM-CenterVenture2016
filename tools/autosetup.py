@@ -22,3 +22,6 @@ muc_generic_import.import_ods(os.path.join(args.path, "lmu-munich-mietspiegel200
 
 # post preproc foursquare
 muc_generic_import.import_ods(os.path.join(args.path, "foursquare"))
+
+# post parkhere foursquare
+muc_generic_import.import_ods(os.path.join(args.path, "park_here_aidenbachstr"))
