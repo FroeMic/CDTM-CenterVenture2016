@@ -38,7 +38,7 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             'Districts': loadDistricts,
             'Test': loadUrl.bind(undefined, dataset.url, markers),
             'Rents': loadUrl.bind(undefined, dataset.url, rent),
-            'Playgrounds': cluster.bind(undefined, dataset.url, 'playgrounds')
+            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster)
         };
 
         if(!(datasetId in actions)) {
@@ -51,13 +51,10 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
     var map;
     leafletData.getMap('map').then(function (res) {
         map = window.map = res;
+        // map.addLayer(L.mapbox.tileLayer('mapbox.streets'));
         $(document).ready(function () {
             setTimeout(function () {
-                map.flyTo(map.getCenter(), 11.5, {
-                    animate: true,
-                    duration: 1.5,
-                    easeLinearity: 0.2
-                });
+                map.setZoom(11, {animate: true});
             }, 1000)
         });
         // console.log('got map', res);
@@ -69,7 +66,57 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             var customLayer = L.geoJson(null, {
                 // http://leafletjs.com/reference.html#geojson-style
                 onEachFeature: function (feature, layer) {
-                    layer.bindTooltip(feature.properties.description + " " + feature.properties.name);
+                    var getCentroid2 = function (arr) {
+                        var twoTimesSignedArea = 0;
+                        var cxTimes6SignedArea = 0;
+                        var cyTimes6SignedArea = 0;
+
+                        var length = arr.length;
+
+                        var x = function (i) { return arr[i % length][1] };
+                        var y = function (i) { return arr[i % length][0] };
+
+                        for ( var i = 0; i < arr.length; i++) {
+                            var twoSA = x(i)*y(i+1) - x(i+1)*y(i);
+                            twoTimesSignedArea += twoSA;
+                            cxTimes6SignedArea += (x(i) + x(i+1)) * twoSA;
+                            cyTimes6SignedArea += (y(i) + y(i+1)) * twoSA;
+                        }
+                        var sixSignedArea = 3 * twoTimesSignedArea;
+                        return [ cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];
+                    };
+                    var getTop = function (arr) {
+                        // get highest latitude = northest point
+                        var maxL, index = null;
+                        arr.forEach(function (elem, idx) {
+                            if(!index || elem[1] > maxL) {
+                                maxL = elem[1];
+                                index = idx;
+                            }
+                        });
+
+                        var swapped = arr[index];
+                        return [swapped[1], swapped[0]];
+                    };
+
+                    var popup = L.popup()
+                        .setContent('<p class="nomouse">' + feature.properties.description + " " + feature.properties.name + '</p>');
+                    layer.on('mouseover', function(e) {
+                        var coords = getTop(feature.geometry.coordinates[0]);
+                        // console.log(coords);
+                        popup.d_id = feature.properties.description;
+                        popup.setLatLng(coords).openOn(map);
+                    });
+                    layer.on('mouseout', function(e) {
+                        function inside(x, y, rect) {
+                            return ((x <= rect.right) && (x >= rect.left) && (y <= rect.bottom) && (y >= rect.top));
+                        }
+                        // if(popup.d_id == feature.properties.description &&
+                        //     inside(e.originalEvent.pageX, e.originalEvent.pageY, popup._container.getBoundingClientRect())) {
+                        //     return;
+                        // }
+                        map.closePopup(popup);
+                    });
                 }
             });
 
@@ -103,23 +150,30 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             }
         } else {
             var layer = existing[0].layer;
-            layer.remove();
+            map.removeLayer(layer);
             existing[0].layer = undefined;
         }
     }
 
-    function cluster(url, id, create) {
-        if(create) {
-            map.addSource("earthquakes", {
-                type: "geojson",
-                data: url,
-                cluster: true,
-                clusterMaxZoom: 14,
-                clusterRadius: 50
+    function cluster(data) {
+        var layer = new L.MarkerClusterGroup({
+            animateAddingMarkers: true,
+            disableClusteringAtZoom: 14
+        });
+
+        for (var i = 0; i < data.length; i++) {
+            var latlong = data[i].latlong;
+            var title = data[i].properties.name;
+            var marker = L.marker(new L.LatLng(latlong[0], latlong[1]), {
+                icon: L.mapbox.marker.icon({'marker-symbol': 'playground', 'marker-color': '0044FF'}),
+                title: title
             });
-        } else {
-            map.removeSource(id);
+            marker.bindPopup(title);
+            layer.addLayer(marker);
         }
+
+        map.addLayer(layer);
+        return layer;
     }
 
     function markers(data) {
@@ -176,7 +230,7 @@ app.controller("MapController",  [ '$scope', '$http', 'leafletData', function($s
             onEachFeature: function (feature, layer) {
                 var value = valueMap[parseInt(feature.properties.description)];
                 var formatted = Math.round(value);
-                layer.bindTooltip(feature.properties.name + ': <strong>' + formatted + suffix + '</strong>');
+                layer.bindPopup(feature.properties.name + ': <strong>' + formatted + suffix + '</strong>');
             },
             style: function (feature) {
                 var value = valueMap[parseInt(feature.properties.description)];

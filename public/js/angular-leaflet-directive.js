@@ -129,7 +129,7 @@ angular.module('leaflet-directive', []).directive('leaflet', ["$q", "leafletData
 
       // Create the Leaflet Map Object with the options
       L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
-      var map = new L.mapbox.Map(element[0], '', leafletMapDefaults.getMapCreationDefaults(attrs.id));
+      var map = new L.mapbox.Map(element[0], 'mapbox.streets', leafletMapDefaults.getMapCreationDefaults(attrs.id));
       ctrl._leafletMap.resolve(map);
 
       if (!isDefined(attrs.center) && !isDefined(attrs.lfCenter)) {
@@ -3529,7 +3529,7 @@ centerDirectiveTypes.forEach(function(directiveName) {
 
               //$log.debug("updating map center...", center);
               leafletScope.settingCenterFromScope = true;
-              map.setView([center.lat, center.lng], center.zoom);
+              map.setView([center.lat, center.lng], center.zoom, {animate: false});
               leafletMapEvents.notifyCenterChangedToBounds(leafletScope, map);
               $timeout(function() {
                 leafletScope.settingCenterFromScope = false;

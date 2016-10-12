@@ -8,6 +8,10 @@ strong {
     font-weight: bolder;
 }
 
+.leaflet-popup {
+    pointer-events: none;
+}
+
 .menu-btn {
     top: 60px;
     right: 310px;

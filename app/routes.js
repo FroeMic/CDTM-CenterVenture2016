@@ -108,7 +108,7 @@ module.exports = function(app) {
                 });
 
                 res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify(toGeoJSON(data)));
+                res.send(JSON.stringify(data));
             });
         });
     });
