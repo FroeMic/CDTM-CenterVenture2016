@@ -5,7 +5,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var cvApp = angular.module('cvApp', ['ui.materialize', 'ngRoute']);
+var cvApp = angular.module('cvApp', ['ngRoute']);
 var HOSTSTRING = ""
 
 // configure our routes
@@ -67,10 +67,12 @@ cvApp.directive("personalityTest", function () {
    };
 });
 
+
 // create the controller and inject Angular's $scope
 cvApp.controller('mainController', function($scope, $location, $http) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+    $scope.needsPersonalityTest = false
     $scope.user = null;
 
     // globally available
@@ -81,6 +83,9 @@ cvApp.controller('mainController', function($scope, $location, $http) {
                function(response){
                  // success callback
                  $scope.user = response.data
+                 if ($scope.user.personalityTest == null || $scope.user.personalityTest == undefined ){
+                   $scope.needsPersonalityTest = true
+                 }
                },
                function(response){
                  // failure callback
@@ -90,6 +95,7 @@ cvApp.controller('mainController', function($scope, $location, $http) {
     angular.element(document).ready(function () {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
+        $('ul.tabs').tabs();
     });
 });
 
@@ -103,6 +109,59 @@ cvApp.controller('contactController', function($scope) {
 
 cvApp.controller('personalityTestController', function($scope) {
   $scope.message = 'personalityTestController message thingy.'
+
+  $scope.survey = {
+    title: "Welcome to XXX",
+    sections: [
+      {
+        title: "Intro",
+        description: "Please give us some information about yourself, so we can find your perfect flatmate.",
+        questions: [
+          {
+            title: "firstname",
+            question: "Firstname",
+            questionType: "TEXT",
+            answerOptions: null
+          },
+          {
+            title: "lastname",
+            question: "Lastname",
+            questionType: "TEXT",
+            answerOptions: null
+          },
+          {
+            title: "gender",
+            question: "Gender",
+            questionType: "CHOICE",
+            answerOptions: [
+              {
+                value: 0,
+                text: "female",
+                iconUrl: "/img/icons/survey/female.png"
+              }
+            ]
+          },
+          {
+            title: "occupation",
+            question: "Occupation",
+            questionType: "TEXT",
+            answerOptions: null
+          }
+        ]
+
+      }
+    ]
+  }
+
+  $scope.finishTest = function() {
+    $scope.needsPersonalityTest = false;
+  }
+
+  angular.element(document).ready(function () {
+      $('.button-collapse').sideNav();
+      $('.parallax').parallax();
+      $('ul.tabs').tabs();
+  });
 });
 
 cvApp.controller('offerCreateController', function($scope) {

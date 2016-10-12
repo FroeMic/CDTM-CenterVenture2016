@@ -124,3 +124,15 @@ footer img{
 footer.page-footer {
   margin: 0;
 }
+
+personality-test .dim {
+  background: rgba(0,0,0,0.5);
+}
+
+personality-test .content {
+  height:90vh;
+  margin-top: 5vh;
+  padding: 10px 0;
+  background: white;
+  overflow: scroll;
+}
