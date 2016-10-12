@@ -66,30 +66,28 @@ def config_ValueMapping(rawDict):
 
 # Command-Line Arguments
 parser = argparse.ArgumentParser(description='Munich OpenData-Set Downloader')
-parser.add_argument('--dataset', '-d', type=str,
-                    help='Json-formatted dataset to parse into mongodb', required=True)
+parser.add_argument('--dataset_dir', '-d', type=str,
+                    help='Folder of dataset (csv) and config to parse into mongodb', required=True)
 
 args = parser.parse_args()
 
 # Load Json Data
-with open(args.dataset) as file:
-    data = json.load(file)
+with open(os.path.join(args.dataset_dir, "ods.json")) as file:
+    cfg = json.load(file)
 
-recordTemplate = mongohelp.RecordTemplate(name=data["name"],
-                                          description=data["description"],
-                                          url_csv=data["url_csv"],
-                                          license_id=data["license_id"],
-                                          license_title=data["license_title"],
-                                          license_url=data["license_url"],
-                                          author=data["author"],
-                                          author_email=data["author_email"],
-                                          maintainer=data["maintainer"],
-                                          maintainer_email=data["maintainer_email"],
-                                          metadata_created=data["metadata_created"],
-                                          metadata_modified=data["metadata_modified"])
+# Mappings and Record Data Template
+recordTemplate = mongohelp.RecordTemplate(**cfg['recordTemplate'])
+locationMapping = mongohelp.LocationRecordMapping(**cfg['locationMapping'])
+valueMapping = mongohelp.ValueRecordMapping(**cfg['valueMapping'])
 
-locationMapping = config_LocationMapping(data)
-valueMapping = config_ValueMapping(data)
+
+with open(os.path.join(args.dataset_dir, "ods.csv")) as file:
+    reader = csv.DictReader(file, delimiter='\t')
+    title = reader.fieldnames
+    # print title
+    csv_rows = []
+    for row in reader:
+        csv_rows.extend([{title[i]:row[title[i]] for i in range(len(title))}])
 
 
 # Connect DB
@@ -99,6 +97,5 @@ db = mongohelp.get_db(client)
 data_collection = mongohelp.get_ods_collection(db)
 ods_collection = mongohelp.get_data_collection(db)
 
-# # Add this new dataset to the ods_collection (check if already inserted)
-mongohelp.insert_dataset(data_collection, recordTemplate, locationMapping, valueMapping, data['data'])
-
+ods_id = mongohelp.insert_ods_header(db, recordTemplate)
+mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, csv_rows)
