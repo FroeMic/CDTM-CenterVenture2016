@@ -24,7 +24,7 @@
                 {{#if user}}
                     <a href="/logout" class="btn waves-effect waves-light teal lighten-1">Logout {{user.displayName}}</a>
                 {{else}}
-                    <a href="" ng-click="showLogin()" class="btn waves-effect waves-light teal lighten-1">Login</a>
+                    <a ng-click="showLogin()" class="btn waves-effect waves-light teal lighten-1">Login</a>
                 {{/if}}
             </li>
         </ul>
@@ -81,6 +81,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"></script>
 <script src="/js/materialize.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.1/angular-materialize.min.js"></script>
 <script src="/js/app.js"></script>
 
 

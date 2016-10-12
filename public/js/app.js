@@ -5,7 +5,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var cvApp = angular.module('cvApp', ['ngRoute']);
+var cvApp = angular.module('cvApp', ['ui.materialize', 'ngRoute']);
 
 // configure our routes
 cvApp.config(function($routeProvider) {
@@ -59,25 +59,6 @@ cvApp.controller('mainController', function($scope) {
 
     $scope.showLogin = function() {
       $scope.showLoginModal = true;
-      // just in time configure modal
-      $('#loginModal').leanModal({
-          dismissible: false, // Modal can be dismissed by clicking outside of the modal
-          opacity: .5, // Opacity of modal background
-          in_duration: 300, // Transition in duration
-          out_duration: 200, // Transition out duration
-          starting_top: '4%', // Starting top style attribute
-          ending_top: '10%', // Ending top style attribute
-          ready: function() {
-            console.log('Modal opened');
-          }, // Callback for Modal open
-          complete: function() {
-            console.log('Modal closed');
-          } // Callback for Modal close
-        });
-
-        // trigger it
-        $('#loginModal').openModal();
-
   };
 
     angular.element(document).ready(function () {
