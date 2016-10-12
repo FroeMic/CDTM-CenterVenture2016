@@ -32,43 +32,96 @@
     </div>
   </nav>
 
-  <div class="container text-darken-3">
-    <span style="font-size: 15em; margin: 4% 5%;">404</span>
-    <span style="font-size: 3em;"> ... not found :-(</span>
-  </div>
+  <div class="row">
+    <div class="col s8">
+      <div class="container">
+        <div class"row">
+          <div class="col s12"; style="margin-top: 10px">
+            <form class="col s12">
+              <div class ="row">
+                <div class="section">
+                  <h5>Street Address</h5>
+                </div>
+                <div class="input-field col s12">
+                  <input id="address" type="text" class="validate">
+                  <label for="email">Street Address</label>
+                </div>
+              </div>
 
+              <div class="row">
+                <div class="section">
+                  <h5>Facts</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="price" type="number" class="validate">
+                  <label for="price">Price (€) including utilities</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="deposit" type="number" class="validate">
+                  <label for="deposit">Deposit (€)</label>
+                </div>
+              </div>
 
-  <footer class="page-footer teal">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="size_room" type="number" class="validate">
+                  <label for="size_room">Room Size (m<sup>2</sup>)</label>
+                </div>
+              </div>
 
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="size_apartment" type="number" class="validate">
+                  <label for="size_apartment">Apartment Size (m<sup>2</sup>)</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <select>
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="1">Shared room</option>
+                    <option value="2">Private room</option>
+                    <option value="3">Whole apartment</option>
+                  </select>
+                  <label>Type</label>
+                </div>
+            </div>
 
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="password" type="password" class="validate">
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="password" type="password" class="validate">
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="email" type="email" class="validate">
+                  <label for="email">Email</label>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-    <div class="footer-copyright"></div>
-  </footer>
+
+    <div class="col s4" style="height:100vh; background:red; position: fixed; right: 0; top:0; z-index:-5;">
+      test
+    </div>
+  </div>
+
+
+
 
   <!--  Scripts-->
   <script src="/js/jquery-2.2.4.min.js"></script>
