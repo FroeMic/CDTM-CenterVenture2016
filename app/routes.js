@@ -37,11 +37,36 @@ module.exports = function(app) {
         res.send(JSON.stringify(
             [
                 {
+                    name: 'Rents',
+                    url: '/map/rentniveau'
+                },
+                {
                     name: 'Test',
                     url: '/dummy/pois'
                 }
             ]
         ));
+    });
+
+    var mongoose = require('mongoose');
+    var RentModel = require('./models/rentNiveau');
+    var DatasetModel = require('./models/dataset');
+    app.get('/map/rentniveau', function (req, res) {
+        var url = 'http://data.ub.uni-muenchen.de/2/1/miete03.asc';
+        DatasetModel.findOne({url_csv: 'http://data.ub.uni-muenchen.de/2/1/miete03.asc'}, function (err, dataset) {
+            var refId = dataset._id;
+            RentModel.aggregate([
+                { $match: { ods_ref_id: refId } },
+                { $group: { _id: '$district', rent: { $avg: '$value' } } }
+            ], function (err, data) {
+                if(err) {
+                    console.error(err);
+                }
+
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify(data));
+            });
+        });
     });
 
     app.get('/dummy/pois', function (req, res) {
