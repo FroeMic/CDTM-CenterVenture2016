@@ -44,6 +44,10 @@ module.exports = function(app) {
         ));
     });
 
+    app.get('/map/voting', function (req, res) {
+        var collectionId = '57fdf5b2fe7db12bf8976827';
+    });
+
     app.get('/dummy/pois', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(
