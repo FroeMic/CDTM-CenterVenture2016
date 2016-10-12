@@ -4,6 +4,10 @@
     float: right;
 }
 
+strong {
+    font-weight: bolder;
+}
+
 .menu-btn {
     top: 60px;
     right: 310px;
