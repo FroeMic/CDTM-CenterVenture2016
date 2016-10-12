@@ -82,6 +82,80 @@ cvApp.controller('contactController', function($scope) {
 });
 
 cvApp.controller('searchController', function($scope) {
+  $('select').material_select();
+  $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+    //Price-Range
+    var dragSlider = document.getElementById('price_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 200, 600 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  100,
+        'max':  1000
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+
+    var dragSlider = document.getElementById('room_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 10, 20 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  1,
+        'max':  35
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+
+    var dragSlider = document.getElementById('apartment_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 30, 70 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  5,
+        'max':  150
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+
+    var dragSlider = document.getElementById('traveltime_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 5, 40 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  1,
+        'max':  60
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+  });
 });
 
 cvApp.controller('offerCreateController', function($scope) {
