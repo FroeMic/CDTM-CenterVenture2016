@@ -5,9 +5,9 @@ var path = require('path');
 
 module.exports = function(app) {
 
-    // server routes ===========================================================
+    // server route ===========================================================
     // handle things like api calls
-    // authentication routes
+    // authentication route
 
     // sample api route
     app.get('/api/locationObject', function(req, res) {
@@ -26,7 +26,7 @@ module.exports = function(app) {
     // route to handle creating goes here (app.post)
     // route to handle delete goes here (app.delete)
 
-    // frontend routes =========================================================
+    // frontend route =========================================================
     // route to handle all angular requests
     app.get('/map', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../public/views') + '/mapview.html');

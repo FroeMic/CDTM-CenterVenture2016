@@ -7,7 +7,7 @@
 // also include ngRoute for all our routing needs
 var cvApp = angular.module('cvApp', ['ngRoute']);
 
-// configure our routes
+// configure our route
 cvApp.config(function($routeProvider) {
     $routeProvider
 
