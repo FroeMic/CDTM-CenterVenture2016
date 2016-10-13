@@ -49,7 +49,6 @@ cvApp.config(function($routeProvider) {
             controller  : 'offerListController'
         })
 
-
         .when('/offer', {
             templateUrl : '../views/offer_create.html',
             controller  : 'offerCreateController'
