@@ -5,7 +5,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var cvApp = angular.module('cvApp', ['ngRoute', 'leaflet-directive']);
+var cvApp = angular.module('cvApp', ['sticky', 'ngRoute', 'leaflet-directive']);
 var HOSTSTRING = ""
 
 function shake(element) {
@@ -471,12 +471,12 @@ cvApp.directive('flatlingMap', function () {
 });
 
 
-cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$compile', 'leafletData', function($scope, $http, $compile, leafletData) {
+cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', function($scope, $http, leafletData) {
     angular.extend($scope, {
         center: {
             lat: 48.143763,
             lng: 11.557979,
-            zoom: 8
+            zoom: 9
         },
         defaults: {
             scrollWheelZoom: false
@@ -485,12 +485,21 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$compile', 'lea
             url: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q',
             options: {
                 maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                attribution: '',
                 id: 'mapbox.streets'
             }
         }
+    });
+
+    // $(window).scroll(function (event) {
+    //     var scroll = $(window).scrollTop();
+    //     console.log('wtf', scroll);
+    //     if(scroll == 0) {
+    //         $('.unstuck').attr('style', '');
+    //     }
+    // });
+    angular.element(document).ready(function () {
+        $('.sidebar').hide();
     });
 
     var toggle = function () {
