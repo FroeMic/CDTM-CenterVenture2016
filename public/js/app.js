@@ -109,6 +109,10 @@ cvApp.controller('contactController', function($scope) {
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
   $(document).ready(function(){
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
     $('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
