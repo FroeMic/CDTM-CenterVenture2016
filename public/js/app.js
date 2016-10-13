@@ -29,7 +29,7 @@ cvApp.config(function($routeProvider) {
             controller  : 'contactController'
         })
 
-        .when('/search', {
+        .when('/search/:city', {
             templateUrl: '../views/search.html',
             controller: 'searchController'
         })
@@ -87,9 +87,9 @@ cvApp.controller('mainController', ['$scope', '$window', function($scope, $windo
         $('.parallax').parallax();
     });
 
-    $scope.query = undefined;
+    $scope.query = undefined; // this should be the city
     $scope.commitSearch = function() {
-        $window.location.href = '/#/search';
+        $window.location.href = '/#/search/'+$scope.query;
     };
 }]);
 
@@ -101,7 +101,7 @@ cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
 
-cvApp.controller('searchController', function($scope) {
+cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
   $(document).ready(function(){
     $('.collapsible').collapsible({
@@ -176,6 +176,8 @@ cvApp.controller('searchController', function($scope) {
       })
     });
   });
+
+    console.log($routeParams.city);
 });
 
 cvApp.controller('profileController', function($scope) {
