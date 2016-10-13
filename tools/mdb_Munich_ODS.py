@@ -96,4 +96,4 @@ def import_muc_ods(path, port=None):
 
               ods_id = mongohelp.insert_ods_header(db, recordTemplate)
               mongohelp.insert_dataset(db, ods_id, locationMapping, valueMapping, data['data'])
-              print "data ", data['name']
+              #print "data ", data['name']
