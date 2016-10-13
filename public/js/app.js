@@ -133,6 +133,13 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
               }
             );
 
+      $scope.$watch('$routeUpdate', function(){
+        if ($location.path() == '/_=_'){
+          $location.path('');
+        };
+      });
+
+
     angular.element(document).ready(function () {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
