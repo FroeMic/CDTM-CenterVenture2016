@@ -8,12 +8,28 @@ var User = require('../models/userObject');
 
 
 // get own user object
-// router.use('/', auth.sessionRequired);
+router.use('/', auth.sessionRequired);
 router.get('/', function (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(
-          req.session.user
-    ));
+    User.findOne({fb_id: req.session.user.id}, function (err, user) {
+      if(err) {
+        res.status(500).send(
+          JSON.stringify({
+            status: 500,
+            description: 'Internal Server Error'
+          })
+        );
+      } else {
+        res.setHeader('Content-Type', 'application/json');
+        // don't send the profile to the user
+        if (user.personalityProfile != null && user.personalityProfile != undefined ){
+          user.personalityProfile = true;
+        }
+        
+        res.send(JSON.stringify(
+          user
+        ));
+      }
+    });
 });
 
 // router.use('/personalitySurvey', auth.sessionRequired);
@@ -191,6 +207,20 @@ router.post('/personalitySurvey', function (req, res) {
       weight: 2,
       min: 1,
       max: 5
+    });
+
+
+    var query = { fb_id: req.session.user.id }
+    var update = {
+      personalityProfile: personalityProfile
+    }
+
+    User.findOneAndUpdate(query, update, {upsert:true, new:true}, function (err, dbuser) {
+      if(err) {
+        console.log(err);
+      } else {
+         console.log(dbuser);
+      }
     });
 
 
