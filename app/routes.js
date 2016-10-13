@@ -2,12 +2,13 @@
 var Location = require('./models/locationObject');
 var passport = require('passport');
 var path = require('path');
+var auth = require('./auth');
 
 module.exports = function(app) {
 
-    // server routes ===========================================================
+    // server route ===========================================================
     // handle things like api calls
-    // authentication routes
+    // authentication route
 
     // sample api route
     app.get('/api/locationObject', function(req, res) {
@@ -26,7 +27,7 @@ module.exports = function(app) {
     // route to handle creating goes here (app.post)
     // route to handle delete goes here (app.delete)
 
-    // frontend routes =========================================================
+    // frontend route =========================================================
     // route to handle all angular requests
     app.get('/map', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../public/views') + '/mapview.html');
@@ -136,6 +137,7 @@ module.exports = function(app) {
         res.render('index.hbs', {user: req.session.user});
     });
 
+    app.use('/logout', auth.loginRequired);
     app.get('/logout', function (req, res) {
         req.session.user = undefined;
         res.redirect('/');
