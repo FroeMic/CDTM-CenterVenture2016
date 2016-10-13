@@ -637,7 +637,7 @@ function seedDB() {
             if(err){
                 console.log(err);
             } else {
-              console.log(dbsurvey);
+              // console.log(dbsurvey);
             }
     });
   });

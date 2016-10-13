@@ -110,8 +110,12 @@ cvApp.controller('mainController', function($scope, $location, $http) {
                function(response){
                  // success callback
                  $scope.user = response.data
-                 if ($scope.user.personalityTest == null || $scope.user.personalityTest == undefined ){
-                   $scope.needsPersonalityTest = true
+                 if ($scope.user != null && $scope.user != undefined && $scope.user != '') {
+                   // user is logged in
+                   console.log($scope.user);
+                   if ($scope.user.personalityTest == null || $scope.user.personalityTest == undefined ){
+                     $scope.needsPersonalityTest = true
+                   }
                  }
                },
                function(response){
@@ -124,7 +128,6 @@ cvApp.controller('mainController', function($scope, $location, $http) {
         $('.parallax').parallax();
         $('ul.tabs').tabs();
         $('select').material_select();
-
     });
 });
 
@@ -152,6 +155,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
              function(response){
                // success callback
                $scope.survey = response.data
+               $timeout(initMaterialize, 0);
              },
              function(response){
                // TODO: Handle Error
