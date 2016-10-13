@@ -174,8 +174,12 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
     var sane = true;
     $scope.survey.sections[$scope.currentSection - 1].questions.forEach(function(question) {
       sane = sane && question.answer != undefined  && question.answer != null;
+      console.log(question.title);
+      console.log(sane);
       if (question.questionType=="TEXT") {
         sane = sane && question.answer != '';
+        console.log(question.title);
+        console.log(sane);
       } else if (question.questionType=="CHOICE") {
         // TODO
       } else if (question.questionType=="LIKERT") {
@@ -187,6 +191,15 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
         $scope.currentSection = $scope.currentSection + 1;
       } else {
         // TODO: Post to REST API.
+        $http.post(HOSTSTRING + '/user/personalitySurvey', JSON.stringify($scope.survey))
+         .then(
+             function(response){
+               // success callback
+             },
+             function(response){
+               // failure callback
+             }
+          );
         $scope.finishTest()
       }
     } else {

@@ -18,7 +18,8 @@ router.get('/', function (req, res) {
 
 router.use('/personalitySurvey', auth.sessionRequired);
 router.post('/personalitySurvey', function (req, res) {
-  // TODO: Update personalityProfile of user
+  // console.log(req.data);
+  console.log(req.body);
 });
 
 router.use('/personalitySurvey', auth.sessionRequired);

@@ -24,13 +24,13 @@ var surveys = [
             number: 2,
             answerOptions: null
           },
-          {
-            title: "Birthday",
-            question: "My Birthday",
-            questionType: "DATE",
-            number: 3,
-            answerOptions: null
-          },
+          // {
+          //   title: "Birthday",
+          //   question: "My Birthday",
+          //   questionType: "DATE",
+          //   number: 3,
+          //   answerOptions: null
+          // },
           {
             title: "Gender",
             question: "My Gender",
