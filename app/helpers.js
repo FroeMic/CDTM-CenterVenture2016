@@ -13,6 +13,8 @@ function calculatePersonalityMatching(tenant, roomie) {
   return dividend / divisor;
 }
 
+// private stuff
+
 // takes the tenants profile and calculates the perfect score
 function fullScore(tenantProfile) {
   var sum = 1.0 // birthday
