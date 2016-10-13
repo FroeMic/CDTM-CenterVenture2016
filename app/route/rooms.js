@@ -21,6 +21,7 @@ router.get('/', function(req, res, next) {
 /* POST /rooms */
 router.use('/', auth.sessionRequired);
 router.post('/', function(req, res, next) {
+    console.log(req.body);
     Room.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);

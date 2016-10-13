@@ -141,8 +141,8 @@ cvApp.controller('offerCreateController', function($scope, $http) {
         $http({
             method  : 'POST',
             url     : '/rooms',
-            data    : $scope.formData, //forms user object
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
         })
             .success(function(data) {
                 if (data.errors) {
@@ -199,8 +199,8 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
         $http({
             method  : 'PUT',
             url     : '/rooms/'+$routeParams.offer_id,
-            data    : $scope.formData, //forms user object
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
         })
             .success(function(data) {
                 if (data.errors) {
