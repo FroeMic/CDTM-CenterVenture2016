@@ -13,8 +13,8 @@ var session          = require('express-session');
 var expressHbs       = require('express-handlebars');
 
 // sub aps ===============================
-var rooms = require('./app/route/rooms');
 var user = require('./app/route/user');
+var rooms = require('./app/route/rooms');
 
 // configuration ===========================================
 var db_setts = require('./config/db');
