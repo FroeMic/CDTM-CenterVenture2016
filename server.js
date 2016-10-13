@@ -1,24 +1,24 @@
 // server.js
 
 // modules =================================================
-var express        = require('express');
-var app            = express();
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-var mongoose       = require('mongoose');
-var passport       = require('passport');
-var LocalStrategy  = require('passport-local').Strategy;
+var express          = require('express');
+var app              = express();
+var bodyParser       = require('body-parser');
+var methodOverride   = require('method-override');
+var mongoose         = require('mongoose');
+var passport         = require('passport');
+var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var session = require('express-session');
+var session          = require('express-session');
+var expressHbs       = require('express-handlebars');
 
-var expressHbs = require('express-handlebars');
+// sub aps ===============================
+var rooms = require('./app/route/rooms');
+var user = require('./app/route/user');
 
 // configuration ===========================================
+var db_setts = require('./config/db');
 
-// config files
-var db = require('./config/db');
-
-// set our port
 var port = process.env.PORT || 1337;
 
 // Configure the Facebook strategy for use by Passport.
@@ -40,7 +40,7 @@ passport.use(new FacebookStrategy({
         // be associated with a user record in the application's database, which
         // allows for account linking and authentication with other identity
         // providers.
-        console.log(profile);
+        // console.log(profile);
         return cb(null, profile);
     }));
 
@@ -71,7 +71,20 @@ app.set('view engine', 'hbs');
 
 // connect to our mongoDB database
 // (uncomment after you enter in your own credentials in config/db.js)
-// mongoose.connect(db.url);
+mongoose.connect(db_setts.url);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    // we're connected!
+    // console.log('db open', db);
+});
+
+app.mongo = db;
+
+// SEED DB
+
+var seedDB = require('./app/SEED');
+seedDB();
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json
@@ -113,8 +126,10 @@ app.use(oursession);
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/public'));
 
-// routes ==================================================
-require('./app/routes')(app); // configure our routes
+// route ==================================================
+app.use('/rooms', rooms);
+app.use('/user', user);
+require('./app/routes')(app); // configure our route
 
 // start app ===============================================
 // startup our app at http://localhost:8080

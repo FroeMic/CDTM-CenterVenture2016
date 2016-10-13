@@ -52,6 +52,11 @@ def insert_ods_header(db, recordTemplate):
     tmp = recordTemplate._asdict()
     return get_ods_collection(db).insert_one(tmp).inserted_id
 
+def tryParse(value):
+    try:
+        return float(value)
+    except ValueError:
+        return value
 
 def insert_dataset(db, ods_id, locationRecordMapping, valueRecordMapping, data):
 
@@ -62,13 +67,13 @@ def insert_dataset(db, ods_id, locationRecordMapping, valueRecordMapping, data):
         for target, original in locationRecordMapping._asdict().iteritems():
             value = blob.pop(original, None)
             if value:
-                transformed_blob[target] = value
+                transformed_blob[target] = tryParse(value)
 
         # Transform Key Value Data
         for target, original in valueRecordMapping._asdict().iteritems():
             value = blob.pop(original, None)
             if value:
-                transformed_blob[target] = value
+                transformed_blob[target] = tryParse(value)
 
         # Copy remaining values
         transformed_blob.update(blob)
