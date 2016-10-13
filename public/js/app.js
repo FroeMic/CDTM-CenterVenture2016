@@ -73,6 +73,11 @@ cvApp.config(function($routeProvider) {
             controller  : 'offerDetailController'
         })
 
+        .when('/rooms', {
+            templateUrl : '../views/rooms.html',
+            controller  : 'roomListController'
+        })
+
         .when('/bookmarks', {
             templateUrl : '../views/bookmarks.html',
             controller  : 'bookmarksController'
@@ -466,6 +471,13 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
 
 cvApp.controller('offerListController', function($scope, $http) {
     $http.get('/rooms/owner/'+$scope.user.fb_id).
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
+});
+
+cvApp.controller('roomListController', function($scope, $http) {
+    $http.get('/rooms').
     then(function(response) {
         $scope.rooms = response.data;
     });
