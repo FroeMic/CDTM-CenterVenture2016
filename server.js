@@ -14,9 +14,11 @@ var expressHbs       = require('express-handlebars');
 
 // sub aps ===============================
 var rooms = require('./app/route/rooms');
+var user = require('./app/route/user');
 
 // configuration ===========================================
 var db_setts = require('./config/db');
+
 var port = process.env.PORT || 1337;
 
 // Configure the Facebook strategy for use by Passport.
@@ -38,7 +40,7 @@ passport.use(new FacebookStrategy({
         // be associated with a user record in the application's database, which
         // allows for account linking and authentication with other identity
         // providers.
-        console.log(profile);
+        // console.log(profile);
         return cb(null, profile);
     }));
 
@@ -78,6 +80,11 @@ db.once('open', function() {
 });
 
 app.mongo = db;
+
+// SEED DB
+
+var seedDB = require('./app/SEED');
+seedDB();
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json
@@ -121,6 +128,7 @@ app.use(express.static(__dirname + '/public'));
 
 // route ==================================================
 app.use('/rooms', rooms);
+app.use('/user', user);
 require('./app/routes')(app); // configure our route
 
 // start app ===============================================
