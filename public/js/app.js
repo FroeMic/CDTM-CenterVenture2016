@@ -90,12 +90,7 @@ cvApp.config(function($routeProvider) {
 cvApp.directive("personalityTest", function () {
    return {
       templateUrl: "/views/personalityTest.html",
-      controller: "personalityTestController",
-      link: function(scope, elem, attr) {
-        angular.element(document).ready(function(){
-          $('select').material_select();
-        });
-      }
+      controller: "personalityTestController"
    };
 });
 
@@ -150,7 +145,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout) {
   }
 
   $scope.survey = {
-    title: "Welcome to Flatling 😃",
+    title: "PersonalitySurvey",
     sections: [
       {
         title: "Intro",

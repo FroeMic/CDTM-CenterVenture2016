@@ -18,6 +18,7 @@ var expressHbs = require('express-handlebars');
 // config files
 var db_setts = require('./config/db');
 
+
 // set our port
 var port = process.env.PORT || 1337;
 
@@ -80,6 +81,11 @@ db.once('open', function() {
 });
 
 app.mongo = db;
+
+// SEED DB
+
+var seedDB = require('./app/SEED');
+seedDB();
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json

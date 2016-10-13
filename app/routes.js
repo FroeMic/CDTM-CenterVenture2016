@@ -65,6 +65,16 @@ module.exports = function(app) {
         ));
     });
 
+    // TODO: REQUIRES AUTH
+    app.post('/user/personalitySurvey', function (req, res) {
+      // TODO: Update personalityProfile of user
+    });
+
+    // TODO: REQUIRES AUTH
+    app.get('/personalitySurvey', function (req, res) {
+      
+    });
+
     app.get('/map/rentniveau', function (req, res) {
         DatasetModel.findOne({url_csv: 'http://data.ub.uni-muenchen.de/2/1/miete03.asc'}, function (err, dataset) {
             var refId = dataset._id;
