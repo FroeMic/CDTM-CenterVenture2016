@@ -137,6 +137,13 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
               }
             );
 
+      $scope.$watch('$routeUpdate', function(){
+        if ($location.path() == '/_=_'){
+          $location.path('');
+        };
+      });
+
+
     angular.element(document).ready(function () {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
@@ -512,7 +519,7 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
 }]);
 
 cvApp.controller('offerListController', function($scope, $http) {
-    $http.get('/rooms').
+    $http.get('/rooms/owner/'+$scope.user.fb_id).
     then(function(response) {
         $scope.rooms = response.data;
     });

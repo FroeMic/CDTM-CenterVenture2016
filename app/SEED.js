@@ -127,7 +127,7 @@ var surveys = [
               },
               {
                 value: 2,
-                text: "sometime"
+                text: "sometimes"
               },
               {
                 value: 3,
