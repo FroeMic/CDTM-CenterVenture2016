@@ -115,6 +115,21 @@ cvApp.controller('offerCreateController', function($scope, $http) {
         $(document).ready(function() {
             $('input#input_text, textarea#comments').characterCounter();
         });
+
+        //Price-Range
+        var dragSlider = document.getElementById('age_range');
+
+        noUiSlider.create(dragSlider, {
+            start: [ 18, 45 ],
+            behaviour: 'drag',
+            connect: true,
+            step: 1,
+            range: {
+                'min':  0,
+                'max':  99
+            },
+            tooltips: true
+        });
     });
 
     // create a blank object to handle form data.
@@ -147,6 +162,56 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
     then(function(response) {
         $scope.room = response.data;
     });
+
+    angular.element(document).ready(function () {
+        $('.slider').slider();
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15 // Creates a dropdown of 15 years to control year
+        });
+        $(document).ready(function() {
+            $('input#input_text, textarea#comments').characterCounter();
+        });
+
+        //Price-Range
+        var dragSlider = document.getElementById('age_range');
+
+        noUiSlider.create(dragSlider, {
+            start: [ 18, 45 ],
+            behaviour: 'drag',
+            connect: true,
+            step: 1,
+            range: {
+                'min':  0,
+                'max':  99
+            },
+            tooltips: true
+        });
+    });
+
+    // create a blank object to handle form data.
+    $scope.formData = {};
+    // calling our submit function.
+    $scope.submitForm = function() {
+        // Posting data to php file
+        $http({
+            method  : 'PUT',
+            url     : '/rooms/'+$routeParams.offer_id,
+            data    : $scope.formData, //forms user object
+            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function(data) {
+                if (data.errors) {
+                    // Showing errors.
+                    $scope.errorName = data.errors.name;
+                    $scope.errorUserName = data.errors.username;
+                    $scope.errorEmail = data.errors.email;
+                } else {
+                    $scope.message = data.message;
+                }
+            });
+    };
 });
 
 cvApp.controller('offerListController', function($scope, $http) {
