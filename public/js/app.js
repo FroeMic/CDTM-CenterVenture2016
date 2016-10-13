@@ -98,6 +98,9 @@ cvApp.controller('bookmarksController', function($scope) {
 });
 
 cvApp.controller('messagesController', function($scope) {
+  $(document).ready(function(){
+  $('ul.tabs').tabs();
+});
 });
 
 cvApp.controller('offerCreateController', function($scope) {
