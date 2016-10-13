@@ -14,6 +14,7 @@ var expressHbs       = require('express-handlebars');
 
 // sub aps ===============================
 var rooms = require('./app/route/rooms');
+var user = require('./app/route/user');
 
 // configuration ===========================================
 var db_setts = require('./config/db');
@@ -127,6 +128,7 @@ app.use(express.static(__dirname + '/public'));
 
 // route ==================================================
 app.use('/rooms', rooms);
+app.use('/user', user);
 require('./app/routes')(app); // configure our route
 
 // start app ===============================================

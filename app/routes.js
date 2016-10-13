@@ -60,31 +60,6 @@ module.exports = function(app) {
         ));
     });
 
-    app.get('/user', function (req, res) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(
-              req.session.user
-        ));
-    });
-
-    // TODO: REQUIRES AUTH
-    app.post('/user/personalitySurvey', function (req, res) {
-      // TODO: Update personalityProfile of user
-    });
-
-    // TODO: REQUIRES AUTH
-    app.get('/personalitySurvey', function (req, res) {
-      Survey.findOne({title: 'PersonalitySurvey'}, function (err, survey) {
-        if(err) {
-            res.status('500')
-        }
-          res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify(
-            survey
-          ));
-      });
-    });
-
     app.get('/map/rentniveau', function (req, res) {
         DatasetModel.findOne({url_csv: 'http://data.ub.uni-muenchen.de/2/1/miete03.asc'}, function (err, dataset) {
             var refId = dataset._id;

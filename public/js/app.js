@@ -120,6 +120,7 @@ cvApp.controller('mainController', function($scope, $location, $http) {
                },
                function(response){
                  // failure callback
+                 console.log(response.data);
               }
             );
 
@@ -150,7 +151,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
  });
 
   $scope.loadSurvey = function() {
-    $http.get(HOSTSTRING + '/personalitySurvey')
+    $http.get(HOSTSTRING + '/user/personalitySurvey')
          .then(
              function(response){
                // success callback
