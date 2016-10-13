@@ -9,7 +9,7 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="/css/noUiSlider.css" type="text/css" rel="stylesheet" media="screen,projection"/>    
+    <link href="/css/noUiSlider.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="/css/color.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="/css/nouislider.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -20,34 +20,8 @@
 
 </head>
 <body ng-controller="mainController">
-<nav class="white" role="navigation">
-    <ul id="nav-mobile" class="dropdown-content">
-        <li><a href="#profile">My Profile</a></li>
-        <li class="divider"></li>
-        <li><a href="#bookmarks">My Bookmarks</a></li>
-        <li><a href="#messages">My Messages</a></li>
-        <li><a href="#offers">My Offers</a></li>
-        <li class="divider"></li>
-        <li><a href="/logout" target="_self">Logout {{user.displayName}}</a></li>
-    </ul>
-    <div class="nav-wrapper container">
-        <a href="#/"><img src="img/logo.png" style="height:60px;"></a><a id="logo-container" href="#/" class="brand-logo"> flatling</a>
-        <ul class="right valign-wrapper" style="height: 100%;">
-            <li class="valign">
-                {{#if user}}
-                    <li class="black-text">Welcome, {{user.displayName}}!</li>
-                    <li><a class="dropdown-button" href="#!" data-activates="nav-mobile"><i class="material-icons">menu</i></a></li>
-                {{else}}
-                    <a href="/auth/facebook" target="_self" class="btn waves-effect waves-light teal lighten-1">Login</a>
-                {{/if}}
-            </li>
-        </ul>
-    </div>
-</nav>
 
-<personality-test hide ng-show="needsPersonalityTest && survey != null"></personality-test>
-
-<div ng-view></div>
+{{{body}}}
 
 
 <!--  Scripts-->
