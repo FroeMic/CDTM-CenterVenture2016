@@ -1,25 +1,23 @@
 // server.js
 
 // modules =================================================
-var express        = require('express');
-var app            = express();
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-var mongoose       = require('mongoose');
-var passport       = require('passport');
-var LocalStrategy  = require('passport-local').Strategy;
+var express          = require('express');
+var app              = express();
+var bodyParser       = require('body-parser');
+var methodOverride   = require('method-override');
+var mongoose         = require('mongoose');
+var passport         = require('passport');
+var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var session        = require('express-session');
+var session          = require('express-session');
+var expressHbs       = require('express-handlebars');
 
-var expressHbs = require('express-handlebars');
+// sub aps ===============================
+var rooms = require('./app/route/rooms');
 
 // configuration ===========================================
-
-// config files
 var db_setts = require('./config/db');
 
-
-// set our port
 var port = process.env.PORT || 1337;
 
 // Configure the Facebook strategy for use by Passport.
@@ -127,8 +125,9 @@ app.use(oursession);
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/public'));
 
-// routes ==================================================
-require('./app/routes')(app); // configure our routes
+// route ==================================================
+app.use('/rooms', rooms);
+require('./app/routes')(app); // configure our route
 
 // start app ===============================================
 // startup our app at http://localhost:8080
