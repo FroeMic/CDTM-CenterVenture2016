@@ -12,17 +12,15 @@
               <li class="collection-item avatar">
                 <i class="material-icons circle red">description</i>
                 <span class="title"><b>Name</b></span>
-                <p>Johannes <br>
-                   Groll
-                </p>
+                <p>{{user.first_name}} {{user.last_name}}</p>
               </li>
-              <li class="collection-item avatar">
+<!--               <li class="collection-item avatar">
                 <i class="material-icons circle blue">folder</i>
                 <span class="title"><b>Address</b></span>
                 <p>Feldmochinger Straße 210 <br>
                    München
                 </p>
-              </li>
+              </li> -->
               <li class="collection-item avatar">
                 <i class="material-icons circle orange">settings</i>
                 <span class="title"><b>Settings</b></span>
@@ -41,7 +39,7 @@
 
          </div>
          <div class="col s12 m12 l4">
-           <img src="/img/profil_pic_Johannes.jpg" style="height:400px;width:400px">
+           <img class="responsive-img" src={{user.pictureUrl}}>
 
          </div>
        </div>
