@@ -136,6 +136,7 @@ cvApp.controller('offerCreateController', function($scope, $http) {
     $scope.formData = {};
     // calling our submit function.
     $scope.submitForm = function() {
+        console.log($scope.formData);
         // Posting data to php file
         $http({
             method  : 'POST',
