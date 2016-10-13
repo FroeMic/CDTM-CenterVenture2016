@@ -4,6 +4,7 @@ var auth = require('../auth');
 
 var mongoose = require('mongoose');
 var Survey = require('../models/survey');
+var User = require('../models/userObject');
 
 
 // get own user object

@@ -25,10 +25,17 @@ var surveys = [
             answerOptions: null
           },
           {
+            title: "Birthday",
+            question: "My Birthday",
+            questionType: "DATE",
+            number: 3,
+            answerOptions: null
+          },
+          {
             title: "Gender",
             question: "My Gender",
             questionType: "CHOICE",
-            number: 3,
+            number: 4,
             answerOptions: [
               {
                 value: 0,
@@ -51,7 +58,7 @@ var surveys = [
             title: "Occupation",
             question: "My Occupation",
             questionType: "TEXT",
-            number: 4,
+            number: 5,
             answerOptions: null
           }
         ]
@@ -504,7 +511,7 @@ var surveys = [
             ]
           },
           {
-            title: "Hardworking",
+            title: "Literature",
             question: "When I read literature or look at art I sometimes get goosebumps or get really enthuastic.",
             questionType: "LIKERT",
             number: 7,
@@ -560,7 +567,7 @@ var surveys = [
             ]
           },
           {
-            title: "Hardworking",
+            title: "People",
             question: "I like being surrounded by many people.",
             questionType: "LIKERT",
             number: 9,

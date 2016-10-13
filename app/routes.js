@@ -9,6 +9,7 @@ var RentModel = require('./models/rentNiveau');
 var DatasetModel = require('./models/dataset');
 var POIModel = require('./models/POI');
 var Survey = require('./models/survey');
+var User = require('./models/userObject');
 
 
 module.exports = function(app) {
@@ -156,7 +157,9 @@ module.exports = function(app) {
         }),
         function(req, res) {
             req.session.user = req.user;
+
             // Successful authentication, redirect home.
+            updateProfile(req.session.user);
             res.redirect('/');
         });
 
@@ -164,3 +167,23 @@ module.exports = function(app) {
         res.status(404).sendfile('./public/views/404.html'); // TODO: make compatible with Angular App Routing
     });
 };
+
+var updateProfile = function(user) {
+  var query = { fb_id: user.id }
+  var update = {
+    fb_id: user.id,
+    display_name: user.displayName,
+    first_name: user._json.first_name,
+    last_name: user._json.last_name,
+    gender: user.gender,
+    pictureUrl: 'http://graph.facebook.com/' + user.id + '/picture?type=large'
+  }
+
+  User.findOneAndUpdate(query, update, {upsert:true, new:true}, function (err, dbuser) {
+    if(err) {
+      console.log(err);
+    } else {
+      // console.log(dbuser);
+    }
+  });
+}

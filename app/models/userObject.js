@@ -1,17 +1,30 @@
-/**
- * Created by cwoebker on 12.10.16.
- */
-
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-    id : {type: String, default: ''},
-    name : {type : String, default: ''},
-    description: {type : String, default: ''},
-    facebook_id: {type : String, default: ''},
-    birthday: {type : Date},
-    occupation: {type: String, default: ''},
-    gender: {type: String, default: ''},
+    fb_id : {type: String},
+    display_name : {type : String},
+    first_name : {type : String},
+    last_name : {type : String},
+    gender: {type : String},
+    pictureUrl: {type : String},
+    personalityProfile: {
+      default: null,
+      type: {
+        firstname : {type : String},
+        lastname : {type : String},
+        birthday : {type : Date},
+        gender : {type : String},
+        occupation: {type : String},
+        values: [
+          {
+            title: {type: String},
+            weight: {type: Number},
+            min: {type: Number},
+            max: {type: Number}
+          }
+        ]
+      }
+    }
 
 });
 

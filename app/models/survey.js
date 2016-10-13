@@ -17,7 +17,7 @@ var schema = new mongoose.Schema({
                 type: String,
                 number: Number,
                 imageUrl: String,
-                enum : ['TEXT','CHOICE', 'LIKERT'],
+                enum : ['TEXT','CHOICE', 'LIKERT', 'DATE'],
               },
               answerOptions: [
                 {
