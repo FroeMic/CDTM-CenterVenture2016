@@ -41,7 +41,7 @@
     </div>
 </nav>
 
-<personality-test hide ng-show="needsPersonalityTest"></personality-test>
+<personality-test hide ng-show="needsPersonalityTest && survey != null"></personality-test>
 
 <div ng-view></div>
 
