@@ -6,10 +6,13 @@
       <div class="row center">
         <form ng-submit="commitSearch()">
         <search>
-          <div class="search--image"">
+          <div class="search--image">
             <div class="row search--container">
               <div class="large-12 medium-12 small-12 columns">
-                <input type="text" placeholder="Find a Room in..." class="search--input text-shadow ng-pristine ng-valid ng-touched" ng-model="query" ng-focus="truncate();" ng-blur="reinsertPlaceholder()" enter-press="commitSearch()">
+                <input type="text" placeholder="Find a Room in..." class="search--input text-shadow ng-pristine ng-valid ng-touched"
+                       ng-model="query"
+                        id="main-search-bar" data-activates="search-dropdown" data-beloworigin="true" autocomplete="off">
+                <ul id="search-dropdown" class="dropdown-content ac-dropdown active"></ul>
               </div>
             </div>
           </div>

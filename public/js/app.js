@@ -108,7 +108,7 @@ cvApp.directive("personalityTest", function () {
 cvApp.controller('mainController', function($scope, $location, $http, $window) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
-    $scope.needsPersonalityTest = false
+    $scope.needsPersonalityTest = false;
     $scope.user = null;
 
     // globally available
@@ -118,7 +118,7 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
            .then(
                function(response){
                  // success callback
-                 $scope.user = response.data
+                 $scope.user = response.data;
                  if ($scope.user != null && $scope.user != undefined && $scope.user != '') {
                    // user is logged in
                   //  console.log($scope.user);
@@ -138,13 +138,63 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
         $('.parallax').parallax();
         $('ul.tabs').tabs();
         $('select').material_select();
+
+        var search = $('#main-search-bar');
+        $('#main-search-bar').materialize_autocomplete({
+            multiple: { enable: false },
+            dropdown: { el: '#search-dropdown' },
+            getData: function(value, callback) {
+                Geocoder.search(value, function (data) {
+                    var mapped = data.map(function (x, idx) {
+                        return {
+                            id: x.latlong,
+                            text: x.long
+                        }
+                    });
+                    callback(value, mapped);
+                });
+            }
+        });
+        $('#main-search-bar').on("change paste keyup input", function() {
+            $scope.query = $(this).val();
+            var id = $(this).data('value');
+            if(id) {
+                $window.location.href = '/#/search/['+ id + ']';
+            }
+        });
     });
 
-    $scope.query = undefined; // this should be the city
+    $scope.query = ''; // this should be the city
     $scope.commitSearch = function() {
         $window.location.href = '/#/search/'+$scope.query;
     };
 });
+
+var Geocoder = {
+    init: function () {
+        L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
+        this._geocoderCtrl = L.mapbox.geocoderControl('mapbox.places', {});
+    },
+    search: function(value, cb) {
+        this._geocoderCtrl.geocoder.query({query: value}, function(err, res) {
+            if(err) {
+                console.error(err);
+            } else {
+                var results = res.results.features.map(function (x) {
+                    return {
+                        latlong: x.center.concat().reverse(),
+                        long: x.place_name,
+                        short: x.text
+                    }
+                });
+                if(results.length > 0) {
+                    cb(results);
+                }
+            }
+        });
+    }
+};
+Geocoder.init();
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
@@ -318,8 +368,8 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
       })
     });
   });
-
-    console.log($routeParams.city);
+   $scope.city = $routeParams.city;
+    console.log($scope.city);
 });
 
 
@@ -466,7 +516,12 @@ cvApp.controller('registerController', function($scope) {
 cvApp.directive('flatlingMap', function () {
     return {
         templateUrl: '/views/map.html',
-        controller: "flatlingMapController"
+        controller: "flatlingMapController",
+        link: function(scope, element, attrs) {
+            if(attrs.coordinates) {
+                scope.location = attrs.coordinates;
+            }
+        }
     }
 });
 
@@ -491,13 +546,6 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         }
     });
 
-    // $(window).scroll(function (event) {
-    //     var scroll = $(window).scrollTop();
-    //     console.log('wtf', scroll);
-    //     if(scroll == 0) {
-    //         $('.unstuck').attr('style', '');
-    //     }
-    // });
     angular.element(document).ready(function () {
         $('.sidebar').hide();
     });
@@ -513,6 +561,44 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         }
         setTimeout(function(){ map.invalidateSize()}, 500);
     };
+
+    function onLocation(newValue, oldValue) {
+        // try to parse json:
+        if(typeof(newValue) == 'string') {
+            try {
+                var json = JSON.parse(newValue);
+                if(json.length == 2 && typeof (json[0]) == 'number' && typeof (json[1]) == 'number') {
+                    newValue = json;
+                }
+            } catch (e) {
+            }
+        }
+
+        if(newValue) {
+            if(newValue.length == 2) {
+                moveTo(newValue);
+                console.log('set location', newValue);
+                return true;
+            } else if(typeof (newValue) == 'string') {
+                // todo geolocator api
+                // return true;
+            }
+        }
+
+        return false;
+    }
+
+    $scope.$watch("location", onLocation);
+
+    var deferredCoords = null;
+    function moveTo(coordinates) {
+        console.log("move to", coordinates);
+        if(map == null) {
+            deferredCoords = coordinates;
+        } else {
+            map.setView(newValue, map.getZoom(), {animate: true});
+        }
+    }
 
     $http.get('/map/plugins').then(function(resp) {
         $scope.datasets = resp.data;
@@ -548,16 +634,22 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
 
     });
 
-    var map;
+    var map = null;
     leafletData.getMap('map').then(function (res) {
         map = window.map = res;
         map.addControl(new ToggleLayers());
-        $(document).ready(function () {
-            setTimeout(function () {
-                map.setZoom(11, {animate: true});
-            }, 1000)
-        });
-        // console.log('got map', res);
+
+        if(deferredCoords) {
+            map.setView(deferredCoords, 11, {animate: true});
+        } else {
+            if(onLocation($scope.location, $scope.location)) {
+                // already moving
+            } else {
+                setTimeout(function () {
+                    map.setZoom(11, {animate: true});
+                }, 1000);
+            }
+        }
     });
     var layers = {};
 
