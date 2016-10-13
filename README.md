@@ -1,9 +1,9 @@
 # CDTM-CenterVenture2016
 
-Server and Web Application of the **2016 CDTM Center Venture**. ✌️
+Server and Web Application of the **2016 CDTM Center Venture**.
 
-## Website
-http://flatling.de
+## Awesome Website 👾
+http://flatling.de/
 
 **Important:** Git-Workflow
 - Feature/*NAME*: Use feature branches to implement new features. Branch from develop and only merge into develop.
