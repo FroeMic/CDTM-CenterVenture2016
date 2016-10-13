@@ -7,7 +7,7 @@
 // also include ngRoute for all our routing needs
 var cvApp = angular.module('cvApp', ['ngRoute']);
 
-// configure our routes
+// configure our route
 cvApp.config(function($routeProvider) {
     $routeProvider
 
@@ -30,8 +30,13 @@ cvApp.config(function($routeProvider) {
         })
 
         .when('/search', {
-            templateUrl : '../views/search.html',
-            controller  : 'searchController'
+            templateUrl: '../views/search.html',
+            controller: 'searchController'
+        })
+
+        .when('/profile', {
+            templateUrl : '../views/profile.html',
+            controller  : 'profileController'
         })
 
         .when('/offer', {
@@ -47,6 +52,16 @@ cvApp.config(function($routeProvider) {
         .when('/offers', {
             templateUrl : '../views/offer_list.html',
             controller  : 'offerListController'
+        })
+
+        .when('/bookmarks', {
+            templateUrl : '../views/bookmarks.html',
+            controller  : 'bookmarksController'
+        })
+
+        .when('/messages', {
+            templateUrl : '../views/messages.html',
+            controller  : 'messagesController'
         })
 
         // route for the login page
@@ -158,7 +173,16 @@ cvApp.controller('searchController', function($scope) {
   });
 });
 
-cvApp.controller('offerCreateController', function($scope) {
+cvApp.controller('profileController', function($scope) {
+});
+
+cvApp.controller('bookmarksController', function($scope) {
+});
+
+cvApp.controller('messagesController', function($scope) {
+});
+
+cvApp.controller('offerCreateController', function($scope, $http) {
     angular.element(document).ready(function () {
         $('select').material_select();
         $('.datepicker').pickadate({
@@ -169,13 +193,44 @@ cvApp.controller('offerCreateController', function($scope) {
             $('input#input_text, textarea#comments').characterCounter();
         });
     });
+
+    // create a blank object to handle form data.
+    $scope.formData = {};
+    // calling our submit function.
+    $scope.submitForm = function() {
+        // Posting data to php file
+        $http({
+            method  : 'POST',
+            url     : '/rooms',
+            data    : $scope.formData, //forms user object
+            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function(data) {
+                if (data.errors) {
+                    // Showing errors.
+                    $scope.errorName = data.errors.name;
+                    $scope.errorUserName = data.errors.username;
+                    $scope.errorEmail = data.errors.email;
+                } else {
+                    $scope.message = data.message;
+                }
+            });
+    };
+
 });
 
-cvApp.controller('offerDetailController', function($scope, $routeParams) {
-    $scope.offer_id = $routeParams.offer_id;
+cvApp.controller('offerDetailController', function($scope, $routeParams, $http) {
+    $http.get('/rooms/'+$routeParams.offer_id).
+    then(function(response) {
+        $scope.room = response.data;
+    });
 });
 
-cvApp.controller('offerListController', function($scope) {
+cvApp.controller('offerListController', function($scope, $http) {
+    $http.get('/rooms').
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
 });
 
 cvApp.controller('loginController', function($scope) {
