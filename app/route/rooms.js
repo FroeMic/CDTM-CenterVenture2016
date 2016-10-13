@@ -7,7 +7,7 @@ var router = express.Router();
 var auth = require('../auth');
 
 var mongoose = require('mongoose');
-var Room = require('../models/roomObject');
+var Room = require('../models/Room');
 
 /* GET /rooms listing. */
 router.use('/', auth.sessionRequired);
