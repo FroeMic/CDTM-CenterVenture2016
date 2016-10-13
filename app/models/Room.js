@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 
 var picture = new mongoose.Schema({
     img: {type : String, default: ''},
-    description: type : String, default: ''},
+    description: {type : String, default: ''},
 });
 
 var schema = new mongoose.Schema({
