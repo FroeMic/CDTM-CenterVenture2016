@@ -35,6 +35,10 @@ cvApp.config(function($routeProvider) {
             templateUrl : '../views/index.html',
             controller  : 'mainController'
         })
+        .when('/_=_', {
+            templateUrl : '../views/index.html',
+            controller  : 'mainController'
+        })
 
         // route for the about page
         .when('/about', {
