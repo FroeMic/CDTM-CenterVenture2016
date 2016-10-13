@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var RentModel = require('./models/rentNiveau');
 var DatasetModel = require('./models/dataset');
 var POIModel = require('./models/POI');
+var Survey = require('./models/survey');
 
 
 module.exports = function(app) {
@@ -72,7 +73,20 @@ module.exports = function(app) {
 
     // TODO: REQUIRES AUTH
     app.get('/personalitySurvey', function (req, res) {
-      
+      // DatasetModel.findOne({title: 'http://data.ub.uni-muenchen.de/2/1/miete03.asc'}, function (err, dataset) {
+      //     var refId = dataset._id;
+      //     RentModel.aggregate([
+      //         { $match: { ods_ref_id: refId } },
+      //         { $group: { _id: '$district', rent: { $avg: '$value' } } }
+      //     ], function (err, data) {
+      //         if(err) {
+      //             console.error(err);
+      //         }
+      //
+      //         res.setHeader('Content-Type', 'application/json');
+      //         res.send(JSON.stringify(data));
+      //     });
+      // });
     });
 
     app.get('/map/rentniveau', function (req, res) {
