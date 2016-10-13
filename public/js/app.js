@@ -155,7 +155,7 @@ cvApp.controller('contactController', function($scope) {
 });
 
 cvApp.controller('personalityTestController', function($scope, $timeout, $http) {
-  $scope.currentSection = 1;
+  $scope.currentSection = 0;
   $scope.survey = null
 
   $scope.$watch('needsPersonalityTest', function() {
@@ -170,6 +170,10 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
              function(response){
                // success callback
                $scope.survey = response.data
+
+               $scope.survey.sections[0].questions[0].answer = $scope.user.first_name;
+               $scope.survey.sections[0].questions[1].answer = $scope.user.last_name;
+
                $timeout(initMaterialize, 0);
              },
              function(response){
