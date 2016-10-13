@@ -63,9 +63,9 @@ def config_ValueMapping(rawDict):
     return mongohelp.ValueRecordMapping(**valueMapDict)
 
 
-def import_muc_ods(path):
+def import_muc_ods(path, port=None):
   # Connect MongoDB
-  client = mongohelp.connect_mongodb()
+  client = mongohelp.connect_mongodb(port)
   db = mongohelp.get_db(client)
 
   data_collection = mongohelp.get_ods_collection(db)
