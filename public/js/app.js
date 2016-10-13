@@ -113,7 +113,9 @@ cvApp.directive("personalityTest", function () {
 cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
-      controller: "offerPreviewController"
+      controller: "offerPreviewController",
+      restrict: 'A',
+      scope: { room: '=' },
    };
 });
 
@@ -259,8 +261,60 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
 
 cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
 
-});
+  $timeout(initMaterialize, 0);
 
+  function initMaterialize() {
+    $(document).ready(function(){
+      $('.slider').slider();
+    });
+  }
+
+  $scope.match = {
+    percentage: 94,
+  };
+
+  $scope.room = {
+    createdAt: "Thu, 13 Oct 2016",
+    updatedAt: "Sat, 15 Oct 2016",
+    address: "Augustenstrasse 93, 80798 Muenchen",
+    price: 480,
+    deposit: 1050,
+    size_room: 25,
+    size_apartment: 80,
+    room_type: "Private Room",
+    start_date: "Tue, 15 Nov 2016",
+    end_date: "",
+    checkbox_shortterm: false,
+    checkbox_furnitured: true,
+    checkbox_kitchen: true,
+    checkbox_washing_machine: false,
+    checkbox_barrier_free: false,
+    checkbox_pets: true,
+    checkbox_smoking: true,
+    checkbox_balcony: true,
+    checkbox_garden: false,
+    checkbox_living_room: true,
+    checkbox_basement: true,
+    nr_of_male_roomates: 4,
+    nr_of_female_roomates: 2,
+    nr_of_other_roomates: 1,
+    comments: "This is the greatest apartment in Munich!!!",
+    pictures: [
+                {
+                  img: '/img/room_indoor2.jpeg',
+                  description: "Spacious Kitchen",
+                },
+                {
+                  img: '/img/houses.jpg',
+                  description: "Quiet Neighbourhood",
+                },
+                {
+                  img: '/img/room_indoor1.jpeg',
+                  description: "German Style Dungeon",
+                }
+              ]
+    };
+});
 
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
@@ -345,7 +399,6 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
     console.log($routeParams.city);
 });
 
-
 cvApp.controller('profileController', function($scope) {
 });
 
@@ -354,8 +407,8 @@ cvApp.controller('bookmarksController', function($scope) {
 
 cvApp.controller('messagesController', function($scope) {
   $(document).ready(function(){
-  $('ul.tabs').tabs();
-});
+    $('ul.tabs').tabs();
+  });
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {

@@ -46,10 +46,6 @@ p {
   color: #26a69a;
 }
 
-.card-title {
-  background: rgba(0, 0, 0, .7);
-}
-
 #nav-mobile {
   width: 180px !important;
 }
@@ -203,4 +199,13 @@ personality-test .likert-line {
 }
 .shake {
     animation-name: shake;
+}
+
+.slider .slides li .caption.caption_neu {
+  color: #fff;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 70%;
+  opacity: 0;
 }

@@ -1,3 +1,45 @@
-<div class="main map-main">
-    <leaflet center="center" class="map" tiles="tiles" id="map"></leaflet>
+<div>
+	<div class="card">
+		<div class="card-image">
+			<div class="slider">
+				<ul class="slides activator">
+					<li ng-repeat="(key, value) in room.pictures">
+						<a ng-href="#/asdsads">
+							<img src="{{value.img}}"> <!-- random image -->
+							<div class="caption caption_neu left-align">
+								<h5>
+									<span style="padding-right: 20px;">Match Rate: {{match.percentage}}%</span>
+									<span style="padding-right: 20px;">Cost: {{room.price}}&euro;</span>
+<!-- 									<span style="padding-right: 20px;">
+										<img src="/img/icons/survey/male.png" alt="Male" style="width: 50px; height: 50px;">
+											{{room.nr_of_male_roomates}}
+										</img>
+									</span>
+									<span style="padding-right: 20px;">{{room.nr_of_female_roomates}}</span>
+									<span style="padding-right: 20px;">{{room.nr_of_other_roomates}}</span> -->
+									<span ng-click="alert('hfj')" class="btn-floating waves-effect waves-light">
+										<i class="material-icons">
+											thumb_up
+										</i>
+									</span>
+
+								</h5>
+							</div>
+						</a>
+					</li>
+
+
+					<!--  DUPLICATE ABOVE PROGRAMMATICALLY -->
+				</ul>
+			</div>
+
+		</div>
+		<div class="card-content">
+			<p>{{room.address}}</p>
+			<p>On offer since: {{room.createdAt}}</p>
+		</div>
+		<div class="card-action">
+			<a href="#">View Details</a>
+		</div>
+	</div>
 </div>
