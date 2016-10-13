@@ -63,7 +63,7 @@ def config_ValueMapping(rawDict):
     return mongohelp.ValueRecordMapping(**valueMapDict)
 
 
-def import_ods(path):
+def import_ods(path, port=None):
     # Load Json Data
     with open(os.path.join(path, "cfg.json")) as file:
         cfg = json.load(file)
@@ -84,7 +84,7 @@ def import_ods(path):
 
 
     # Connect DB
-    client = mongohelp.connect_mongodb()
+    client = mongohelp.connect_mongodb(port)
     db = mongohelp.get_db(client)
 
     data_collection = mongohelp.get_ods_collection(db)

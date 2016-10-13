@@ -9,7 +9,7 @@ var RentModel = require('./models/rentNiveau');
 var DatasetModel = require('./models/dataset');
 var POIModel = require('./models/POI');
 var Survey = require('./models/survey');
-var User = require('./models/userObject');
+var User = require('./models/User');
 
 
 module.exports = function(app) {

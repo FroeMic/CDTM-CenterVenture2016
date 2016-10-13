@@ -205,7 +205,7 @@ cvApp.controller('contactController', function($scope) {
 });
 
 cvApp.controller('personalityTestController', function($scope, $timeout, $http) {
-  $scope.currentSection = 1;
+  $scope.currentSection = 0;
   $scope.survey = null
 
   $scope.$watch('needsPersonalityTest', function() {
@@ -220,6 +220,10 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
              function(response){
                // success callback
                $scope.survey = response.data
+
+               $scope.survey.sections[0].questions[0].answer = $scope.user.first_name;
+               $scope.survey.sections[0].questions[1].answer = $scope.user.last_name;
+
                $timeout(initMaterialize, 0);
              },
              function(response){
@@ -389,7 +393,7 @@ cvApp.controller('messagesController', function($scope) {
 });
 });
 
-cvApp.controller('offerCreateController', function($scope, $http) {
+cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
     angular.element(document).ready(function () {
         $('select').material_select();
         $('.datepicker').pickadate({
@@ -420,12 +424,13 @@ cvApp.controller('offerCreateController', function($scope, $http) {
     $scope.formData = {};
     // calling our submit function.
     $scope.submitForm = function() {
+        console.log($scope.formData);
         // Posting data to php file
         $http({
             method  : 'POST',
             url     : '/rooms',
-            data    : $scope.formData, //forms user object
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
         })
             .success(function(data) {
                 if (data.errors) {
@@ -437,14 +442,16 @@ cvApp.controller('offerCreateController', function($scope, $http) {
                     $scope.message = data.message;
                 }
             });
+
+        $window.location.href = '/#/offers';
     };
 
-});
+}]);
 
-cvApp.controller('offerDetailController', function($scope, $routeParams, $http) {
+cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
-        $scope.room = response.data;
+        $scope.formData = response.data; // load data into the form Object
     });
 
     angular.element(document).ready(function () {
@@ -472,18 +479,18 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
             },
             tooltips: true
         });
+
+        $('label').addClass('active');
     });
 
-    // create a blank object to handle form data.
-    $scope.formData = {};
     // calling our submit function.
     $scope.submitForm = function() {
         // Posting data to php file
         $http({
             method  : 'PUT',
             url     : '/rooms/'+$routeParams.offer_id,
-            data    : $scope.formData, //forms user object
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
         })
             .success(function(data) {
                 if (data.errors) {
@@ -495,8 +502,10 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
                     $scope.message = data.message;
                 }
             });
+
+        $window.location.href = '/#/offers';
     };
-});
+}]);
 
 cvApp.controller('offerListController', function($scope, $http) {
     $http.get('/rooms').
