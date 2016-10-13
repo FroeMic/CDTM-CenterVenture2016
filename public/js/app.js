@@ -243,6 +243,8 @@ cvApp.controller('offerCreateController', function($scope, $http) {
                     $scope.message = data.message;
                 }
             });
+
+        $window.location.href = '/#/offers';
     };
 
 });
@@ -250,7 +252,7 @@ cvApp.controller('offerCreateController', function($scope, $http) {
 cvApp.controller('offerDetailController', function($scope, $routeParams, $http) {
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
-        $scope.room = response.data;
+        $scope.formData = response.data; // load data into the form Object
     });
 
     angular.element(document).ready(function () {
@@ -278,10 +280,10 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
             },
             tooltips: true
         });
+
+        $('label').addClass('active');
     });
 
-    // create a blank object to handle form data.
-    $scope.formData = {};
     // calling our submit function.
     $scope.submitForm = function() {
         // Posting data to php file
