@@ -142,8 +142,28 @@ footer.page-footer {
   margin-top: 10px;
 }
 
+.stretch-height {
+  height: 90vh;
+  overflow-y: scroll;
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
+#max_nr_of_roommates {
+  margin-bottom: 0;
+}
+
 .map-main {
   box-shadow: 0 0 3px 0 black;
+}
+
+.nomargins .map-main {
+box-shadow: none;
+}
+.nomargins.mapcontainer {
+margin-top: 5px;
+  padding: 0;
+  height: 90vh;
 }
 
 .stuck {
@@ -151,6 +171,27 @@ footer.page-footer {
   top:0;
   left: unset !important;
   right: 0 !important;
+}
+
+.search-flex {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.search-left {
+  flex: 0 1 400px;
+  margin-left: 5px;
+  margin-right: 5px;
+  box-shadow: 2px 0 2px -2px black;
+}
+
+.customicon {
+  line-height: 0;
+  cursor: pointer !important;
+}
+
+.search-map {
+  flex: 1 0 auto;
 }
 
 personality-test .dim {

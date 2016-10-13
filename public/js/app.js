@@ -534,6 +534,10 @@ cvApp.directive('flatlingMap', function () {
             if(attrs.coordinates) {
                 scope.location = attrs.coordinates;
             }
+            if(attrs.toggleLeft) {
+                scope.toggleLeft = attrs.toggleLeft;
+            }
+            scope.rooms = attrs.rooms;
         }
     }
 });
@@ -602,6 +606,9 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
     }
 
     $scope.$watch("location", onLocation);
+    $scope.$watch('rooms', function (newrooms, oldrooms) {
+        console.log('rooms:', oldrooms, '->', newrooms);
+    });
 
     var deferredCoords = null;
     function moveTo(coordinates) {
@@ -609,7 +616,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         if(map == null) {
             deferredCoords = coordinates;
         } else {
-            map.setView(newValue, map.getZoom(), {animate: true});
+            map.setView(newValue, 12, {animate: true});
         }
     }
 
@@ -634,7 +641,6 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
     };
 
     var ToggleLayers = L.Control.extend({
-
         options: {
             position: 'topright'
         },
@@ -644,13 +650,38 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
             elem = $(html).click(toggle);
             return elem[0];
         }
-
     });
+
+    var ToggleLeft = L.Control.extend({
+        options: {
+            position: 'topleft'
+        },
+
+        onAdd: function (map) {
+            var html = '<div class="leaflet-control-layers leaflet-control customicon"><i class="material-icons">reorder</i></div>';
+            elem = $(html).click(toggleLeft);
+            return elem[0];
+        }
+    });
+
+    var toggleLeft = function () {
+        var item = $($scope.toggleLeft);
+        var invisible = item.is(':hidden');
+        if(invisible) {
+            item.fadeIn();
+        } else {
+            item.fadeOut();
+        }
+        setTimeout(function(){ map.invalidateSize()}, 500);
+    };
 
     var map = null;
     leafletData.getMap('map').then(function (res) {
         map = window.map = res;
         map.addControl(new ToggleLayers());
+        if($scope.toggleLeft) {
+            map.addControl(new ToggleLeft());
+        }
 
         if(deferredCoords) {
             map.setView(deferredCoords, 11, {animate: true});
