@@ -3,6 +3,11 @@
  */
 var mongoose = require('mongoose');
 
+var picture = new mongoose.Schema({
+    img: {type : String, default: ''},
+    description: type : String, default: ''},
+});
+
 var schema = new mongoose.Schema({
     user_id: {type: String, default: ''},
     address: {type: String, default: ''},
@@ -28,6 +33,10 @@ var schema = new mongoose.Schema({
     nr_of_female_roomates: {type: Number, default: 0},
     nr_of_other_roomates: {type: Number, default: 0},
     comments: {type: String, default: ''},
+    pictures: [ picture ]
+},
+{
+    timestamps: true
 });
 
 // define our nerd model

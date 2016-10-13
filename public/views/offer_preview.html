@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col s12 m7">
+		<div class="card">
+			<div class="card-image">
+				<a href="#/DEINEMUDDA">
+					<img src="{{room.pictures[0].img}}">
+				</a>
+				<span class="card-title card-titel-new">
+					<span style="padding-right: 20px;">Match Rate: {{match.percentage}}%</span>
+					<span style="padding-right: 20px;">Cost: {{room.price}}&euro;</span>
+				</span>
+				<span class="card-title card-button">
+					<span ng-click="count = count + 1" ng-init="count=0" class="btn-floating waves-effect waves-light">
+						<i class="material-icons">
+							thumb_up
+						</i>
+					</span>
+				</span>
+			</div>
+			<div class="card-content">
+				<p>{{room.address}}</p>
+				<p>On offer since: {{room.createdAt}}</p>
+			</div>
+			<div class="card-action">
+				<a href="#">View Details count: {{count}}</a>
+			</div>
+		</div>
+	</div>
+</div>

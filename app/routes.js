@@ -163,8 +163,13 @@ module.exports = function(app) {
             res.redirect('/');
         });
 
+    app.get('/livestream', function(req, res) {
+        res.render('lifestream.hbs', {user: req.session.user});
+    });
+
+
     app.get('*', function(req, res) {
-        res.status(404).sendfile('./public/views/404.html'); // TODO: make compatible with Angular App Routing
+        res.redirect('/');
     });
 };
 
