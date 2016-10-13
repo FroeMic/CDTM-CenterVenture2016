@@ -78,6 +78,11 @@ cvApp.config(function($routeProvider) {
             controller  : 'roomListController'
         })
 
+        .when('/room/:room_id', {
+            templateUrl : '../views/room.html',
+            controller  : 'roomDetailController'
+        })
+
         .when('/bookmarks', {
             templateUrl : '../views/bookmarks.html',
             controller  : 'bookmarksController'
@@ -475,6 +480,14 @@ cvApp.controller('offerListController', function($scope, $http) {
         $scope.rooms = response.data;
     });
 });
+
+
+cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
+    $http.get('/rooms/'+$routeParams.room_id).
+    then(function(response) {
+        $scope.formData = response.data; // load data into the form Object
+    });
+}]);
 
 cvApp.controller('roomListController', function($scope, $http) {
     $http.get('/rooms').
