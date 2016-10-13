@@ -44,6 +44,11 @@ cvApp.config(function($routeProvider) {
             controller  : 'profileController'
         })
 
+        .when('/offers', {
+            templateUrl : '../views/offer_list.html',
+            controller  : 'offerListController'
+        })
+
         .when('/offer', {
             templateUrl : '../views/offer_create.html',
             controller  : 'offerCreateController'
@@ -52,11 +57,6 @@ cvApp.config(function($routeProvider) {
         .when('/offer/:offer_id', {
             templateUrl : '../views/offer_detail.html',
             controller  : 'offerDetailController'
-        })
-
-        .when('/offers', {
-            templateUrl : '../views/offer_list.html',
-            controller  : 'offerListController'
         })
 
         .when('/bookmarks', {
@@ -109,6 +109,10 @@ cvApp.controller('contactController', function($scope) {
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
   $(document).ready(function(){
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
     $('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
