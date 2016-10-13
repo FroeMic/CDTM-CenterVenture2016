@@ -2,7 +2,7 @@
 
 Server and Web Application of the **2016 CDTM Center Venture**. ✌️
 
-## Website
+## Awesome Website
 http://flatling.de/
 
 **Important:** Git-Workflow
