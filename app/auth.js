@@ -15,7 +15,7 @@ function apiMiddleware(req, res, next) {
         next();
         return;
     }
-    res.send(401, 'not authorized');
+    res.status(401).send('not authorized');
 }
 
 module.exports = {
