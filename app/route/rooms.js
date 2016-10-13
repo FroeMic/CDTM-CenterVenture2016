@@ -37,6 +37,15 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+/* GET /rooms/id */
+router.use('/owner/:user_id', auth.sessionRequired);
+router.get('/owner/:user_id', function(req, res, next) {
+    Room.findOne({user_id: req.params.user_id}, function (err, room) {
+        if (err) return next(err);
+        res.json(room);
+    });
+});
+
 /* PUT /rooms/:id */
 router.use('/:id', auth.sessionRequired);
 router.put('/:id', function(req, res, next) {
