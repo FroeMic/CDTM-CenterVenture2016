@@ -78,7 +78,7 @@ cvApp.config(function($routeProvider) {
 });
 
 // create the controller and inject Angular's $scope
-cvApp.controller('mainController', function($scope) {
+cvApp.controller('mainController', ['$scope', '$window', function($scope, $window) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
 
@@ -86,7 +86,12 @@ cvApp.controller('mainController', function($scope) {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
     });
-});
+
+    $scope.query = undefined;
+    $scope.commitSearch = function() {
+        $window.location.href = '/#/search';
+    };
+}]);
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
