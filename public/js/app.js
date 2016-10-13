@@ -58,6 +58,12 @@ cvApp.config(function($routeProvider) {
             controller  : 'profileController'
         })
 
+        // route for the preview page
+        .when('/preview', {
+            templateUrl : '../views/offer_preview.html',
+            controller  : 'offerPreviewController'
+        })
+
         .when('/offers', {
             templateUrl : '../views/offer_list.html',
             controller  : 'offerListController'
@@ -100,6 +106,14 @@ cvApp.directive("personalityTest", function () {
    return {
       templateUrl: "/views/personalityTest.html",
       controller: "personalityTestController"
+   };
+});
+
+
+cvApp.directive("offerPreview", function () {
+   return {
+      templateUrl: "/views/offerPreview.html",
+      controller: "offerPreviewController"
    };
 });
 
@@ -243,6 +257,11 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
 
 });
 
+cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
+
+});
+
+
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
   $(document).ready(function(){
@@ -325,10 +344,6 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
 
     console.log($routeParams.city);
 });
-
-
-
-
 
 
 cvApp.controller('profileController', function($scope) {
