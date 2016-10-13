@@ -44,6 +44,11 @@ cvApp.config(function($routeProvider) {
             controller  : 'contactController'
         })
 
+        .when('/profile', {
+            templateUrl : '../views/profile.html',
+            controller  : 'profileController'
+        })
+
         .when('/offer', {
             templateUrl : '../views/offer_create.html',
             controller  : 'offerCreateController'
@@ -59,6 +64,16 @@ cvApp.config(function($routeProvider) {
             controller  : 'offerListController'
         })
 
+        .when('/bookmarks', {
+            templateUrl : '../views/bookmarks.html',
+            controller  : 'bookmarksController'
+        })
+
+        .when('/messages', {
+            templateUrl : '../views/messages.html',
+            controller  : 'messagesController'
+        })
+
         // route for the login page
         .when('/login', {
             templateUrl : '../views/login.html',
@@ -70,8 +85,6 @@ cvApp.config(function($routeProvider) {
             templateUrl : '../views/register.html',
             controller  : 'registerController'
         });
-
-
 });
 
 cvApp.directive("personalityTest", function () {
@@ -796,8 +809,27 @@ cvApp.controller('personalityTestController', function($scope, $timeout) {
 
 });
 
-cvApp.controller('offerCreateController', function($scope) {
 
+cvApp.controller('profileController', function($scope) {
+});
+
+cvApp.controller('bookmarksController', function($scope) {
+});
+
+cvApp.controller('messagesController', function($scope) {
+});
+
+cvApp.controller('offerCreateController', function($scope) {
+    angular.element(document).ready(function () {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15 // Creates a dropdown of 15 years to control year
+        });
+        $(document).ready(function() {
+            $('input#input_text, textarea#comments').characterCounter();
+        });
+    });
 });
 
 cvApp.controller('offerDetailController', function($scope, $routeParams) {

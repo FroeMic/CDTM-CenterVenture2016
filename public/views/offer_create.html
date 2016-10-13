@@ -20,27 +20,21 @@
                 </div>
               </div>
               <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s12 m12 l6">
                   <input id="price" type="number" class="validate">
                   <label for="price">Price (€) including utilities</label>
                 </div>
-              </div>
-              <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s12 m12 l6">
                   <input id="deposit" type="number" class="validate">
                   <label for="deposit">Deposit (€)</label>
                 </div>
               </div>
-
               <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s12 m12 l6">
                   <input id="size_room" type="number" class="validate">
                   <label for="size_room">Room Size (m<sup>2</sup>)</label>
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s12 m12 l6">
                   <input id="size_apartment" type="number" class="validate">
                   <label for="size_apartment">Apartment Size (m<sup>2</sup>)</label>
                 </div>
@@ -58,9 +52,17 @@
             </div>
 
               <div class="row">
-                <div class="input-field col s12">
-                  <input id="password" type="password" class="validate">
-                  <label for="password">Password</label>
+                <div class="input-field col s12 m12 l4">
+                  <input id="startdate" type="text" type="date" class="datepicker">
+                  <label for="startdate">Available from</label>
+                </div>
+                <div class="col s12 m12 l4" style="margin-top:30px;">
+                  <input type="checkbox" class="filled-in" id="checkbox_shortterm"/>
+                  <label for="checkbox_shortterm">Short Term?</label>
+                </div>
+                <div class="input-field col s12 m12 l4">
+                  <input id="enddate" type="text" class="datepicker">
+                  <label for="end">To</label>
                 </div>
               </div>
               <div class="row">
@@ -70,9 +72,74 @@
                 </div>
               </div>
               <div class="row">
+                <div class="col s12 m6 l4">
+                  <input type="checkbox" class="filled-in" id="checkbox_furnitured"/>
+                  <label for="checkbox_furnitured">Furnitured</label>
+                </div>
+                <div class="col s12 m6 l4">
+                  <input type="checkbox" class="filled-in" id="checkbox_kitchen"/>
+                  <label for="checkbox_kitchen">Equipped Kitchen</label>
+                </div>
+                <div class="col s12 m6 l4">
+                  <input type="checkbox" class="filled-in" id="checkbox_washing_machine"/>
+                  <label for="checkbox_washing_machine">Washing machine</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col s12 m6 l4">
+                  <input type="checkbox" class="filled-in" id="checkbox_barrier_free"/>
+                  <label for="checkbox_barrier_free">Barrier-free</label>
+                </div>
+                <div class="col s12 m4 l4">
+                  <input type="checkbox" class="filled-in" id="checkbox_pets"/>
+                  <label for="checkbox_pets">Pets allowed/label>
+                </div>
+                <div class="col s12 m6 l4">
+                  <input type="checkbox" class="filled-in" id="checkbox_smoking"/>
+                  <label for="checkbox_smoking">Smoking allowed</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12 m12 l4">
+                  <input id="nr_of_roommates" type="number" class="validate">
+                  <label for="nr_of_roommates">Number of Roommates:</label>
+                </div>
+                <div class="col s12 m6 l4" style="margin-top:30px;">
+                  <input type="checkbox" class="filled-in" id="male_roommates"/>
+                  <label for="male_roommates"> Male</label>
+                </div>
+                <div class="col s12 m6 l4" style="margin-top:30px;">
+                  <input type="checkbox" class="filled-in" id="female_roommates"/>
+                  <label for="female_roommates"> Female</label>
+                </div>
+              </div>
+
+              <div class="row">
                 <div class="input-field col s12">
-                  <input id="email" type="email" class="validate">
-                  <label for="email">Email</label>
+                  <textarea id="comments" class="materialize-textarea" length="500" style="height:22px;"></textarea>
+                  <label for="comments">Optional Description:</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="file-field input-field col s12">
+                  <div class="btn">
+                    <span>Pictures</span>
+                    <input type="file" multiple>
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="Upload one or more Pictures of your apartment">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col s12 right-align">
+                  <div class="btn">
+                    <span>Post Offer</span>
+                  </div>
                 </div>
               </div>
             </form>
