@@ -13,10 +13,10 @@ var schema = new mongoose.Schema({
               title: {type: String},
               question: {type: String},
               number: Number,
+              imageUrl: String,
               questionType: {
                 type: String,
                 number: Number,
-                imageUrl: String,
                 enum : ['TEXT','CHOICE', 'LIKERT', 'DATE'],
               },
               answerOptions: [

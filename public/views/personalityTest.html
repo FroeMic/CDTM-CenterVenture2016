@@ -15,6 +15,12 @@
               <input placeholder="{{question.title}}" type="text" ng-model="question.answer">
             </div>
 
+            <!-- DATE Question -->
+            <div hide ng-show="question.questionType=='DATE'">
+              <div class="question-title">{{question.question}}</div>
+              <input type="text" class="datepicker"  placeholder="{{question.title}}" ng-model="question.answer">
+            </div>
+
             <!-- CHOICE Question -->
             <div hide ng-show="question.questionType=='CHOICE'">
               <div class="question-title">{{question.question}}</div>

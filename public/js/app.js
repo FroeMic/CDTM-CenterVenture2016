@@ -174,17 +174,16 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
     var sane = true;
     $scope.survey.sections[$scope.currentSection - 1].questions.forEach(function(question) {
       sane = sane && question.answer != undefined  && question.answer != null;
-      console.log(question.title);
-      console.log(sane);
+
       if (question.questionType=="TEXT") {
         sane = sane && question.answer != '';
-        console.log(question.title);
-        console.log(sane);
       } else if (question.questionType=="CHOICE") {
         // TODO
       } else if (question.questionType=="LIKERT") {
         // TODO
-      }
+      } else if (question.questionType=="DATE") {
+      // TODO
+    }
     });
     if (sane) {
       if ($scope.currentSection < $scope.survey.sections.length) {
@@ -215,6 +214,12 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
     $(document).ready(function(){
       $('select').material_select();
       $('.materialboxed').materialbox();
+      $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 60, // Creates a dropdown of 15 years to control year
+        min: new Date(1960,1,1),
+        max: new Date(new Date().getFullYear() - 16, new Date().getMonth(), new Date().getDate())
+      });
     });
 }
 
