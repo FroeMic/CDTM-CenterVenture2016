@@ -6,7 +6,21 @@
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
 var cvApp = angular.module('cvApp', ['ngRoute', 'leaflet-directive']);
+var HOSTSTRING = ""
 
+function shake(element) {
+  try {
+    element.classList.add('shake');
+    element.classList.add('animated');
+    setTimeout(function () {
+      element.classList.remove('shake');
+      element.classList.remove('animated');
+    }, 1000);
+  }
+  catch(err) {
+    // ignore
+  }
+}
 
 cvApp.config(function($logProvider){
     $logProvider.debugEnabled(false);
@@ -82,21 +96,55 @@ cvApp.config(function($routeProvider) {
         });
 });
 
+cvApp.directive("personalityTest", function () {
+   return {
+      templateUrl: "/views/personalityTest.html",
+      controller: "personalityTestController"
+   };
+});
+
+
 // create the controller and inject Angular's $scope
-cvApp.controller('mainController', ['$scope', '$window', function($scope, $window) {
+cvApp.controller('mainController', function($scope, $location, $http, $window) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+    $scope.needsPersonalityTest = false
+    $scope.user = null;
+
+    // globally available
+    HOSTSTRING = "http://" + $location.host()+":"+$location.port()
+
+      $http.get(HOSTSTRING + '/user')
+           .then(
+               function(response){
+                 // success callback
+                 $scope.user = response.data
+                 if ($scope.user != null && $scope.user != undefined && $scope.user != '') {
+                   // user is logged in
+                  //  console.log($scope.user);
+                   if ($scope.user.personalityProfile == null || $scope.user.personalityProfile == undefined ){
+                     $scope.needsPersonalityTest = true
+                   }
+                 }
+               },
+               function(response){
+                 // failure callback
+                 console.log(response.data);
+              }
+            );
 
     angular.element(document).ready(function () {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
+        $('ul.tabs').tabs();
+        $('select').material_select();
     });
 
     $scope.query = undefined; // this should be the city
     $scope.commitSearch = function() {
         $window.location.href = '/#/search/'+$scope.query;
     };
-}]);
+});
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
@@ -104,6 +152,91 @@ cvApp.controller('aboutController', function($scope) {
 
 cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
+});
+
+cvApp.controller('personalityTestController', function($scope, $timeout, $http) {
+  $scope.currentSection = 1;
+  $scope.survey = null
+
+  $scope.$watch('needsPersonalityTest', function() {
+    if ($scope.needsPersonalityTest) {
+      $scope.loadSurvey();
+    }
+ });
+
+  $scope.loadSurvey = function() {
+    $http.get(HOSTSTRING + '/user/personalitySurvey')
+         .then(
+             function(response){
+               // success callback
+               $scope.survey = response.data
+               $timeout(initMaterialize, 0);
+             },
+             function(response){
+               // TODO: Handle Error
+               // failure callback
+            }
+          );
+  }
+
+  $scope.finishTest = function() {
+    $scope.needsPersonalityTest = false;
+  }
+
+  $scope.nextSection = function() {
+    // Sanity checking.
+    var sane = true;
+    $scope.survey.sections[$scope.currentSection - 1].questions.forEach(function(question) {
+      sane = sane && question.answer != undefined  && question.answer != null;
+
+      if (question.questionType=="TEXT") {
+        sane = sane && question.answer != '';
+      } else if (question.questionType=="CHOICE") {
+        // TODO
+      } else if (question.questionType=="LIKERT") {
+        // TODO
+      } else if (question.questionType=="DATE") {
+      // TODO
+    }
+    });
+    if (sane) {
+      if ($scope.currentSection < $scope.survey.sections.length) {
+        $scope.currentSection = $scope.currentSection + 1;
+      } else {
+        // TODO: Post to REST API.
+        $http.post(HOSTSTRING + '/user/personalitySurvey', JSON.stringify($scope.survey))
+         .then(
+             function(response){
+               // success callback
+             },
+             function(response){
+               // failure callback
+             }
+          );
+        $scope.finishTest()
+      }
+    } else {
+      // TODO: visualize wrong input
+      shake(document.getElementById('survey-form'));
+    }
+  }
+
+
+  $timeout(initMaterialize, 0);
+
+  function initMaterialize() {
+    $(document).ready(function(){
+      $('select').material_select();
+      $('.materialboxed').materialbox();
+      $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 60, // Creates a dropdown of 15 years to control year
+        min: new Date(1960,1,1),
+        max: new Date(new Date().getFullYear() - 16, new Date().getMonth(), new Date().getDate())
+      });
+    });
+}
+
 });
 
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
@@ -188,6 +321,11 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
 
     console.log($routeParams.city);
 });
+
+
+
+
+
 
 cvApp.controller('profileController', function($scope) {
 });
@@ -318,6 +456,7 @@ cvApp.controller('offerListController', function($scope, $http) {
 });
 
 cvApp.controller('loginController', function($scope) {
+  $scope.message = 'Login Controller message thingy.';
 });
 
 cvApp.controller('registerController', function($scope) {
