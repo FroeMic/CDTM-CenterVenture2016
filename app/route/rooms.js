@@ -5,16 +5,42 @@
 var express = require('express');
 var router = express.Router();
 var auth = require('../auth');
+var helpers = require('../helpers');
+var calculatePersonalityMatching = helpers.calculatePersonalityMatching;
 
 var mongoose = require('mongoose');
 var Room = require('../models/Room');
+var User = require('../models/User');
 
 /* GET /rooms listing. */
 router.use('/', auth.sessionRequired);
 router.get('/', function(req, res, next) {
     Room.find(function (err, rooms) {
         if (err) return next(err);
-        res.json(rooms);
+        console.log(req.session.user);
+        User.findOne({fb_id: req.session.user.id}, function (err, user) {
+            if(err) {
+                res.status(500).send(
+                    JSON.stringify({
+                        status: 500,
+                        description: 'Internal Server Error'
+                    })
+                );
+            } else {
+                var results = [];
+                var i;
+                for (i = 0; i < rooms.length; ++i) {
+                    //console.log(rooms[key]);
+                    var score = calculatePersonalityMatching(user, user);
+                    var room = rooms[i].toObject();
+                    room.score = score;
+                    results.push(room);
+                    console.log(room.score);
+                }
+                console.log(results);
+                res.json(results);
+            }
+        });
     });
 });
 

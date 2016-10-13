@@ -14,6 +14,7 @@
                         <div class="card-content">
                             <p>{{room.comments}}</p>
                             <p>{{room.price}} Euro per month</p>
+                            <p>Score: {{room.score * 100 | number:0}}</p>
                         </div>
                         <div class="card-action">
                             <a href="#room/{{room._id}}">Details</a>
