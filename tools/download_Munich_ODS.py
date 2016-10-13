@@ -85,42 +85,52 @@ def parse_csv_from_url(url):
         return None
 
 
-def download_muc_ods(path):
-    # 1) Get all group_names and create subfolders to store json files
-    groups = create_group_folders(path)
-
-    # # 2) Iterate over all groups, and packages, and convert packages to json format with meta data
-    for group in groups:
-        for package in get_group_packages(group)["packages"]:
-            package_info = get_package(package["name"])
-            # pprint.pprint(package_info)
 
 
-            data = package_info["resources"]
+# Command-Line Arguments
+parser = argparse.ArgumentParser(description='Munich OpenData-Set Downloader')
+parser.add_argument('--path', '-p', type=str,
+                   help='Destination Folder for downloaded and transformed json files', required=True)
 
-            for blob in data:
-                if blob["format"] == "CSV":
-                    csv_data = parse_csv_from_url(blob["url"])
-                    if csv_data is not None:
-                        info =  {
-                                    'name': package_info['title'],
-                                    'description': blob['description'],
-                                    'url_csv': blob["url"],
-                                    'license_id': package_info['license_id'],
-                                    'license_title': package_info['license_title'],
-                                    'license_url': package_info['license_url'],
-                                    'author': package_info['author'],
-                                    'author_email': package_info['author_email'],
-                                    'maintainer': package_info['maintainer'],
-                                    'maintainer_email': package_info['maintainer_email'],
-                                    'metadata_created': package_info['metadata_created'],
-                                    'metadata_modified': package_info['metadata_modified'],
-                                    'data': None
-                                }
+args = parser.parse_args()
 
-                        info['data'] = csv_data
-                        json_file = os.path.join(path, group, package["name"] + ".json")
-                        print json_file
-                        write_json(info, json_file, "pretty")
 
-                        break # dont look further...yeaah hacky TODO
+# 1) Get all group_names and create subfolders to store json files
+groups = create_group_folders(args.path)
+
+# # 2) Iterate over all groups, and packages, and convert packages to json format with meta data
+for group in groups:
+    for package in get_group_packages(group)["packages"]:
+        package_info = get_package(package["name"])
+        # pprint.pprint(package_info)
+
+
+        data = package_info["resources"]
+
+        for blob in data:
+            if blob["format"] == "CSV":
+                csv_data = parse_csv_from_url(blob["url"])
+                if csv_data is not None:
+                    info =  {
+                                'name': package_info['title'],
+                                'description': blob['description'],
+                                'url_csv': blob["url"],
+                                'license_id': package_info['license_id'],
+                                'license_title': package_info['license_title'],
+                                'license_url': package_info['license_url'],
+                                'author': package_info['author'],
+                                'author_email': package_info['author_email'],
+                                'maintainer': package_info['maintainer'],
+                                'maintainer_email': package_info['maintainer_email'],
+                                'metadata_created': package_info['metadata_created'],
+                                'metadata_modified': package_info['metadata_modified'],
+                                'data': None
+                            }
+
+                    info['data'] = csv_data
+                    json_file = os.path.join(args.path, group, package["name"] + ".json")
+                    print json_file
+                    write_json(info, json_file, "pretty")
+
+                    break # dont look further...yeaah hacky TODO
+

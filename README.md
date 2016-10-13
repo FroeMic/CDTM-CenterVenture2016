@@ -1,6 +1,6 @@
 # CDTM-CenterVenture2016
 
-Server and Web Application of the **2016 CDTM Center Venture**.
+Server and Web Application of the **2016 CDTM Center Venture**. ✌️
 
 ## Awesome Website 👾
 http://flatling.de/

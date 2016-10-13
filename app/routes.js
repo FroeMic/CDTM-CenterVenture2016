@@ -2,21 +2,12 @@
 var Location = require('./models/locationObject');
 var passport = require('passport');
 var path = require('path');
-var auth = require('./auth');
-
-var mongoose = require('mongoose');
-var RentModel = require('./models/rentNiveau');
-var DatasetModel = require('./models/dataset');
-var POIModel = require('./models/POI');
-var Survey = require('./models/survey');
-var User = require('./models/userObject');
-
 
 module.exports = function(app) {
 
-    // server route ===========================================================
+    // server routes ===========================================================
     // handle things like api calls
-    // authentication route
+    // authentication routes
 
     // sample api route
     app.get('/api/locationObject', function(req, res) {
@@ -35,7 +26,7 @@ module.exports = function(app) {
     // route to handle creating goes here (app.post)
     // route to handle delete goes here (app.delete)
 
-    // frontend route =========================================================
+    // frontend routes =========================================================
     // route to handle all angular requests
     app.get('/map', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../public/views') + '/mapview.html');
@@ -46,76 +37,11 @@ module.exports = function(app) {
         res.send(JSON.stringify(
             [
                 {
-                    name: 'Rents',
-                    url: '/map/rentniveau'
-                },
-                {
-                    name: 'Playgrounds',
-                    url: '/map/playgrounds'
-                },
-                {
                     name: 'Test',
                     url: '/dummy/pois'
                 }
             ]
         ));
-    });
-
-    app.get('/map/rentniveau', function (req, res) {
-        DatasetModel.findOne({url_csv: 'http://data.ub.uni-muenchen.de/2/1/miete03.asc'}, function (err, dataset) {
-            var refId = dataset._id;
-            RentModel.aggregate([
-                { $match: { ods_ref_id: refId } },
-                { $group: { _id: '$district', rent: { $avg: '$value' } } }
-            ], function (err, data) {
-                if(err) {
-                    console.error(err);
-                }
-
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify(data));
-            });
-        });
-    });
-
-    function toGeoJSON(points) {
-        var root = {
-            "type": "FeatureCollection",
-            "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }
-        };
-        root.features = points.map(function (x) {
-            var coords = x.latlong ? x.latlong : [x.latitude, x.longitude];
-            return {
-                type: 'Feature',
-                properties: x.properties,
-                geometry: { type: "Point", "coordinates": coords }
-            }
-        });
-        return root;
-    }
-
-    app.get('/map/playgrounds', function (req, res) {
-        DatasetModel.findOne({url_csv: 'https://www.opengov-muenchen.de/dataset/0760ce3a-fef8-43e4-888f-8cc92fdf56de/resource/845ce3bd-ea80-4623-b51d-a30680175c22/download/spielplaetzemuenchenohneleerespalten2016-06-13.csv'}, function (err, dataset) {
-            var refId = dataset._id;
-            POIModel.find({ ods_ref_id: refId }, function (err, data) {
-                if(err) {
-                    console.error(err);
-                }
-
-                data = data.map(function (x, idx, arr) {
-                    return {
-                        latlong: x.latlong(),
-                        properties: {
-                            name: x.value,
-                            age: x.altersgruppe
-                        }
-                    }
-                });
-
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify(data));
-            });
-        });
     });
 
     app.get('/dummy/pois', function (req, res) {
@@ -141,7 +67,6 @@ module.exports = function(app) {
         res.render('index.hbs', {user: req.session.user});
     });
 
-    app.use('/logout', auth.loginRequired);
     app.get('/logout', function (req, res) {
         req.session.user = undefined;
         res.redirect('/');
@@ -157,9 +82,7 @@ module.exports = function(app) {
         }),
         function(req, res) {
             req.session.user = req.user;
-
             // Successful authentication, redirect home.
-            updateProfile(req.session.user);
             res.redirect('/');
         });
 
@@ -167,23 +90,3 @@ module.exports = function(app) {
         res.status(404).sendfile('./public/views/404.html'); // TODO: make compatible with Angular App Routing
     });
 };
-
-var updateProfile = function(user) {
-  var query = { fb_id: user.id }
-  var update = {
-    fb_id: user.id,
-    display_name: user.displayName,
-    first_name: user._json.first_name,
-    last_name: user._json.last_name,
-    gender: user.gender,
-    pictureUrl: 'http://graph.facebook.com/' + user.id + '/picture?type=large'
-  }
-
-  User.findOneAndUpdate(query, update, {upsert:true, new:true}, function (err, dbuser) {
-    if(err) {
-      console.log(err);
-    } else {
-      // console.log(dbuser);
-    }
-  });
-}
