@@ -112,7 +112,7 @@ cvApp.controller('mainController', function($scope, $location, $http) {
                  $scope.user = response.data
                  if ($scope.user != null && $scope.user != undefined && $scope.user != '') {
                    // user is logged in
-                   console.log($scope.user);
+                  //  console.log($scope.user);
                    if ($scope.user.personalityProfile == null || $scope.user.personalityProfile == undefined ){
                      $scope.needsPersonalityTest = true
                    }

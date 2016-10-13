@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 var Survey = require('../models/survey');
 var User = require('../models/userObject');
 
-
 // get own user object
 router.use('/', auth.sessionRequired);
 router.get('/', function (req, res) {
@@ -24,7 +23,6 @@ router.get('/', function (req, res) {
         if (user.personalityProfile != null && user.personalityProfile != undefined ){
           user.personalityProfile = true;
         }
-        
         res.send(JSON.stringify(
           user
         ));
@@ -32,7 +30,7 @@ router.get('/', function (req, res) {
     });
 });
 
-// router.use('/personalitySurvey', auth.sessionRequired);
+router.use('/personalitySurvey', auth.sessionRequired);
 router.post('/personalitySurvey', function (req, res) {
   // console.log(req.data);
   var survey = req.body;
@@ -209,7 +207,6 @@ router.post('/personalitySurvey', function (req, res) {
       max: 5
     });
 
-
     var query = { fb_id: req.session.user.id }
     var update = {
       personalityProfile: personalityProfile
@@ -219,15 +216,12 @@ router.post('/personalitySurvey', function (req, res) {
       if(err) {
         console.log(err);
       } else {
-         console.log(dbuser);
+        //  console.log(dbuser);
       }
     });
-
-
-    console.log(personalityProfile);
   }
 
-  res.send("Fin");
+  res.send("success");
 });
 
 // router.use('/personalitySurvey', auth.sessionRequired);
