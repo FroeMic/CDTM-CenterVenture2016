@@ -34,6 +34,11 @@ cvApp.config(function($routeProvider) {
             controller  : 'contactController'
         })
 
+        .when('/search/:city', {
+            templateUrl: '../views/search.html',
+            controller: 'searchController'
+        })
+
         .when('/profile', {
             templateUrl : '../views/profile.html',
             controller  : 'profileController'
@@ -78,7 +83,7 @@ cvApp.config(function($routeProvider) {
 });
 
 // create the controller and inject Angular's $scope
-cvApp.controller('mainController', function($scope) {
+cvApp.controller('mainController', ['$scope', '$window', function($scope, $window) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
 
@@ -86,7 +91,12 @@ cvApp.controller('mainController', function($scope) {
         $('.button-collapse').sideNav();
         $('.parallax').parallax();
     });
-});
+
+    $scope.query = undefined; // this should be the city
+    $scope.commitSearch = function() {
+        $window.location.href = '/#/search/'+$scope.query;
+    };
+}]);
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
@@ -94,6 +104,85 @@ cvApp.controller('aboutController', function($scope) {
 
 cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
+});
+
+cvApp.controller('searchController', function($scope, $routeParams, $http) {
+  $('select').material_select();
+  $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+    //Price-Range
+    var dragSlider = document.getElementById('price_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 200, 600 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  100,
+        'max':  1000
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+
+    var dragSlider = document.getElementById('room_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 10, 20 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  1,
+        'max':  35
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+
+    var dragSlider = document.getElementById('apartment_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 30, 70 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  5,
+        'max':  150
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+
+    var dragSlider = document.getElementById('traveltime_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 5, 40 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  1,
+        'max':  60
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
+  });
+
+    console.log($routeParams.city);
 });
 
 cvApp.controller('profileController', function($scope) {

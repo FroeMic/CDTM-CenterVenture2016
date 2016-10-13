@@ -1,0 +1,166 @@
+<div class="row">
+   <div class="col s8">
+     <div class="container">
+
+       <div class"row">
+         <div class="col s12"; style="margin-top: 10px">
+           <form class="col s12">
+             <div class ="row">
+               <div class="section">
+                 <h5>Find your perfect Apartment:</h5>
+               </div>
+               <div class="input-field col s12 m12 l4">
+                 <input id="startdate" type="text" type="date" class="datepicker">
+                 <label for="startdate">Moving in date</label>
+               </div>
+               <div class="col s12 m12 l4" style="margin-top:30px;">
+                 <input type="checkbox" class="filled-in" id="checkbox_shortterm"/>
+                 <label for="checkbox_shortterm">Short Term?</label>
+               </div>
+               <div class="input-field col s12 m12 l4">
+                 <input id="enddate" type="text" class="datepicker">
+                 <label for="end">Till</label>
+               </div>
+             </div>
+
+
+
+            <div class="row">
+              <div class="col s12">
+                <h6>Price range</h6>
+                <div id="price_range"></div>
+              </div>
+            </div>
+
+             <div class="row">
+               <div class="input-field col s12">
+                 <select>
+                   <option value="" disabled selected>Choose your university:</option>
+                   <option value="1">Technische Universität München (Center)</option>
+                   <option value="2">Technische Universität München (Garching)</option>
+                   <option value="3">Ludwig-Maximilians-Universität München</option>
+                 </select>
+                 <label>University</label>
+               </div>
+           </div>
+
+           <div class="row">
+             <div class="col s12">
+               <h6>How long are you willing to travel to university?</h6>
+               <div id="traveltime_range"></div>
+             </div>
+           </div>
+
+
+             <ul class="collapsible" data-collapsible="expandable" style="margin-top:50px">
+               <li>
+                 <div class="collapsible-header">Optional</div>
+                    <div class="collapsible-body row">
+
+                      <div class="container col s12" style="margin-top: 25px;">
+                        <div class="row">
+                          <div class="col s12">
+
+                            <div class="col s12">
+                              <h6>Room size</h6>
+                              <div id="room_range"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="container col s12" style="margin-top: 25px;">
+                        <div class="row">
+                          <div class="col s12">
+                            <div class="col s12">
+                            <h6>Apartment size</h6>
+                              <div id="apartment_range"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="container col s12" style="margin-top: 25px;">
+                        <div class="input-field col s12">
+                          <select>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Shared room</option>
+                            <option value="2">Private room</option>
+                            <option value="3">Private room + Shared appartment</option>
+                            <option value="4">Whole apartment</option>
+                          </select>
+                          <label>Type of Housing</label>
+                        </div>
+                    <div class="container col s12" style="margin-top: 10px;">
+                      <div class="row">
+                        <div class="col s12 m6 l4">
+                          <input type="checkbox" class="filled-in" id="checkbox_furnitured"/>
+                          <label for="checkbox_furnitured">Furnitured</label>
+                        </div>
+                        <div class="col s12 m6 l4">
+                          <input type="checkbox" class="filled-in" id="checkbox_kitchen"/>
+                          <label for="checkbox_kitchen">Equipped Kitchen</label>
+                        </div>
+                        <div class="col s12 m6 l4">
+                          <input type="checkbox" class="filled-in" id="checkbox_washing_machine"/>
+                          <label for="checkbox_washing_machine">Washing machine</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="container col s12" style="margin-top: 0px;" >
+                      <div class="row">
+                        <div class="col s12 m6 l4">
+                          <input type="checkbox" class="filled-in" id="checkbox_barrier_free"/>
+                          <label for="checkbox_barrier_free">Barrier-free</label>
+                        </div>
+                        <div class="col s12 m4 l4">
+                          <input type="checkbox" class="filled-in" id="checkbox_pets"/>
+                          <label for="checkbox_pets">Pets allowed/label>
+                        </div>
+                          <div class="col s12 m6 l4">
+                            <input type="checkbox" class="filled-in" id="checkbox_smoking"/>
+                            <label for="checkbox_smoking">Smoking allowed</label>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="container col s12" style="margin-top: 10px;">
+                      <div class="row">
+                        <div class="input-field col s12 m12 l4">
+                          <input id="nr_of_roommates" type="number" class="validate">
+                          <label for="nr_of_roommates">Number of Roommates:</label>
+                        </div>
+                        <div class="col s12 m6 l4" style="margin-top:30px;">
+                          <input type="checkbox" class="filled-in" id="male_roommates"/>
+                          <label for="male_roommates"> Male</label>
+                        </div>
+                        <div class="col s12 m6 l4" style="margin-top:30px;">
+                          <input type="checkbox" class="filled-in" id="female_roommates"/>
+                          <label for="female_roommates"> Female</label>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="row">
+              <div class="col s12 right-align" style="margin-top:25px">
+                <div class="btn">
+                  <span>Find Offer</span>
+                </div>
+              </div>
+            </div>
+
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+
+
+
+   <div class="col s4" style="height:100vh; background:red; position: fixed; right: 0; top:0; z-index:-5;">
+     test
+   </div>
+ </div>
