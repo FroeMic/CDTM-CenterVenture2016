@@ -194,7 +194,7 @@ cvApp.controller('bookmarksController', function($scope) {
 cvApp.controller('messagesController', function($scope) {
 });
 
-cvApp.controller('offerCreateController', function($scope, $http) {
+cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
     angular.element(document).ready(function () {
         $('select').material_select();
         $('.datepicker').pickadate({
@@ -247,9 +247,9 @@ cvApp.controller('offerCreateController', function($scope, $http) {
         $window.location.href = '/#/offers';
     };
 
-});
+}]);
 
-cvApp.controller('offerDetailController', function($scope, $routeParams, $http) {
+cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
@@ -303,8 +303,10 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
                     $scope.message = data.message;
                 }
             });
+
+        $window.location.href = '/#/offers';
     };
-});
+}]);
 
 cvApp.controller('offerListController', function($scope, $http) {
     $http.get('/rooms').
