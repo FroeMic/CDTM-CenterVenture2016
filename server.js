@@ -107,7 +107,6 @@ app.use('/maps/public', express.static(__dirname + '/data/public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // session cookies
 var oursession = session({
     //store: new FileStore(),

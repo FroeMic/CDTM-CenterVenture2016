@@ -35,6 +35,10 @@ cvApp.config(function($routeProvider) {
             templateUrl : '../views/index.html',
             controller  : 'mainController'
         })
+        .when('/_=_', {
+            templateUrl : '../views/index.html',
+            controller  : 'mainController'
+        })
 
         // route for the about page
         .when('/about', {
@@ -56,6 +60,12 @@ cvApp.config(function($routeProvider) {
         .when('/profile', {
             templateUrl : '../views/profile.html',
             controller  : 'profileController'
+        })
+
+        // route for the preview page
+        .when('/preview', {
+            templateUrl : '../views/offer_preview.html',
+            controller  : 'offerPreviewController'
         })
 
         .when('/offers', {
@@ -114,11 +124,21 @@ cvApp.directive("personalityTest", function () {
 });
 
 
+cvApp.directive("offerPreview", function () {
+   return {
+      templateUrl: "/views/offerPreview.html",
+      controller: "offerPreviewController",
+      restrict: 'A',
+      scope: { room: '=' },
+   };
+});
+
+
 // create the controller and inject Angular's $scope
 cvApp.controller('mainController', function($scope, $location, $http, $window) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
-    $scope.needsPersonalityTest = false
+    $scope.needsPersonalityTest = false;
     $scope.user = null;
 
     // globally available
@@ -128,7 +148,7 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
            .then(
                function(response){
                  // success callback
-                 $scope.user = response.data
+                 $scope.user = response.data;
                  if ($scope.user != null && $scope.user != undefined && $scope.user != '') {
                    // user is logged in
                   //  console.log($scope.user);
@@ -155,13 +175,63 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
         $('.parallax').parallax();
         $('ul.tabs').tabs();
         $('select').material_select();
+
+        var search = $('#main-search-bar');
+        $('#main-search-bar').materialize_autocomplete({
+            multiple: { enable: false },
+            dropdown: { el: '#search-dropdown' },
+            getData: function(value, callback) {
+                Geocoder.search(value, function (data) {
+                    var mapped = data.map(function (x, idx) {
+                        return {
+                            id: x.latlong,
+                            text: x.long
+                        }
+                    });
+                    callback(value, mapped);
+                });
+            }
+        });
+        $('#main-search-bar').on("change paste keyup input", function() {
+            $scope.query = $(this).val();
+            var id = $(this).data('value');
+            if(id) {
+                $window.location.href = '/#/search/['+ id + ']';
+            }
+        });
     });
 
-    $scope.query = undefined; // this should be the city
+    $scope.query = ''; // this should be the city
     $scope.commitSearch = function() {
         $window.location.href = '/#/search/'+$scope.query;
     };
 });
+
+var Geocoder = {
+    init: function () {
+        L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
+        this._geocoderCtrl = L.mapbox.geocoderControl('mapbox.places', {});
+    },
+    search: function(value, cb) {
+        this._geocoderCtrl.geocoder.query({query: value}, function(err, res) {
+            if(err) {
+                console.error(err);
+            } else {
+                var results = res.results.features.map(function (x) {
+                    return {
+                        latlong: x.center.concat().reverse(),
+                        long: x.place_name,
+                        short: x.text
+                    }
+                });
+                if(results.length > 0) {
+                    cb(results);
+                }
+            }
+        });
+    }
+};
+Geocoder.init();
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
@@ -260,6 +330,63 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
 
 });
 
+cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
+
+  $timeout(initMaterialize, 0);
+
+  function initMaterialize() {
+    $(document).ready(function(){
+      $('.slider').slider();
+    });
+  }
+
+  $scope.match = {
+    percentage: 94,
+  };
+
+  $scope.room = {
+    createdAt: "Thu, 13 Oct 2016",
+    updatedAt: "Sat, 15 Oct 2016",
+    address: "Augustenstrasse 93, 80798 Muenchen",
+    price: 480,
+    deposit: 1050,
+    size_room: 25,
+    size_apartment: 80,
+    room_type: "Private Room",
+    start_date: "Tue, 15 Nov 2016",
+    end_date: "",
+    checkbox_shortterm: false,
+    checkbox_furnitured: true,
+    checkbox_kitchen: true,
+    checkbox_washing_machine: false,
+    checkbox_barrier_free: false,
+    checkbox_pets: true,
+    checkbox_smoking: true,
+    checkbox_balcony: true,
+    checkbox_garden: false,
+    checkbox_living_room: true,
+    checkbox_basement: true,
+    nr_of_male_roomates: 4,
+    nr_of_female_roomates: 2,
+    nr_of_other_roomates: 1,
+    comments: "This is the greatest apartment in Munich!!!",
+    pictures: [
+                {
+                  img: '/img/room_indoor2.jpeg',
+                  description: "Spacious Kitchen",
+                },
+                {
+                  img: '/img/houses.jpg',
+                  description: "Quiet Neighbourhood",
+                },
+                {
+                  img: '/img/room_indoor1.jpeg',
+                  description: "German Style Dungeon",
+                }
+              ]
+    };
+});
+
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
   $(document).ready(function(){
@@ -339,14 +466,9 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
       })
     });
   });
-
-    console.log($routeParams.city);
+   $scope.city = $routeParams.city;
+    console.log($scope.city);
 });
-
-
-
-
-
 
 cvApp.controller('profileController', function($scope) {
 });
@@ -356,8 +478,8 @@ cvApp.controller('bookmarksController', function($scope) {
 
 cvApp.controller('messagesController', function($scope) {
   $(document).ready(function(){
-  $('ul.tabs').tabs();
-});
+    $('ul.tabs').tabs();
+  });
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
@@ -507,7 +629,16 @@ cvApp.controller('registerController', function($scope) {
 cvApp.directive('flatlingMap', function () {
     return {
         templateUrl: '/views/map.html',
-        controller: "flatlingMapController"
+        controller: "flatlingMapController",
+        link: function(scope, element, attrs) {
+            if(attrs.coordinates) {
+                scope.location = attrs.coordinates;
+            }
+            if(attrs.toggleLeft) {
+                scope.toggleLeft = attrs.toggleLeft;
+            }
+            scope.rooms = attrs.rooms;
+        }
     }
 });
 
@@ -532,13 +663,6 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         }
     });
 
-    // $(window).scroll(function (event) {
-    //     var scroll = $(window).scrollTop();
-    //     console.log('wtf', scroll);
-    //     if(scroll == 0) {
-    //         $('.unstuck').attr('style', '');
-    //     }
-    // });
     angular.element(document).ready(function () {
         $('.sidebar').hide();
     });
@@ -554,6 +678,47 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         }
         setTimeout(function(){ map.invalidateSize()}, 500);
     };
+
+    function onLocation(newValue, oldValue) {
+        // try to parse json:
+        if(typeof(newValue) == 'string') {
+            try {
+                var json = JSON.parse(newValue);
+                if(json.length == 2 && typeof (json[0]) == 'number' && typeof (json[1]) == 'number') {
+                    newValue = json;
+                }
+            } catch (e) {
+            }
+        }
+
+        if(newValue) {
+            if(newValue.length == 2) {
+                moveTo(newValue);
+                console.log('set location', newValue);
+                return true;
+            } else if(typeof (newValue) == 'string') {
+                // todo geolocator api
+                // return true;
+            }
+        }
+
+        return false;
+    }
+
+    $scope.$watch("location", onLocation);
+    $scope.$watch('rooms', function (newrooms, oldrooms) {
+        console.log('rooms:', oldrooms, '->', newrooms);
+    });
+
+    var deferredCoords = null;
+    function moveTo(coordinates) {
+        console.log("move to", coordinates);
+        if(map == null) {
+            deferredCoords = coordinates;
+        } else {
+            map.setView(newValue, 12, {animate: true});
+        }
+    }
 
     $http.get('/map/plugins').then(function(resp) {
         $scope.datasets = resp.data;
@@ -576,7 +741,6 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
     };
 
     var ToggleLayers = L.Control.extend({
-
         options: {
             position: 'topright'
         },
@@ -586,19 +750,50 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
             elem = $(html).click(toggle);
             return elem[0];
         }
-
     });
 
-    var map;
+    var ToggleLeft = L.Control.extend({
+        options: {
+            position: 'topleft'
+        },
+
+        onAdd: function (map) {
+            var html = '<div class="leaflet-control-layers leaflet-control customicon"><i class="material-icons">reorder</i></div>';
+            elem = $(html).click(toggleLeft);
+            return elem[0];
+        }
+    });
+
+    var toggleLeft = function () {
+        var item = $($scope.toggleLeft);
+        var invisible = item.is(':hidden');
+        if(invisible) {
+            item.fadeIn();
+        } else {
+            item.fadeOut();
+        }
+        setTimeout(function(){ map.invalidateSize()}, 500);
+    };
+
+    var map = null;
     leafletData.getMap('map').then(function (res) {
         map = window.map = res;
         map.addControl(new ToggleLayers());
-        $(document).ready(function () {
-            setTimeout(function () {
-                map.setZoom(11, {animate: true});
-            }, 1000)
-        });
-        // console.log('got map', res);
+        if($scope.toggleLeft) {
+            map.addControl(new ToggleLeft());
+        }
+
+        if(deferredCoords) {
+            map.setView(deferredCoords, 11, {animate: true});
+        } else {
+            if(onLocation($scope.location, $scope.location)) {
+                // already moving
+            } else {
+                setTimeout(function () {
+                    map.setZoom(11, {animate: true});
+                }, 1000);
+            }
+        }
     });
     var layers = {};
 
