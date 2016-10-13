@@ -29,20 +29,28 @@ LocationRecordMapping = namedtuple('LocationRecordMapping', 'latitude, longitude
 ValueRecordMapping = namedtuple('ValueMapping', 'value_description, value')
 
 
-def connect_mongodb(uri=""):
-    if not uri:
-        client = MongoClient(DEFAULT_ADDRESS, DEFAULT_PORT)
+def connect_mongodb(port=None):
+    if port:
+        client = MongoClient(DEFAULT_ADDRESS, port)
     else:
-        client = MongoClient(uri)
+        client = MongoClient(DEFAULT_ADDRESS, DEFAULT_PORT)
 
     return client
+
+
+def reset_db(port):
+    client = connect_mongodb(port)
+    client[DEFAULT_DB].drop_collection('open_datasets')
+    client[DEFAULT_DB].drop_collection('open_datasets_data')
 
 
 def get_db(client):
     return client[DEFAULT_DB]
 
+
 def get_ods_collection(db):
     return db[DEFAULT_ODS_COLLECTION]
+
 
 def get_data_collection(db):
     return db[DEFAULT_DATA_COLLECTION]
