@@ -163,7 +163,7 @@ module.exports = function(app) {
             res.redirect('/');
         });
 
-    app.get('/lifestream', function(req, res) {
+    app.get('/livestream', function(req, res) {
         res.render('lifestream.hbs', {user: req.session.user});
     });
 
