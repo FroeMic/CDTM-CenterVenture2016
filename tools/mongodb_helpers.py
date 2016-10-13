@@ -38,8 +38,7 @@ def connect_mongodb(port=None):
     return client
 
 
-def reset_db(port):
-    client = connect_mongodb(port)
+def reset_db(client):
     client[DEFAULT_DB].drop_collection('open_datasets')
     client[DEFAULT_DB].drop_collection('open_datasets_data')
 
