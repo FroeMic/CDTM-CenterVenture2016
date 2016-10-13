@@ -10,11 +10,11 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="img/Johannes.jpg">
-                            <span class="card-title">{{room._id}} Offer</span>
+                            <span class="card-title">{{room.address}}</span>
                         </div>
                         <div class="card-content">
-                            <p>I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
+                            <p>{{room.comments}}</p>
+                            <p>{{room.price}} Euro per month</p>
                         </div>
                         <div class="card-action">
                             <a href="#offer/{{room._id}}">Details</a>

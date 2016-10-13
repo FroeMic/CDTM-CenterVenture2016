@@ -18,6 +18,7 @@ var user = require('./app/route/user');
 
 // configuration ===========================================
 var db_setts = require('./config/db');
+var fb_setts = require('./config/fb');
 
 var port = process.env.PORT || 1337;
 
@@ -31,7 +32,7 @@ var port = process.env.PORT || 1337;
 passport.use(new FacebookStrategy({
         clientID: "1072223219560634",
         clientSecret: "7f957acd6b1360bb73460fd8e36b0557",
-        callbackURL: 'http://localhost:1337/auth/facebook/callback',
+        callbackURL: fb_setts.url,
         profileFields: ['id', 'displayName', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified', 'picture']
     },
     function(accessToken, refreshToken, profile, cb) {

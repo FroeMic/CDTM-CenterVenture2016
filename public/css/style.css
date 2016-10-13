@@ -50,6 +50,10 @@ p {
   background: rgba(0, 0, 0, .7);
 }
 
+#nav-mobile {
+  width: 180px !important;
+}
+
 .parallax-container {
   min-height: 380px;
   line-height: 0;
@@ -131,6 +135,22 @@ footer img{
 
 footer.page-footer {
   margin: 0;
+}
+
+.mapcontainer {
+    height: 90vh;
+  margin-top: 10px;
+}
+
+.map-main {
+  box-shadow: 0 0 3px 0 black;
+}
+
+.stuck {
+  position:fixed;
+  top:0;
+  left: unset !important;
+  right: 0 !important;
 }
 
 personality-test .dim {

@@ -5,7 +5,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var cvApp = angular.module('cvApp', ['ngRoute', 'leaflet-directive']);
+var cvApp = angular.module('cvApp', ['sticky', 'ngRoute', 'leaflet-directive']);
 var HOSTSTRING = ""
 
 function shake(element) {
@@ -334,9 +334,12 @@ cvApp.controller('bookmarksController', function($scope) {
 });
 
 cvApp.controller('messagesController', function($scope) {
+  $(document).ready(function(){
+  $('ul.tabs').tabs();
+});
 });
 
-cvApp.controller('offerCreateController', function($scope, $http) {
+cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
     angular.element(document).ready(function () {
         $('select').material_select();
         $('.datepicker').pickadate({
@@ -367,12 +370,13 @@ cvApp.controller('offerCreateController', function($scope, $http) {
     $scope.formData = {};
     // calling our submit function.
     $scope.submitForm = function() {
+        console.log($scope.formData);
         // Posting data to php file
         $http({
             method  : 'POST',
             url     : '/rooms',
-            data    : $scope.formData, //forms user object
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
         })
             .success(function(data) {
                 if (data.errors) {
@@ -384,14 +388,16 @@ cvApp.controller('offerCreateController', function($scope, $http) {
                     $scope.message = data.message;
                 }
             });
+
+        $window.location.href = '/#/offers';
     };
 
-});
+}]);
 
-cvApp.controller('offerDetailController', function($scope, $routeParams, $http) {
+cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
-        $scope.room = response.data;
+        $scope.formData = response.data; // load data into the form Object
     });
 
     angular.element(document).ready(function () {
@@ -419,18 +425,18 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
             },
             tooltips: true
         });
+
+        $('label').addClass('active');
     });
 
-    // create a blank object to handle form data.
-    $scope.formData = {};
     // calling our submit function.
     $scope.submitForm = function() {
         // Posting data to php file
         $http({
             method  : 'PUT',
             url     : '/rooms/'+$routeParams.offer_id,
-            data    : $scope.formData, //forms user object
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
         })
             .success(function(data) {
                 if (data.errors) {
@@ -442,8 +448,10 @@ cvApp.controller('offerDetailController', function($scope, $routeParams, $http) 
                     $scope.message = data.message;
                 }
             });
+
+        $window.location.href = '/#/offers';
     };
-});
+}]);
 
 cvApp.controller('offerListController', function($scope, $http) {
     $http.get('/rooms').
@@ -468,12 +476,12 @@ cvApp.directive('flatlingMap', function () {
 });
 
 
-cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$compile', 'leafletData', function($scope, $http, $compile, leafletData) {
+cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', function($scope, $http, leafletData) {
     angular.extend($scope, {
         center: {
             lat: 48.143763,
             lng: 11.557979,
-            zoom: 8
+            zoom: 9
         },
         defaults: {
             scrollWheelZoom: false
@@ -482,12 +490,21 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$compile', 'lea
             url: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q',
             options: {
                 maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                attribution: '',
                 id: 'mapbox.streets'
             }
         }
+    });
+
+    // $(window).scroll(function (event) {
+    //     var scroll = $(window).scrollTop();
+    //     console.log('wtf', scroll);
+    //     if(scroll == 0) {
+    //         $('.unstuck').attr('style', '');
+    //     }
+    // });
+    angular.element(document).ready(function () {
+        $('.sidebar').hide();
     });
 
     var toggle = function () {

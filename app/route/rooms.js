@@ -7,7 +7,7 @@ var router = express.Router();
 var auth = require('../auth');
 
 var mongoose = require('mongoose');
-var Room = require('../models/roomObject');
+var Room = require('../models/Room');
 
 /* GET /rooms listing. */
 router.use('/', auth.sessionRequired);
@@ -21,6 +21,7 @@ router.get('/', function(req, res, next) {
 /* POST /rooms */
 router.use('/', auth.sessionRequired);
 router.post('/', function(req, res, next) {
+    console.log(req.body);
     Room.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -31,6 +32,15 @@ router.post('/', function(req, res, next) {
 router.use('/:id', auth.sessionRequired);
 router.get('/:id', function(req, res, next) {
     Room.findById(req.params.id, function (err, room) {
+        if (err) return next(err);
+        res.json(room);
+    });
+});
+
+/* GET /rooms/id */
+router.use('/owner/:user_id', auth.sessionRequired);
+router.get('/owner/:user_id', function(req, res, next) {
+    Room.findOne({user_id: req.params.user_id}, function (err, room) {
         if (err) return next(err);
         res.json(room);
     });

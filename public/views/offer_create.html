@@ -55,16 +55,16 @@
 
               <div class="row">
                 <div class="input-field col s12 m12 l4 form-group">
-                  <input id="startdate" type="text" class="datepicker form-control" ng-model="formData.startdate">
-                  <label for="startdate">Available from</label>
+                  <input id="start_date" type="text" class="datepicker form-control" ng-model="formData.start_date">
+                  <label for="start_date">Available from</label>
                 </div>
                 <div class="col s12 m12 l4 form-group" style="margin-top:30px;">
                   <input id="checkbox_shortterm" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_shortterm">
                   <label for="checkbox_shortterm">Short Term?</label>
                 </div>
                 <div hide ng-show='formData.checkbox_shortterm' class="input-field col s12 m12 l4 form-group">
-                  <input id="enddate" type="text" class="datepicker form-control" ng-model="formData.enddate">
-                  <label for="enddate">To</label>
+                  <input id="end_date" type="text" class="datepicker form-control" ng-model="formData.end_date">
+                  <label for="end_date">To</label>
                 </div>
               </div>
 
@@ -169,16 +169,13 @@
                 </div>
               </div>
             </form>
-            <!-- SHOW DATA FROM INPUTS AS THEY ARE BEING TYPED -->
-            <pre>
-              {{ formData }}
-            </pre>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col s4" style="height:100vh; background:red; position: fixed; right: 0; top:0; z-index:-5;">
-      test
+    <div sticky unsticky-class="unstuck" sticky-class="stuck" use-placeholder="false" offset="10"
+         class="col s4 mapcontainer stick">
+      <flatling-map></flatling-map>
     </div>
   </div>
