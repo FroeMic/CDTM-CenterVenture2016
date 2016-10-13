@@ -3,6 +3,17 @@
   <div class="col s12 m10 l8">
 
     <div id="survey-form" class="content" style="">
+      <div hide ng-show="currentSection==0" class="container">
+        <h2>Welcome to flatling</h2>
+        <div class="section-description">We want to support on your search for a new flat or flatmate. Don't you hate reading trough hundreds of emails to find flatmates which fit your lifestyle? Flatling will recommend you people who match your personality, so you can enjoy meeting your new flatmates.</div>
+        <div class="center-align">
+          <br>
+          <div class="btn" ng-click="currentSection=1">
+            Let's Start
+          </div>
+        </div>
+      </div>
+
       <div hide ng-show="section.number==currentSection" class="container" ng-repeat="section in survey.sections">
         <h2>{{section.title}}</h2>
         <div class="section-description">{{section.description}}</div>

@@ -12,6 +12,7 @@ function userMiddleware(req, res, next) {
 
 function apiMiddleware(req, res, next) {
     if (req.session.user) {
+        console.log("API Auth Request " + req.originalUrl + " from: " + JSON.stringify(req.session.user.displayName));
         next();
         return;
     }

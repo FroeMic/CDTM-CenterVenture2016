@@ -4,7 +4,8 @@
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-    address: {type : String, default: ''},
+    user_id: {type: String, default: ''},
+    address: {type: String, default: ''},
     price: {type: Number, default: 0},
     deposit: {type: Number, default: 0},
     size_room: {type: Number, default: 0},
