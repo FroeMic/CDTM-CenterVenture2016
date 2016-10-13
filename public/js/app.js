@@ -44,6 +44,12 @@ cvApp.config(function($routeProvider) {
             controller  : 'profileController'
         })
 
+        .when('/offers', {
+            templateUrl : '../views/offer_list.html',
+            controller  : 'offerListController'
+        })
+
+
         .when('/offer', {
             templateUrl : '../views/offer_create.html',
             controller  : 'offerCreateController'
@@ -52,11 +58,6 @@ cvApp.config(function($routeProvider) {
         .when('/offer/:offer_id', {
             templateUrl : '../views/offer_detail.html',
             controller  : 'offerDetailController'
-        })
-
-        .when('/offers', {
-            templateUrl : '../views/offer_list.html',
-            controller  : 'offerListController'
         })
 
         .when('/bookmarks', {
