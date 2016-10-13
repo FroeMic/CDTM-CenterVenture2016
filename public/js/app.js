@@ -110,6 +110,21 @@ cvApp.controller('offerCreateController', function($scope, $http) {
         $(document).ready(function() {
             $('input#input_text, textarea#comments').characterCounter();
         });
+
+        //Price-Range
+        var dragSlider = document.getElementById('age_range');
+
+        noUiSlider.create(dragSlider, {
+            start: [ 18, 45 ],
+            behaviour: 'drag',
+            connect: true,
+            step: 1,
+            range: {
+                'min':  0,
+                'max':  99
+            },
+            tooltips: true
+        });
     });
 
     // create a blank object to handle form data.
