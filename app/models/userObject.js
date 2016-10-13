@@ -18,6 +18,7 @@ var schema = new mongoose.Schema({
         values: [
           {
             title: {type: String},
+            value: {type: Number},
             weight: {type: Number},
             min: {type: Number},
             max: {type: Number}
