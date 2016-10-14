@@ -486,16 +486,20 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
         })
             .success(function(data) {
                 if (data.errors) {
-                    // Showing errors.
-                    $scope.errorName = data.errors.name;
-                    $scope.errorUserName = data.errors.username;
-                    $scope.errorEmail = data.errors.email;
+                  // Showing errors.
+                  $scope.errorName = data.errors.name;
+                  $scope.errorUserName = data.errors.username;
+                  $scope.errorEmail = data.errors.email;
+                  Materialize.toast('Error: Room couldn\'t be saved!', 4000)
+                  $window.location.href = '/#/offers/';
                 } else {
-                    $scope.message = data.message;
+                  $scope.message = data.message;
+                  var $toastContent = $('<span class=\"center-align\">Room Saved!</span>');
+                  Materialize.toast($toastContent, 4000)
+                  $window.location.href = '/#/offer/'+data._id;
                 }
             });
 
-        $window.location.href = '/#/offers';
     };
 
 }]);
@@ -550,8 +554,11 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
                     $scope.errorName = data.errors.name;
                     $scope.errorUserName = data.errors.username;
                     $scope.errorEmail = data.errors.email;
+                    Materialize.toast('Error: Room couldn\'t be updated!', 4000)
                 } else {
                     $scope.message = data.message;
+                  var $toastContent = $('<span class=\"center-align\">Room Updated!</span>');
+                  Materialize.toast($toastContent, 4000)
                 }
             });
 
