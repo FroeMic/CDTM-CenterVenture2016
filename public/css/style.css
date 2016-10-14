@@ -33,6 +33,12 @@ html, body {
   display: none !important;
 }
 
+.img-container {
+  height: 50px;
+  width: 50px;
+  overflow: hidden;
+}
+
 .circular-image {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
@@ -335,8 +341,20 @@ personality-test .likert-line {
   margin: 40px 0;
 }
 
+.match-container a{
+  color: black;
+}
+
 .match-card {
-  height: 60px;
+  min-height: 85px;
+}
+
+.match-score {
+  font-size: 16pt;
+}
+
+.match-score.hot {
+  color: #07ad24;
 }
 
 .subtitle {

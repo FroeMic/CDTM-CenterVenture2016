@@ -124,6 +124,7 @@ cvApp.directive("personalityTest", function () {
 });
 
 
+
 cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
@@ -244,15 +245,14 @@ cvApp.controller('aboutController', function($scope) {
 });
 
 cvApp.controller('matchController', function($scope, $http) {
-    $scope.message = 'Look! I am an about page.';
-    $scope.matches = null
+    $scope.Math = Math;
+    $scope.matches = null;
 
     if ($scope.user) {
           $http.get(HOSTSTRING + '/user/matches')
                .then(
                    function(response){
                      // success callback
-                     console.log(response.data);
                      $scope.matches = response.data
                    },
                    function(response){
@@ -261,7 +261,6 @@ cvApp.controller('matchController', function($scope, $http) {
                   }
                 );
     }
-
 
 });
 
