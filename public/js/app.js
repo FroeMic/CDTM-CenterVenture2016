@@ -126,6 +126,13 @@ cvApp.directive("offerPreview", function () {
 });
 
 
+cvApp.directive("messageView", function () {
+    return {
+        templateUrl: "/views/messageView.html",
+        controller: "messageViewController"
+    };
+});
+
 // create the controller and inject Angular's $scope
 cvApp.controller('mainController', function($scope, $location, $http, $window) {
     // create a message to display in our view
@@ -454,6 +461,20 @@ cvApp.controller('messagesController', function($scope) {
   $(document).ready(function(){
     $('ul.tabs').tabs();
   });
+});
+
+cvApp.controller('messageViewController', function($scope, $timeout, $http) {
+
+    $scope.submitMessage = function(to) {
+        // Posting data to php file
+        $scope.formData.to = to;
+        $http({
+            method  : 'POST',
+            url     : '/messages',
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
