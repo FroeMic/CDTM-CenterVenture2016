@@ -32,10 +32,11 @@ router.get('/', function (req, res) {
     });
 });
 
-router.use('/:user_id', auth.sessionRequired);
-router.get('/:user_id', function (req, res) {
+router.use('/profile/:user_id', auth.sessionRequired);
+router.get('/profile/:user_id', function (req, res) {
   User.findOne({_id: req.params.user_id}, function (err, user) {
     if(err) {
+      console.log(err);
       res.status(500).send(
           JSON.stringify({
             status: 500,

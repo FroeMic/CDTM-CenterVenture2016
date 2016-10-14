@@ -538,7 +538,7 @@ cvApp.controller('accountController', function($scope) {
 });
 
 cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
-    $http.get('/user/'+$routeParams.user_id)
+    $http.get('/user/profile/'+$routeParams.user_id)
         .then(function(response){
                 $scope.profile = response.data;
             }
