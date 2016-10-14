@@ -381,7 +381,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
 
 });
 
-cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
+cvApp.controller('offerPreviewController', ['$scope', '$timeout', '$http', '$route', function($scope, $timeout, $http, $route) {
 
   $timeout(initMaterialize, 0);
 
@@ -415,7 +415,15 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
             url     : '/bookmarks',
             data    : JSON.stringify({room: $scope.room._id}), //forms user object
             headers : {'Content-Type': 'application/json'}
-        });
+        }).then(
+            function(response){
+                var $toastContent = $('<span class=\"center-align\">Bookmark Saved</span>');
+                Materialize.toast($toastContent, 4000);
+            },
+            function(response){
+                Materialize.toast('Error: Bookmark couldn\'t be updated!', 4000);
+            }
+        );
     };
 
     $scope.removeBookmark = function(bookmark_id) {
@@ -425,9 +433,18 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
             url     : '/bookmarks/' + bookmark_id,
             data    : JSON.stringify({}), //forms user object
             headers : {'Content-Type': 'application/json'}
-        });
+        }).then(
+            function(response){
+                var $toastContent = $('<span class=\"center-align\">Bookmark Removed</span>');
+                Materialize.toast($toastContent, 4000);
+                $route.reload();
+            },
+            function(response){
+                Materialize.toast('Error: Bookmark couldn\'t be updated!', 4000);
+            }
+        );
     };
-});
+}]);
 
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
@@ -632,12 +649,12 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
                   $scope.errorName = data.errors.name;
                   $scope.errorUserName = data.errors.username;
                   $scope.errorEmail = data.errors.email;
-                  Materialize.toast('Error: Room couldn\'t be saved!', 4000)
+                  Materialize.toast('Error: Room couldn\'t be saved!', 4000);
                   $window.location.href = '/#/offers/';
                 } else {
                   $scope.message = data.message;
                   var $toastContent = $('<span class=\"center-align\">Room Saved!</span>');
-                  Materialize.toast($toastContent, 4000)
+                  Materialize.toast($toastContent, 4000);
                   $window.location.href = '/#/offer/'+data._id;
                 }
             });
