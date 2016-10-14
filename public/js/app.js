@@ -866,6 +866,17 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
                         img: '/img/wg-5.jpg',
                       }
                     ]
+
+        $scope.formData.checkbox_living_room = true;
+        $scope.formData.checkbox_furnitured = true;
+        $scope.formData.checkbox_kitchen = true;
+        $scope.formData.checkbox_washing_machine = true;
+        $scope.formData.checkbox_barrier_free = true;
+        $scope.formData.checkbox_pets = true;
+        $scope.formData.checkbox_smoking = true;
+        $scope.formData.checkbox_balcony = true;
+        $scope.formData.checkbox_basement = true;
+        $scope.formData.checkbox_garden = true;
     });
 
     $scope.$watch('formData.coordinates', function (val) {
