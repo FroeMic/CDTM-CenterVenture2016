@@ -245,6 +245,9 @@ cvApp.controller('aboutController', function($scope) {
 
 cvApp.controller('matchController', function($scope) {
     $scope.message = 'Look! I am an about page.';
+    $scope.matches = [1,2,3,4]
+
+     
 });
 
 cvApp.controller('contactController', function($scope) {

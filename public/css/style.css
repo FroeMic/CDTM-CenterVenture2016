@@ -330,3 +330,16 @@ personality-test .likert-line {
   bottom: 10%;
   left: 50%;
 }
+
+.match-container {
+  margin: 40px 0;
+}
+
+.match-card {
+  height: 60px;
+}
+
+.subtitle {
+  font-size: 14pt;
+  color: rgba(0,0,0,0.6);
+}
