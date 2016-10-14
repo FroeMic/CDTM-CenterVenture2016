@@ -624,6 +624,13 @@ cvApp.controller('messagesController', function($scope, $http) {
         $scope.pokes = response.data;
     });
 
+    $http.get('/user/profile/fb/10205781696376503')
+        .then(function(response){
+                $scope.profile = response.data;
+                console.log($scope.profile)
+            }
+        );
+
 });
 
 cvApp.controller('messageViewController', function($scope, $timeout, $http) {
