@@ -30,7 +30,7 @@
 			<p ng-if="!owner">Provided by: <a href="#/profile/{{room.owner._id}}">{{room.owner.display_name}}</a></p>
 		</div>
 		<div class="card-action">
-			<a ng-if="owner" href="#/offer/{{room._id}}">View Details</a>
+			<a ng-if="owner" href="#/offer/{{room._id}}">Change Details</a>
 			<a ng-if="!owner" href="#/room/{{room._id}}">View Details</a>
 		</div>
 	</div>
