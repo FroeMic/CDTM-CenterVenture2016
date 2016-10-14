@@ -17,28 +17,15 @@ router.use('/', auth.sessionRequired);
 router.get('/', function(req, res, next) {
     Room.find().populate('owner').exec(function (err, rooms) {
         if (err) return next(err);
-        User.findOne({fb_id: req.session.user.id}, function (err, user) {
-            if(err) {
-                res.status(500).send(
-                    JSON.stringify({
-                        status: 500,
-                        description: 'Internal Server Error'
-                    })
-                );
-            } else {
-                var results = [];
-                var i;
-                for (i = 0; i < rooms.length; ++i) {
-                    var room = rooms[i].toObject();
-                    var score = calculatePersonalityMatching(user, room.owner);
-                    room.score = score;
-                    results.push(room);
-                    //console.log(room.owner);
-                }
-                //console.log(user);
-                res.json(results);
-            }
-        });
+        var results = [];
+        var i;
+        for (i = 0; i < rooms.length; ++i) {
+            var room = rooms[i].toObject();
+            var score = calculatePersonalityMatching(req.session.dbuser, room.owner);
+            room.score = score;
+            results.push(room);
+        }
+        res.json(results);
     });
 });
 
@@ -73,7 +60,7 @@ router.get('/owner/:user_id', function(req, res, next) {
 /* PUT /rooms/:id */
 router.use('/:room_id', auth.sessionRequired);
 router.put('/:room_id', function(req, res, next) {
-    Room.where({_id: req.params.room_id, owner: req.session.user.id}).update(req.body, function (err, post) {
+    Room.where({_id: req.params.room_id, owner: req.session.dbuser._id}).update(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -82,7 +69,7 @@ router.put('/:room_id', function(req, res, next) {
 /* DELETE /rooms/:id */
 router.use('/:id', auth.sessionRequired);
 router.delete('/:id', function(req, res, next) {
-    Room.find({_id: req.params.id, owner: req.session.user.id}).remove(function (err, post) {
+    Room.find({_id: req.params.id, owner: req.session.dbuser._id}).remove(function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
