@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var Survey = require('../models/survey');
 var User = require('../models/User');
 
+var helpers = require('../helpers');
+
 // get own user object
 router.use('/', auth.sessionRequired);
 router.get('/', function (req, res) {
@@ -224,7 +226,7 @@ router.post('/personalitySurvey', function (req, res) {
   res.send("success");
 });
 
-// router.use('/personalitySurvey', auth.sessionRequired);
+router.use('/personalitySurvey', auth.sessionRequired);
 router.get('/personalitySurvey', function (req, res) {
   Survey.findOne({title: 'PersonalitySurvey'}, function (err, survey) {
     if(err) {
@@ -241,6 +243,49 @@ router.get('/personalitySurvey', function (req, res) {
       ));
     }
   });
+});
+
+router.use('/matches', auth.sessionRequired);
+router.get('/matches', function (req, res) {
+
+  User.findOne({fb_id: req.session.user.id}, function (err, user) {
+    if(err) {
+      res.status(500).send(
+        JSON.stringify({
+          status: 500,
+          description: 'Internal Server Error'
+        })
+      );
+    } else {
+
+      User.find({fb_id: {$ne : req.session.user.id}}, function (err, users) {
+        if(err) {
+          res.status(500).send(
+            JSON.stringify({
+              status: 500,
+              description: 'Internal Server Error'
+            })
+          );
+        } else {
+          var matches = []
+          users.forEach(function(other) {
+            matches.push({
+              id: other.id,
+              name: other.display_name,
+              score: helpers.calculatePersonalityMatching(user, other),
+              occupation: other.personalityProfile.occupation,
+              pictureUrl: other.pictureUrl
+            })
+          })
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify(
+            matches
+          ));
+        }
+      });
+    }
+  });
+
 });
 
 module.exports = router;

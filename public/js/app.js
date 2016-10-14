@@ -243,11 +243,26 @@ cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
 });
 
-cvApp.controller('matchController', function($scope) {
+cvApp.controller('matchController', function($scope, $http) {
     $scope.message = 'Look! I am an about page.';
-    $scope.matches = [1,2,3,4]
+    $scope.matches = null
 
-     
+    if ($scope.user) {
+          $http.get(HOSTSTRING + '/user/matches')
+               .then(
+                   function(response){
+                     // success callback
+                     console.log(response.data);
+                     $scope.matches = response.data
+                   },
+                   function(response){
+                     // TODO: Handle Error
+                     // failure callback
+                  }
+                );
+    }
+
+
 });
 
 cvApp.controller('contactController', function($scope) {

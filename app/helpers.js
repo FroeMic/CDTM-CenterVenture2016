@@ -1,4 +1,3 @@
-
 // takes two user profile objects and calculates their matching
 function calculatePersonalityMatching(tenant, roomie) {
   if (tenant == null || roomie == null) {
