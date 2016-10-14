@@ -1,9 +1,15 @@
 <div class="search-flex">
-    <form class="search-left" id="search-left">
+
+
+
+    <form class="search-left grow" id="search-left">
       <div class ="row">
-        <div class="section col s12" style="margin-top: 10px;">
-          <h5>Find your perfect Apartment:</h5>
-        </div>
+          <div class="col s12" style="margin-left:10px;margin-top:30px;margin-bottom:20px">
+            <h2>Find your perfect Appartment</h2>
+          </div>
+      </div>
+      <div class="card" style="margin:20px; padding: 20px">
+      <div class ="row">
         <div class="input-field col s6 form-group">
           <input id="startdate" type="text" class="datepicker form-control" ng-model="formData.startdate">
           <label for="startdate">Available from</label>
@@ -166,6 +172,7 @@
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->
+    </div>
     </form>
   <div class="search-map mapcontainer nomargins">
     <flatling-map rooms="{{rooms}}" coordinates="{{city}}" toggle-left="#search-left"></flatling-map>

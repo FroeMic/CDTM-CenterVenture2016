@@ -140,6 +140,18 @@ cvApp.directive("matchCard", function () {
   };
 });
 
+cvApp.directive("badge", function () {
+  return {
+      scope: {
+          notifications: '=' //Two-way data binding
+      },
+      templateUrl: '/views/badge.html?2',
+      controller: function ($scope){
+        $scope.Math = Math;
+      }
+  };
+});
+
 cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
@@ -159,6 +171,7 @@ cvApp.directive("messageView", function () {
 cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+    $scope.notifications = 0;
     $scope.needsPersonalityTest = false;
     $scope.user = null;
 
@@ -176,6 +189,19 @@ cvApp.controller('mainController', function($scope, $location, $http, $window, $
                      $scope.needsPersonalityTest = true
                    }
                  }
+
+                 $http.get(HOSTSTRING + '/pokes/to/' + $scope.user._id)
+                      .then(
+                          function(response){
+                            // success callback
+                            $scope.notifications = response.data.length;
+                          },
+                          function(response){
+                            // failure callback
+                            console.log(response.data);
+                         }
+                       );
+
                },
                function(response){
                  // failure callback
@@ -554,6 +580,7 @@ cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$windo
     $http.get('/user/profile/'+$routeParams.user_id)
         .then(function(response){
                 $scope.profile = response.data;
+                console.log($scope.profile)
             }
         );
     $http.get('/rooms/owner/'+$routeParams.user_id).
@@ -587,10 +614,16 @@ cvApp.controller('bookmarksController', function($scope, $http) {
     });
 });
 
-cvApp.controller('messagesController', function($scope) {
-  $(document).ready(function(){
-    $('ul.tabs').tabs();
-  });
+cvApp.controller('messagesController', function($scope, $http) {
+    $(document).ready(function(){
+        $('ul.tabs').tabs();
+    });
+
+    $http.get('/pokes/to/'+$scope.user._id).
+    then(function(response) {
+        $scope.pokes = response.data;
+    });
+
 });
 
 cvApp.controller('messageViewController', function($scope, $timeout, $http) {
@@ -809,6 +842,10 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
       });
     }
 
+    $scope.$watch('coordinates', function (val) {
+        $scope.pin = val;
+    });
+
     $http.get('/rooms/'+$routeParams.room_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
@@ -817,18 +854,33 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
         $scope.formData.createdAt = new Date($scope.formData.createdAt).toUTCString();
         $scope.formData.pictures = [
                       {
-                        img: '/img/room_indoor2.jpeg',
-                        description: "Spacious Kitchen",
+                        img: '/img/wg-1.jpg',
                       },
                       {
-                        img: '/img/houses.jpg',
-                        description: "Quiet Neighbourhood",
+                        img: '/img/wg-2.jpg',
                       },
                       {
-                        img: '/img/room_indoor1.jpeg',
-                        description: "German Style Dungeon",
+                        img: '/img/wg-4.jpg',
+                      },
+                      {
+                        img: '/img/wg-5.jpg',
                       }
                     ]
+
+        $scope.formData.checkbox_living_room = true;
+        $scope.formData.checkbox_furnitured = true;
+        $scope.formData.checkbox_kitchen = true;
+        $scope.formData.checkbox_washing_machine = true;
+        $scope.formData.checkbox_barrier_free = true;
+        $scope.formData.checkbox_pets = true;
+        $scope.formData.checkbox_smoking = true;
+        // $scope.formData.checkbox_balcony = true;
+        // $scope.formData.checkbox_basement = true;
+        // $scope.formData.checkbox_garden = true;
+    });
+
+    $scope.$watch('formData.coordinates', function (val) {
+        $scope.pin = val;
     });
 
 
@@ -891,7 +943,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
     });
 
     angular.element(document).ready(function () {
-        $('.sidebar').hide();
+        // $('.sidebar').hide();
     });
 
     var toggle = function () {
@@ -996,8 +1048,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             return feature;
         }
 
-        if(!newrooms.map) {
-            console.log(newrooms);
+        if(!newrooms) {
             return;
         }
 
@@ -1047,7 +1098,8 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             'Districts': loadDistricts,
             'Test': loadUrl.bind(undefined, dataset.url, markers),
             'Rents': loadUrl.bind(undefined, dataset.url, rent),
-            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster)
+            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster),
+            'Bars': loadUrl.bind(undefined, dataset.url, heatmap)
         };
 
         if(!(datasetId in actions)) {
@@ -1227,6 +1279,18 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             marker.bindPopup(title);
             layer.addLayer(marker);
         }
+
+        map.addLayer(layer);
+        return layer;
+    }
+
+    function heatmap(data) {
+        var layer = new L.heatLayer([], { maxZoom: 18, radius: 30, blur: 30, max: 0.95 })
+
+        data.forEach( function(element, index) {
+          layer.addLatLng(element.latlong);
+          // statements
+        });
 
         map.addLayer(layer);
         return layer;
