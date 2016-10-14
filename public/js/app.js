@@ -436,9 +436,37 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
     console.log($scope.city);
     $scope.rooms = [];
     $http.get('/rooms').then(function (rooms) {
+        $scope.oringinal_rooms = rooms.data;
         $scope.rooms = rooms.data;
+        refilter();
     });
+
+    $scope.$watch('formData.startDate', refilter);
+    $scope.$watch('formData.checkbox_shortterm', refilter);
+    $scope.$watch('formData.enddate', refilter);
+    $scope.$watch('formData.university', refilter);
+    $scope.$watch('formData.enddate', refilter);
+    $scope.$watch('formData.enddate', refilter);
+    $scope.$watch('price_slider.minValue', refilter);
+    $scope.$watch('price_slider.maxValue', refilter);
+    // lookup the models in search.html ...
+
+    function filterRoom(room) {
+        // adapt here for real filtering
+        // && $scope.filterblablabla
+        return room.price > $scope.price_slider.minValue
+            && room.price < $scope.price_slider.maxValue;
+    }
+
+    function refilter() {
+        if(!$scope.oringinal_rooms || !$scope.oringinal_rooms.filter) {
+            return;
+        }
+        $scope.rooms = $scope.oringinal_rooms.filter(filterRoom);
+    }
 });
+
+
 
 cvApp.controller('profileController', function($scope) {
 });
@@ -494,7 +522,8 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
             if(id) {
                 var pos = JSON.parse('[' + id + ']');
                 $scope.formData.coordinates = pos;
-                $scope.location = pos;
+                // $scope.location = pos;
+                $scope.pin = pos;
                 $scope.$apply();
             }
         });
@@ -696,7 +725,41 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
         return false;
     }
 
+    var pin = null;
+    function pinAt(newValue, oldVal) {
+        if(typeof(newValue) == 'string') {
+            try {
+                var json = JSON.parse(newValue);
+                if(json.length == 2 && typeof (json[0]) == 'number' && typeof (json[1]) == 'number') {
+                    newValue = json;
+                }
+            } catch (e) {
+            }
+        }
+
+        if(newValue) {
+            if(newValue.length == 2) {
+                if(pin == null) {
+                    pin = L.marker(newValue, {
+                        draggable: true
+                    }).addTo(map);
+                } else {
+                    pin.setLatLng(newValue);
+                }
+                moveTo(newValue, 15); // center marker
+                console.log('set markers', newValue);
+                return true;
+            } else if(typeof (newValue) == 'string') {
+                // todo geolocator api
+                // return true;
+            }
+        }
+
+        return false;
+    }
+
     $scope.$watch("location", onLocation);
+    $scope.$watch('pin', pinAt);
     var roomsLayer = null;
     $scope.$watch('rooms', function (newrooms, oldrooms) {
         console.log('rooms:', oldrooms, '->', newrooms);
@@ -750,12 +813,12 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
     });
 
     var deferredCoords = null;
-    function moveTo(coordinates) {
+    function moveTo(coordinates, zoom) {
         console.log("move to", coordinates);
         if(map == null) {
             deferredCoords = coordinates;
         } else {
-            map.setView(coordinates, 12, {animate: true});
+            map.setView(coordinates, zoom || 12, {animate: true});
         }
     }
 
