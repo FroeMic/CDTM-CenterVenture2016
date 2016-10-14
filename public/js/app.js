@@ -262,7 +262,6 @@ cvApp.controller('matchController', function($scope, $http, $timeout) {
              .then(
                  function(response){
                    // success callback
-                   console.log("response.data");
                    $timeout(function(){
                      $scope.matches = response.data;
                    },0);
