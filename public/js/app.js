@@ -171,7 +171,7 @@ cvApp.directive("messageView", function () {
 cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
-    $scope.notifications = 10;
+    $scope.notifications = 0;
     $scope.needsPersonalityTest = false;
     $scope.user = null;
 
@@ -189,6 +189,19 @@ cvApp.controller('mainController', function($scope, $location, $http, $window, $
                      $scope.needsPersonalityTest = true
                    }
                  }
+
+                 $http.get(HOSTSTRING + '/pokes/to/' + $scope.user._id)
+                      .then(
+                          function(response){
+                            // success callback
+                            $scope.notifications = response.data.length;
+                          },
+                          function(response){
+                            // failure callback
+                            console.log(response.data);
+                         }
+                       );
+
                },
                function(response){
                  // failure callback
@@ -601,10 +614,16 @@ cvApp.controller('bookmarksController', function($scope, $http) {
     });
 });
 
-cvApp.controller('messagesController', function($scope) {
-  $(document).ready(function(){
-    $('ul.tabs').tabs();
-  });
+cvApp.controller('messagesController', function($scope, $http) {
+    $(document).ready(function(){
+        $('ul.tabs').tabs();
+    });
+
+    $http.get('/pokes/to/'+$scope.user._id).
+    then(function(response) {
+        $scope.pokes = response.data;
+    });
+
 });
 
 cvApp.controller('messageViewController', function($scope, $timeout, $http) {

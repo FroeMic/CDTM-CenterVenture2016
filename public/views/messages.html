@@ -15,7 +15,7 @@
             <ul class="tabs">
               <li class="tab col s3"><a class="active"href="#messages_inbox">Messages</a></li>
               <li class="tab col s3"><a href="#request_inbox">Requests</a></li>
-              <li class="tab col s3"><a href="#poke_inbox">My Pokes</a></li>
+              <li class="tab col s3"><a href="#poke_inbox">Pokes</a></li>
             </ul>
           </div>
           <div id="messages_inbox" class="col s12">
@@ -78,29 +78,13 @@
 
           <div id="poke_inbox" class="col s12">
             <ul class="collection">
-              <li class="collection-item avatar">
-                <img src="/img/profil_pics/hesse.jpg" alt="" class="circle">
-                <span class="title">Adrian Hesse</span
+              <li ng-repeat="poke in pokes" class="collection-item avatar">
+                <img src="{{ poke.from.pictureUrl }}" alt="" class="circle">
+                <span class="title">{{ poke.from.display_name }}</span>
+                <p>On: {{ poke.createdAt | date:'yyyy-MM-dd HH:mm' }}</p>
                 </li>
-                <li class="collection-item avatar">
-                  <img src="/img/profil_pics/aish.jpg" alt="" class="circle">
-                  <span class="title">Aishwarye Ravindran</span>
-                </li>
-                <li class="collection-item avatar">
-                  <img src="/img/profil_pics/areeb.jpg" alt="" class="circle">
-                  <span class="title">Areeb Kamran</span>
-                </li>
-                <li class="collection-item avatar">
-                  <img src="/img/profil_pics/kim.jpg" alt="" class="circle">
-                  <span class="title">Kim Bormann</span>
-                </li>
-                <li class="collection-item avatar">
-                  <img src="/img/profil_pics/minh.jpg" alt="" class="circle">
-                  <span class="title">Minh-Anh Le</span>
-                </li>
-              </ul>
-
-            </div>
+            </ul>
+          </div>
           </div>
 
 
