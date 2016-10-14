@@ -349,12 +349,22 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
     }
   ];
 
-    $scope.bookmark = function() {
+    $scope.submitBookmark = function() {
         // Posting data to php file
         $http({
             method  : 'POST',
             url     : '/bookmarks',
             data    : JSON.stringify({room: $scope.room._id}), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
+
+    $scope.removeBookmark = function(bookmark_id) {
+        // Posting data to php file
+        $http({
+            method  : 'DELETE',
+            url     : '/bookmarks/' + bookmark_id,
+            data    : JSON.stringify({}), //forms user object
             headers : {'Content-Type': 'application/json'}
         });
     };

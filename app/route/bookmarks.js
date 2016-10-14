@@ -46,7 +46,7 @@ router.post('/', function(req, res, next) {
 
 router.use('/:bookmark_id', auth.sessionRequired);
 router.delete('/:bookmark_id', function(req, res, next) {
-    Room.find({_id: req.params.bookmark_id, owner: req.session.dbuser._id}).remove(function (err, post) {
+    Bookmark.findOneAndRemove({_id: req.params.bookmark_id, owner: req.session.dbuser._id}, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
