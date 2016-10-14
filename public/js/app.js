@@ -488,6 +488,16 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
       }
     };
 
+    angular.extend($scope, {
+        formData: {
+            startDate: null,
+            checkbox_shortterm: false,
+            enddate: null,
+            university: '',
+            checkbox_showown: true
+        }
+    });
+
     //travel-Range
     $scope.travel_slider = {
       minValue: 10,
@@ -517,13 +527,16 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
     $scope.$watch('formData.enddate', refilter);
     $scope.$watch('price_slider.minValue', refilter);
     $scope.$watch('price_slider.maxValue', refilter);
+    $scope.$watch('formData.checkbox_showown', refilter);
     // lookup the models in search.html ...
 
     function filterRoom(room) {
         // adapt here for real filtering
         // && $scope.filterblablabla
+        var ownerid = room.owner ? room.owner._id : '';
         return room.price > $scope.price_slider.minValue
-            && room.price < $scope.price_slider.maxValue;
+            && room.price < $scope.price_slider.maxValue
+            && ($scope.user._id != ownerid || $scope.formData.checkbox_showown);
     }
 
     function refilter() {
@@ -927,7 +940,8 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
         };
 
         function makeFeature(room) {
-            return {
+            var own = room.owner && room.owner._id == $scope.user._id;
+            var feature = {
                 "type": "Feature",
                 "geometry": {
                     "type": "Point",
@@ -936,12 +950,13 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
                 "properties": {
                     "title": room.price + '€ / ' + room.size_room + 'qm',
                     "description": room.address,
-                    "marker-color": "#fc4353",
-                    "marker-size": "large",
-                    "marker-symbol": Math.min(99, Math.round(room.score * 100) || 0),
                     url: '/room/' + room._id
                 }
-            }
+            };
+            feature.properties['marker-color'] = own ? '#3e69e8' : "#fc4353";
+            feature.properties['marker-size'] = own ? 'medium' : "large";
+            feature.properties['marker-symbol'] = own ? '' : Math.min(99, Math.round(room.score * 100) || 0);
+            return feature;
         }
 
         if(!newrooms.map) {
