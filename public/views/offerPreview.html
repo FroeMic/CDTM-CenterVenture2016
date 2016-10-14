@@ -5,7 +5,7 @@
 				<img src="{{room.pictures[0].img}}">
 			</a>
 			<span class="card-title card-titel-new">
-				<span style="padding-right: 20px;">Match Rate: {{room.score * 100 | number:0 }}%</span>
+				<span ng-if="!owner" style="padding-right: 20px;">Match Rate: {{room.score * 100 | number:0 }}%</span>
 				<span style="padding-right: 20px;">Cost: {{room.price}}&euro;</span>
 			</span>
 			<span class="card-title card-button">

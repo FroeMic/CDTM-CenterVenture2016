@@ -24,9 +24,7 @@ router.get('/', function(req, res, next) {
             var score = calculatePersonalityMatching(req.session.dbuser, room.owner);
             room.score = score;
             results.push(room);
-            //console.log(room.owner);
         }
-        //console.log(user);
         res.json(results);
     });
 });
