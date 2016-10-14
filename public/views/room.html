@@ -2,202 +2,135 @@
     <div class="col s8">
         <div class="container">
             <div class"row">
-            <div class="col s12"; style="margin-top: 10px">
-                <form name="offerForm" ng-submit="submitForm()" class="col s12">
+                <div class="col s12"; style="margin-top: 10px">
+                    <div class="row">
+                        <h4>{{formData.address}}</h4>
+                    </div>
                     <div class ="row">
                         <div class="section">
                             <h5>Pictures</h5>
                         </div>
-                        <div style="position: relative;">
-                            <div class="fixed-action-btn horizontal" style="position: absolute; display: inline-block; top: 24px; right: 24px;">
-                                <a class="btn-floating btn-large red">
-                                    <i class="large material-icons">mode_edit</i>
-                                </a>
-                                <ul>
-                                    <li><a class="btn-floating green"><i class="material-icons">delete</i></a></li>
-                                    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="slider">
-                            <ul class="slides">
-                                <li>
-                                    <img src="/img/room_indoor1.jpeg"> <!-- random image -->
-                                    <div class="caption center-align">
-                                        <h3>This is our big Tagline!</h3>
-                                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                                    </div>
-                                </li>
-                                <li>
-                                    <img src="/img/room_indoor2.jpeg"> <!-- random image -->
-                                    <div class="caption left-align">
-                                        <h3>Left Aligned Caption</h3>
-                                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                                    </div>
-                                </li>
-                                <li>
-                                    <img src="/img/houses.jpg"> <!-- random image -->
-                                    <div class="caption right-align">
-                                        <h3>Right Aligned Caption</h3>
-                                        <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                                    </div>
+                            <ul class="slides activator">
+                                <li ng-repeat="(key, value) in formData.pictures">
+                                    <a ng-href="#/asdsads">
+                                        <img src="{{value.img}}"> <!-- random image -->
+                                        <div class="caption caption_neu left-align">
+                                            <h5>
+                                                <span style="padding-right: 20px;">{{value.description}}</span>
+                                            </h5>
+                                        </div>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="divider"></div>
-                    <div class ="row">
-                        <div class="section">
-                            <h5>Street Address</h5>
-                        </div>
-                        <div class="input-field col s12 form-group">
-                            <input id="address" type="text" class="validate form-control" ng-model="formData.address">
-                            <label for="address">Street Address</label>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="row">
-                        <div class="section">
-                            <h5>Facts</h5>
-                            <p>Provide some details about the room to improve your matches.<p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 m12 l6 form-group">
-                            <input id="price" type="number" class="validate form-control" ng-model="formData.price">
-                            <label for="price">Price (€) including utilities</label>
-                        </div>
-                        <div class="input-field col s12 m12 l6 form-group">
-                            <input id="deposit" type="number" class="validate form-control" ng-model="formData.deposit">
-                            <label for="deposit">Deposit (€)</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 m12 l6 form-group">
-                            <input id="size_room" type="number" class="validate form-control" ng-model="formData.size_room">
-                            <label for="size_room">Room Size (m<sup>2</sup>)</label>
-                        </div>
-                        <div class="input-field col s12 m12 l6 form-group">
-                            <input id="size_apartment" type="number" class="validate form-control" ng-model="formData.size_apartment">
-                            <label for="size_apartment">Apartment Size (m<sup>2</sup>)</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 form-group">
-                            <select id="room_type" class="form-control" ng-model="formData.room_type">
-                                <option value="" disabled selected>Choose your option</option>
-                                <option value="1">Shared room</option>
-                                <option value="2">Private room</option>
-                                <option value="3">Private room + Shared apartment</option>
-                                <option value="4">Whole apartment</option>
-                            </select>
-                            <label>Type</label>
-                        </div>
-                    </div>
+                <div class="divider"></div>
 
-                    <div class="row">
-                        <div class="input-field col s12 m12 l4 form-group">
-                            <input id="startdate" type="text" class="datepicker form-control" ng-model="formData.startdate">
-                            <label for="startdate">Available from</label>
-                        </div>
-                        <div class="col s12 m12 l4 form-group" style="margin-top:30px;">
-                            <input id="checkbox_shortterm" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_shortterm">
-                            <label for="checkbox_shortterm">Short Term?</label>
-                        </div>
-                        <div hide ng-show='formData.checkbox_shortterm' class="input-field col s12 m12 l4 form-group">
-                            <input id="enddate" type="text" class="datepicker form-control" ng-model="formData.enddate">
-                            <label for="enddate">To</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col s12 m6 l4 form-group">
-                            <input id="checkbox_furnitured" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_furnitured"/>
-                            <label for="checkbox_furnitured">Furnished</label>
-                        </div>
-                        <div class="col s12 m6 l4 form-group">
-                            <input id="checkbox_kitchen" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_kitchen" />
-                            <label for="checkbox_kitchen">Equipped Kitchen</label>
-                        </div>
-                        <div class="col s12 m6 l4 form-group">
-                            <input id="checkbox_washing_machine" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_washing_machine" />
-                            <label for="checkbox_washing_machine">Washing machine</label>
+                <div class="row">
+                    <div class="col s6">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <div class="card-title">Availability and Costs</div>
+                                <span style="display: inline-block; margin-right: 25px; height:100px">
+                                    <p>From: {{formData.startdate}}</p>
+                                    <p>Price including utilities:</p>
+                                    <p>Deposit:</p>
+                                </span>
+                                <span style="display: inline-block;">
+                                    <p hide ng-show='formData.checkbox_shortterm'>Until: {{formData.enddate}}</p>
+                                    <p>{{formData.price}}€</p>
+                                    <p>{{formData.deposit}}€</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col s12 m6 l4 form-group">
-                            <input id="checkbox_barrier_free" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_barrier_free"/>
-                            <label for="checkbox_barrier_free">Barrier-free</label>
-                        </div>
-                        <div class="col s12 m4 l4 form-group">
-                            <input id="checkbox_pets" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_pets"/>
-                            <label for="checkbox_pets">Pets allowed</label>
-                        </div>
-                        <div class="col s12 m6 l4 form-group">
-                            <input id="checkbox_smoking" type="checkbox" class="filled-in form-control" ng-model="formData.checkbox_smoking"/>
-                            <label for="checkbox_smoking">Smoking allowed</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col s12 m6 l4 form-group">
-                            <input type="checkbox" class="filled-in form-control" id="checkbox_balcony" ng-model="formData.checkbox_balcony"/>
-                            <label for="checkbox_balcony">Balcony</label>
-                        </div>
-                        <div class="col s12 m6 l4 form-group">
-                            <input type="checkbox" class="filled-in form-control" id="checkbox_garden" ng-model="formData.checkbox_garden"/>
-                            <label for="checkbox_garden">Garden</label>
-                        </div>
-                        <div class="col s12 m6 l4 form-group">
-                            <input type="checkbox" class="filled-in form-control" id="checkbox_living_room" ng-model="formData.checkbox_living_room"/>
-                            <label for="checkbox_living_room">Living Room</label>
+                    <div class="col s6">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <div class="card-title">Accomodation Details</div>
+                                <span style="display: inline-block; margin-right: 25px; height:100px">
+                                    <p>Accomodation Type:</p>
+                                    <p>Room Size:</p>
+                                    <p>Apartment Size:</p>
+                                </span>
+                                <span style="display: inline-block;">
+                                    <p>{{formData.room_type}} TODO: FIX ME</p>
+                                    <p>{{formData.size_room}} m<sup>2</sup></p>
+                                    <p>{{formData.size_apartment}} m<sup>2</sup></p>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col s12 m6 l4"></div>
-                        <div class="col s12 m6 l4 form-group">
-                            <input type="checkbox" class="filled-in form-control" id="checkbox_basement" ng-model="formData.checkbox_basement"/>
-                            <label for="checkbox_basement">Basement</label>
+                    <div class="col s6">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <div class="card-title">Your Roommates:</div>
+                                <span style="display: inline-block; margin-right: 25px; height:300px">
+                                    <p>Number of Male Roommates:</p>
+                                    <p>Number of Female Roommates:</p>
+                                    <p>Number of Other Roommates:</p>
+                                    <p>Minimum Age:</p>
+                                    <p>Maximum Age:</p>
+                                </span>
+                                <span style="display: inline-block;">
+                                    <p>{{formData.nr_of_male_roommates}}</p>
+                                    <p>{{formData.nr_of_female_roommates}}</p>
+                                    <p>{{formData.nr_of_other_roommates}}</p>
+                                    <p>{{formData.roommate_min_age}}</p>
+                                    <p>{{formData.roommate_max_age}}</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="input-field col s12 m12 l4 form-group">
-                            <input id="nr_of_male_roommates" type="number" class="validate" ng-model="formData.nr_of_male_roommates">
-                            <label for="nr_of_male_roommates">Number of Male Roommates:</label>
-                        </div>
-                        <div class="input-field col s12 m12 l4 form-group">
-                            <input id="nr_of_female_roommates" type="number" class="validate" ng-model="formData.nr_of_female_roommates">
-                            <label for="nr_of_female_roommates">Number of Female Roommates:</label>
-                        </div>
-                        <div class="input-field col s12 m12 l4 form-group">
-                            <input id="nr_of_other_roommates" type="number" class="validate" ng-model="formData.nr_of_other_roommates">
-                            <label for="nr_of_other_roommates">Number of Other Roommates:</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <slider-hack>Age Range of Roommates</slider-hack>
-                            <div id="age_range"></div>
+                    <div class="col s6">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <div class="card-title">Amenities</div>
+                                <span style="display: inline-block; margin-right: 25px; height:300px">
+                                    <p hide ng-show='formData.checkbox_living_room'>Living Room</p>
+                                    <p hide ng-show='formData.checkbox_furnitured'>Furnished</p>
+                                    <p hide ng-show='formData.checkbox_kitchen'>Equipped Kitchen</p>
+                                    <p hide ng-show='formData.checkbox_washing_machine'>Washing machine</p>
+                                    <p hide ng-show='formData.checkbox_barrier_free'>Barrier-free</p>
+                                    <p hide ng-show='formData.checkbox_pets'>Pets allowed</p>
+                                    <p hide ng-show='formData.checkbox_smoking'>Smoking allowed</p>
+                                    <p hide ng-show='formData.checkbox_balcony'>Balcony</p>
+                                    <p hide ng-show='formData.checkbox_basement'>Basement</p>
+                                    <p hide ng-show='formData.checkbox_garden'>Garden</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="input-field col s12 form-group">
-                            <textarea id="comments" class="materialize-textarea form-control" ng-model="formData.comments" length="500" style="height:22px;"></textarea>
-                            <label for="comments">Optional Description:</label>
+                    <div class="col s12">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <div class="card-title">Additional Details</div>
+                                {{formData.comments}}
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div  sticky unsticky-class="unstuck" sticky-class="stuck" use-placeholder="false" offset="10"
-      class="col s4 mapcontainer stick">
-    <flatling-map></flatling-map>
+class="col s4 mapcontainer stick">
+<flatling-map></flatling-map>
 </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+

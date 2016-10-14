@@ -5,6 +5,7 @@ var schema = new mongoose.Schema({
     display_name : {type : String},
     first_name : {type : String},
     last_name : {type : String},
+    about : {type : String},
     gender: {type : String},
     pictureUrl: {type : String},
     personalityProfile: {

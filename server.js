@@ -16,6 +16,8 @@ var expressHbs       = require('express-handlebars');
 var user = require('./app/route/user');
 var rooms = require('./app/route/rooms');
 var bookmarks = require('./app/route/bookmarks');
+var messages = require('./app/route/messages');
+var pokes = require('./app/route/pokes');
 
 // configuration ===========================================
 var db_setts = require('./config/db');
@@ -131,6 +133,8 @@ app.use(express.static(__dirname + '/public'));
 app.use('/rooms', rooms);
 app.use('/user', user);
 app.use('/bookmarks', bookmarks);
+app.use('/messsages', messages);
+app.use('/pokes', pokes);
 
 require('./app/routes')(app); // configure our route
 

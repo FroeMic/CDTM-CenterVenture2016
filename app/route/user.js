@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var Survey = require('../models/survey');
 var User = require('../models/User');
 
+var helpers = require('../helpers');
+
 // get own user object
 router.use('/', auth.sessionRequired);
 router.get('/', function (req, res) {
@@ -28,6 +30,30 @@ router.get('/', function (req, res) {
         ));
       }
     });
+});
+
+router.use('/profile/:user_id', auth.sessionRequired);
+router.get('/profile/:user_id', function (req, res) {
+  User.findOne({_id: req.params.user_id}, function (err, user) {
+    if(err) {
+      console.log(err);
+      res.status(500).send(
+          JSON.stringify({
+            status: 500,
+            description: 'Internal Server Error'
+          })
+      );
+    } else {
+      res.setHeader('Content-Type', 'application/json');
+      // don't send the profile to the user
+      if (user.personalityProfile != null && user.personalityProfile != undefined ){
+        user.personalityProfile = true;
+      }
+      res.send(JSON.stringify(
+          user
+      ));
+    }
+  });
 });
 
 router.use('/personalitySurvey', auth.sessionRequired);
@@ -209,8 +235,9 @@ router.post('/personalitySurvey', function (req, res) {
 
     var query = { fb_id: req.session.user.id }
     var update = {
-      personalityProfile: personalityProfile
-    }
+      personalityProfile: personalityProfile,
+      about: survey.sections[0].questions[5].answer,
+    };
 
     User.findOneAndUpdate(query, update, {upsert:true, new:true}, function (err, dbuser) {
       if(err) {
@@ -224,7 +251,7 @@ router.post('/personalitySurvey', function (req, res) {
   res.send("success");
 });
 
-// router.use('/personalitySurvey', auth.sessionRequired);
+router.use('/personalitySurvey', auth.sessionRequired);
 router.get('/personalitySurvey', function (req, res) {
   Survey.findOne({title: 'PersonalitySurvey'}, function (err, survey) {
     if(err) {
@@ -241,6 +268,51 @@ router.get('/personalitySurvey', function (req, res) {
       ));
     }
   });
+});
+
+router.use('/matches', auth.sessionRequired);
+router.get('/matches', function (req, res) {
+
+  User.findOne({fb_id: req.session.user.id}, function (err, user) {
+    if(err) {
+      res.status(500).send(
+        JSON.stringify({
+          status: 500,
+          description: 'Internal Server Error'
+        })
+      );
+    } else {
+
+      User.find({fb_id: {$ne : req.session.user.id}}, function (err, users) {
+        if(err) {
+          res.status(500).send(
+            JSON.stringify({
+              status: 500,
+              description: 'Internal Server Error'
+            })
+          );
+        } else {
+          var matches = []
+          users.forEach(function(other) {
+            if(other.personalityProfile != null && other.personalityProfile != null) {
+              matches.push({
+                id: other.id,
+                name: other.display_name,
+                score: helpers.calculatePersonalityMatching(user, other),
+                occupation: other.personalityProfile.occupation,
+                pictureUrl: other.pictureUrl
+              })
+            }
+          })
+          res.setHeader('Content-Type', 'application/json');
+          res.send(JSON.stringify(
+            matches
+          ));
+        }
+      });
+    }
+  });
+
 });
 
 module.exports = router;

@@ -57,8 +57,24 @@ module.exports = function(app) {
                     url: '/map/playgrounds'
                 },
                 {
-                    name: 'Test',
-                    url: '/dummy/pois'
+                    name: 'Bars',
+                    url: '/map/playgrounds'
+                },
+                {
+                    name: 'Restaurants',
+                    url: '/map/playgrounds'
+                },
+                {
+                    name: 'Banks',
+                    url: '/map/playgrounds'
+                },
+                {
+                    name: 'Supermarkets',
+                    url: '/map/playgrounds'
+                },
+                {
+                    name: 'Cell coverage',
+                    url: '/map/playgrounds'
                 }
             ]
         ));
