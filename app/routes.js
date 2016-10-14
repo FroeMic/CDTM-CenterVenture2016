@@ -58,7 +58,7 @@ module.exports = function(app) {
                 },
                 {
                     name: 'Bars',
-                    url: '/map/playgrounds'
+                    url: '/map/bars'
                 },
                 {
                     name: 'Restaurants',
