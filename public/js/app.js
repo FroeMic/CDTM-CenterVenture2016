@@ -5,7 +5,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var cvApp = angular.module('cvApp', ['sticky', 'ngRoute', 'leaflet-directive', 'rzModule']);
+var cvApp = angular.module('cvApp', ['sticky', 'ngRoute', 'leaflet-directive']);
 var HOSTSTRING = ""
 
 function shake(element) {
@@ -381,48 +381,73 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
     //Price-Range
-    $scope.price_slider = {
-      minValue: 100,
-      maxValue: 900,
-      options:{
-        floor:0,
-        ceil:1000,
-        step:1,
-      }
-    };
+    var dragSlider = document.getElementById('price_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 200, 600 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  100,
+        'max':  1000
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
 
-    //Room-Range
-    $scope.room_slider = {
-      minValue: 10,
-      maxValue: 30,
-      options:{
-        floor:0,
-        ceil:40,
-        step:1,
-      }
-    };
-    //Price-Range
-    $scope.apartment_slider = {
-      minValue: 10,
-      maxValue: 135,
-      options:{
-        floor:0,
-        ceil:150,
-        step:1,
-      }
-    };
+    var dragSlider = document.getElementById('room_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 10, 20 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  1,
+        'max':  35
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
 
-    //travel-Range
-    $scope.travel_slider = {
-      minValue: 10,
-      maxValue: 75,
-      options:{
-        floor:0,
-        ceil:90,
-        step:1,
-      }
-    };
+    var dragSlider = document.getElementById('apartment_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 30, 70 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  5,
+        'max':  150
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
 
+    var dragSlider = document.getElementById('traveltime_range');
+    noUiSlider.create(dragSlider, {
+      start: [ 5, 40 ],
+      behaviour: 'drag',
+      connect: true,
+      step:1,
+      range: {
+        'min':  1,
+        'max':  60
+      },
+      format: wNumb({
+        decimals: 0,
+        thousand: '.',
+        //postfix: ' (€)',
+      })
+    });
   });
    $scope.city = $routeParams.city;
     console.log($scope.city);
@@ -454,17 +479,21 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
         $(document).ready(function() {
             $('input#input_text, textarea#comments').characterCounter();
         });
-        //age_range-Range
-        $scope.age_slider = {
-          minValue: 10,
-          maxValue: 75,
-          options:{
-            floor:0,
-            ceil:90,
-            step:1,
-          }
-      };
 
+        //Price-Range
+        var dragSlider = document.getElementById('age_range');
+
+        noUiSlider.create(dragSlider, {
+            start: [ 18, 45 ],
+            behaviour: 'drag',
+            connect: true,
+            step: 1,
+            range: {
+                'min':  0,
+                'max':  99
+            },
+            tooltips: true
+        });
     });
 
     // create a blank object to handle form data.
@@ -494,7 +523,9 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
                   $window.location.href = '/#/offer/'+data._id;
                 }
             });
+
     };
+
 }]);
 
 cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
@@ -512,8 +543,24 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
         });
         $(document).ready(function() {
             $('input#input_text, textarea#comments').characterCounter();
-            $('label').addClass('active');
         });
+
+        //Price-Range
+        var dragSlider = document.getElementById('age_range');
+
+        noUiSlider.create(dragSlider, {
+            start: [ 18, 45 ],
+            behaviour: 'drag',
+            connect: true,
+            step: 1,
+            range: {
+                'min':  0,
+                'max':  99
+            },
+            tooltips: true
+        });
+
+        $('label').addClass('active');
     });
 
     // calling our submit function.
