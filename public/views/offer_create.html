@@ -139,8 +139,10 @@
 
               <div class="row">
                 <div class="input-field col s12">
-                  <slider-hack>Age Range of Roommates</slider-hack>
-                  <div id="age_range"></div>
+                  <slider-hack>Age range of roommates</slider-hack>
+                  <rzslider rz-slider-model="age_slider.minValue"
+                            rz-slider-high="age_slider.maxValue"
+                            rz-slider-options="age_slider.options"></rzslider>
                 </div>
               </div>
 
