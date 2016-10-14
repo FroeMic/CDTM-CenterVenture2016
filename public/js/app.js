@@ -587,10 +587,16 @@ cvApp.controller('bookmarksController', function($scope, $http) {
     });
 });
 
-cvApp.controller('messagesController', function($scope) {
-  $(document).ready(function(){
-    $('ul.tabs').tabs();
-  });
+cvApp.controller('messagesController', function($scope, $http) {
+    $(document).ready(function(){
+        $('ul.tabs').tabs();
+    });
+
+    $http.get('/pokes/to/'+$scope.user._id).
+    then(function(response) {
+        $scope.pokes = response.data;
+    });
+
 });
 
 cvApp.controller('messageViewController', function($scope, $timeout, $http) {

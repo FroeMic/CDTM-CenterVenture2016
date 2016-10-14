@@ -19,6 +19,15 @@ router.get('/', function(req, res, next) {
     });
 });
 
+/* GET /rooms/id */
+router.use('/to/:user_id', auth.sessionRequired);
+router.get('/to/:user_id', function(req, res, next) {
+    Poke.find({to: req.params.user_id}).populate('from').exec(function (err, pokes) {
+        if (err) return next(err);
+        res.json(pokes);
+    });
+});
+
 /* POST /rooms */
 router.use('/:profile_id', auth.sessionRequired);
 router.post('/:profile_id', function(req, res, next) {
