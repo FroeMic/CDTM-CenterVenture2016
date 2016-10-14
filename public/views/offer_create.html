@@ -9,7 +9,9 @@
                   <h5>Street Address</h5>
                 </div>
                 <div class="input-field col s12 form-group">
-                  <input id="address" type="text" class="validate form-control" ng-model="formData.address">
+                  <input id="address" type="text" class="validate form-control" ng-model="formData.address"
+                         data-activates="search-dropdown" data-beloworigin="true" autocomplete="off">
+                  <ul id="search-dropdown" class="dropdown-content ac-dropdown active"></ul>
                   <label for="address">Street Address</label>
                 </div>
               </div>
@@ -173,7 +175,7 @@
     </div>
 
     <div sticky unsticky-class="unstuck" sticky-class="stuck" use-placeholder="false" offset="10"
-         class="col s4 mapcontainer stick">
+          class="col s4 mapcontainer stick">
       <flatling-map></flatling-map>
     </div>
   </div>

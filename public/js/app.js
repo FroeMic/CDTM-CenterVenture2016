@@ -169,7 +169,7 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
         $('select').material_select();
 
         var search = $('#main-search-bar');
-        $('#main-search-bar').materialize_autocomplete({
+        search.materialize_autocomplete({
             multiple: { enable: false },
             dropdown: { el: '#search-dropdown' },
             getData: function(value, callback) {
@@ -184,7 +184,7 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
                 });
             }
         });
-        $('#main-search-bar').on("change paste keyup input", function() {
+        search.on("change paste keyup input", function() {
             $scope.query = $(this).val();
             var id = $(this).data('value');
             if(id) {
@@ -199,31 +199,39 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
     };
 });
 
-var Geocoder = {
-    init: function () {
-        L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
-        this._geocoderCtrl = L.mapbox.geocoderControl('mapbox.places', {});
-    },
-    search: function(value, cb) {
-        this._geocoderCtrl.geocoder.query({query: value}, function(err, res) {
-            if(err) {
-                console.error(err);
-            } else {
-                var results = res.results.features.map(function (x) {
-                    return {
-                        latlong: x.center.concat().reverse(),
-                        long: x.place_name,
-                        short: x.text
+function _getGeocoder(id) {
+    var obj = {
+        init: function (id) {
+            L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
+            this._geocoder = L.mapbox.geocoder(id || 'mapbox.places');
+        },
+        search: function(value, cb) {
+            this._geocoder.query({
+                query: value,
+                proximity: [48.1345,11.571]
+            }, function(err, res) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    var results = res.results.features.map(function (x) {
+                        return {
+                            latlong: x.center.concat().reverse(),
+                            long: x.place_name,
+                            short: x.text
+                        }
+                    });
+                    if(results.length > 0) {
+                        cb(results);
                     }
-                });
-                if(results.length > 0) {
-                    cb(results);
                 }
-            }
-        });
-    }
-};
-Geocoder.init();
+            });
+        }
+    };
+    obj.init(id);
+    return obj;
+}
+
+var Geocoder = _getGeocoder();
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
@@ -451,6 +459,10 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
   });
    $scope.city = $routeParams.city;
     console.log($scope.city);
+    $scope.rooms = [];
+    $http.get('/rooms').then(function (rooms) {
+        $scope.rooms = rooms.data;
+    });
 });
 
 cvApp.controller('profileController', function($scope) {
@@ -470,14 +482,46 @@ cvApp.controller('messagesController', function($scope) {
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+    $scope.$watch('coordinates', console.log);
+
     angular.element(document).ready(function () {
         $('select').material_select();
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 15 // Creates a dropdown of 15 years to control year
         });
-        $(document).ready(function() {
-            $('input#input_text, textarea#comments').characterCounter();
+        $('input#input_text, textarea#comments').characterCounter();
+
+
+        var search = $('#address');
+        search.materialize_autocomplete({
+            multiple: { enable: false },
+            dropdown: { el: '#search-dropdown' },
+            getData: function(value, callback) {
+                Geocoder.search(value, function (data) {
+                    var mapped = data.map(function (x, idx) {
+                        return {
+                            id: x.latlong,
+                            text: x.long
+                        }
+                    });
+                    console.log("results:", mapped.map(function (x) {
+                        return x.text;
+                    }));
+                    callback(value, mapped);
+                });
+            }
+        });
+        search.on("change paste input", function() {
+            var value = $scope.formData.address = $(this).val();
+            var id = $(this).data('value');
+            console.log("createoffersearch:", value, id);
+            if(id) {
+                var pos = JSON.parse('[' + id + ']');
+                $scope.formData.coordinates = pos;
+                $scope.location = pos;
+                $scope.$apply();
+            }
         });
 
         //Price-Range
@@ -501,7 +545,6 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
     // calling our submit function.
     $scope.submitForm = function() {
         console.log($scope.formData);
-        // Posting data to php file
         $http({
             method  : 'POST',
             url     : '/rooms',
@@ -637,7 +680,7 @@ cvApp.directive('flatlingMap', function () {
 });
 
 
-cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', function($scope, $http, leafletData) {
+cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'leafletData', function($scope, $http, $location, leafletData) {
     angular.extend($scope, {
         center: {
             lat: 48.143763,
@@ -675,6 +718,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
 
     function onLocation(newValue, oldValue) {
         // try to parse json:
+        console.log('try set location', newValue);
         if(typeof(newValue) == 'string') {
             try {
                 var json = JSON.parse(newValue);
@@ -700,8 +744,56 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
     }
 
     $scope.$watch("location", onLocation);
+    var roomsLayer = null;
     $scope.$watch('rooms', function (newrooms, oldrooms) {
         console.log('rooms:', oldrooms, '->', newrooms);
+        // make geojson
+        var geojson = {
+            type: 'FeatureCollection'
+        };
+
+        function makeFeature(room) {
+            return {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": room.coordinates.concat().reverse()
+                },
+                "properties": {
+                    "title": room.price + '€ / ' + room.size_room + 'qm',
+                    "description": room.address,
+                    "marker-color": "#fc4353",
+                    "marker-size": "large",
+                    "marker-symbol": Math.min(99, Math.round(room.score) || 0),
+                    url: '/room/' + room._id
+                }
+            }
+        }
+
+        if(!newrooms.map) {
+            console.log(newrooms);
+            return;
+        }
+
+        geojson.features = newrooms.map(makeFeature);
+        if(!roomsLayer) {
+            roomsLayer = L.mapbox.featureLayer(geojson, {
+                pointToLayer: function (feature, latlang) {
+                    var marker = L.mapbox.marker.style(feature, latlang);
+                    return marker;
+                }
+            }).addTo(map);
+            roomsLayer.on('mouseover', function(e) {
+                e.layer.openPopup();
+            });
+            roomsLayer.on('mouseout', function(e) {
+                e.layer.closePopup();
+            });
+            roomsLayer.on('click', function(e) {
+                $location.path(e.layer.feature.properties.url);
+            });
+        }
+        roomsLayer.setGeoJSON(geojson);
     });
 
     var deferredCoords = null;
@@ -710,12 +802,16 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         if(map == null) {
             deferredCoords = coordinates;
         } else {
-            map.setView(newValue, 12, {animate: true});
+            map.setView(coordinates, 12, {animate: true});
         }
     }
 
     $http.get('/map/plugins').then(function(resp) {
         $scope.datasets = resp.data;
+        setTimeout(function () {
+            var thing = $('.leaflet-top.leaflet-right>.leaflet-control');
+            shake(thing[1]);
+        }, 2000);
     });
     $scope.datasetClicked = function (dataset) {
         // console.log('datasetclicked', dataset);
@@ -977,4 +1073,10 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
 
         return omnivore.kml('/maps/public/munich-districts.kml', null, customLayer).addTo(map);
     }
+
+    // return {
+    //     scope: {
+    //         location: '=coordinates'
+    //     }
+    // };
 }]);

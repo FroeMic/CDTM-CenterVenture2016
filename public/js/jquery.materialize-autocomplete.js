@@ -193,6 +193,10 @@
             self.render();
 
             self.$el.on('input', function (e) {
+                if(self.prevent_reload) {
+                    self.prevent_reload = false;
+                    return;
+                }
                 var $t = $(this);
                 var value = $t.val();
 
@@ -433,6 +437,7 @@
             self.value = item.text;
             self.$el.val(item.text);
             self.$el.data('value', item.id);
+            self.prevent_reload = true;
             self.$el.trigger('input');
             self.$dropdown.html('').hide();
 

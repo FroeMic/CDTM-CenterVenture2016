@@ -15,6 +15,7 @@ var schema = new mongoose.Schema({
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     address: {type: String, default: ''},
     price: {type: Number, default: 0},
+    coordinates: {type: [Number], default: [] },
     deposit: {type: Number, default: 0},
     size_room: {type: Number, default: 0},
     size_apartment: {type: Number, default: 0},

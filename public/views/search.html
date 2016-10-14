@@ -1,6 +1,5 @@
 <div class="search-flex">
-  <div class="search-left" id="search-left">
-    <form class="col s12">
+    <form class="search-left" id="search-left">
       <div class ="row">
         <div class="section col s12" style="margin-top: 10px;">
           <h5>Find your perfect Apartment:</h5>
@@ -146,16 +145,15 @@
             </div>
           </div></li>
       </ul>
-      <div class="row">
-        <div class="col s12 right-align" style="margin-top:25px">
-          <div class="btn">
-            <span>Find Offer</span>
-          </div>
-        </div>
-      </div>
+      <!--<div class="row">-->
+        <!--<div class="col s12 right-align" style="margin-top:25px">-->
+          <!--<div class="btn">-->
+            <!--<span>Find Offer</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </form>
-  </div>
   <div class="search-map mapcontainer nomargins">
-    <flatling-map coordinates="{{city}}" toggle-left="#search-left"></flatling-map>
+    <flatling-map rooms="{{rooms}}" coordinates="{{city}}" toggle-left="#search-left"></flatling-map>
   </div>
 </div>

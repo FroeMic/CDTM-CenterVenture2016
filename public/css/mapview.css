@@ -109,6 +109,44 @@ strong {
     line-height:30px;
 }
 
+.leaflet-control {
+    transform: scale(1.2);
+    transform-origin: center;
+}
+
+.leaflet-left .leaflet-control {
+    margin-left: 15px !important;
+}
+.leaflet-right .leaflet-control {
+    margin-right: 15px !important;
+}
+.leaflet-top .leaflet-control {
+    margin-top: 15px !important;
+}
+.leaflet-bottom .leaflet-control {
+    margin-bottom: 15px !important;
+}
+
+.leaflet-control-attribution {
+    transform-origin: center right;
+}
+
+/*.leaflet-left.leaflet-top .leaflet-control {*/
+    /*transform-origin: top left;*/
+/*}*/
+
+/*.leaflet-right.leaflet-top .leaflet-control {*/
+    /*transform-origin: top right;*/
+/*}*/
+
+/*.leaflet-left.leaflet-bottom .leaflet-control {*/
+    /*transform-origin: bottom left;*/
+/*}*/
+
+/*.leaflet-right.leaflet-bottom .leaflet-control {*/
+    /*transform-origin: bottom right;*/
+/*}*/
+
 .marker-badge span {
 }
 
