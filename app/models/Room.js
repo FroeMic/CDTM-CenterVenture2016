@@ -7,6 +7,7 @@ var schema = new mongoose.Schema({
     user_id: {type: String, default: ''},
     address: {type: String, default: ''},
     price: {type: Number, default: 0},
+    coordinates: {type: [Number], default: [] },
     deposit: {type: Number, default: 0},
     size_room: {type: Number, default: 0},
     size_apartment: {type: Number, default: 0},

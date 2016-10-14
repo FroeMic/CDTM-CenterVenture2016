@@ -176,17 +176,22 @@ margin-top: 5px;
 .search-flex {
   display: flex;
   flex-flow: row nowrap;
+  height: 90vh;
+  align-items: stretch;
 }
 
 .search-left {
-  flex: 0 1 400px;
+  flex: 0 1 550px;
   margin-left: 5px;
   margin-right: 5px;
   box-shadow: 2px 0 2px -2px black;
+  overflow-y: scroll;
 }
 
 .customicon {
   line-height: 0;
+  width: 26px;
+  height: 26px;
   cursor: pointer !important;
 }
 
