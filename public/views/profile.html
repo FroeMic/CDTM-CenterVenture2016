@@ -33,7 +33,7 @@
             </div>
             <div class="col s12 m12 l4">
                 <img class="responsive-img" src={{profile.pictureUrl}}>
-                <br><br><br>
+                <br><p ng-hide="profile._id === user._id" >Your Matching Score: {{ rooms[0].score * 100}}%</p>
                 <div class="btn">
                     <span>Back</span>
                 </div>

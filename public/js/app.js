@@ -567,6 +567,7 @@ cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$windo
     $http.get('/user/profile/'+$routeParams.user_id)
         .then(function(response){
                 $scope.profile = response.data;
+                console.log($scope.profile)
             }
         );
     $http.get('/rooms/owner/'+$routeParams.user_id).
