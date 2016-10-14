@@ -16,4 +16,4 @@ var schema = new mongoose.Schema({
         timestamps: true
     });
 
-module.exports = mongoose.model('Poke', schema);
+module.exports = mongoose.model('Message', schema);
