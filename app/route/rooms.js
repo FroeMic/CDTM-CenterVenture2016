@@ -17,28 +17,17 @@ router.use('/', auth.sessionRequired);
 router.get('/', function(req, res, next) {
     Room.find().populate('owner').exec(function (err, rooms) {
         if (err) return next(err);
-        User.findOne({fb_id: req.session.user.id}, function (err, user) {
-            if(err) {
-                res.status(500).send(
-                    JSON.stringify({
-                        status: 500,
-                        description: 'Internal Server Error'
-                    })
-                );
-            } else {
-                var results = [];
-                var i;
-                for (i = 0; i < rooms.length; ++i) {
-                    var room = rooms[i].toObject();
-                    var score = calculatePersonalityMatching(user, room.owner);
-                    room.score = score;
-                    results.push(room);
-                    //console.log(room.owner);
-                }
-                //console.log(user);
-                res.json(results);
-            }
-        });
+        var results = [];
+        var i;
+        for (i = 0; i < rooms.length; ++i) {
+            var room = rooms[i].toObject();
+            var score = calculatePersonalityMatching(req.session.dbuser, room.owner);
+            room.score = score;
+            results.push(room);
+            //console.log(room.owner);
+        }
+        //console.log(user);
+        res.json(results);
     });
 });
 
