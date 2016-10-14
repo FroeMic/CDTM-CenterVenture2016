@@ -680,7 +680,7 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
     };
 }]);
 
-cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {  
+cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
     $scope.matches = null;
 
     $http.get('/rooms/'+$routeParams.offer_id).
@@ -699,6 +699,7 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
                    },0);
                  },
                  function(response){
+                   console.log(response);
                    // TODO: Handle Error
                    // failure callback
                 }

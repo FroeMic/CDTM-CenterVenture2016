@@ -4,9 +4,7 @@
               <div class="section">
                 <h5>Pictures</h5>
               </div>
-              <div ng-hide="matches==null || matches==undefined" ng-reapeat="match in matches | orderBy">
-                <match-card match="match"></match-card>
-              </div>
+
               <div style="position: relative;">
                 <div class="fixed-action-btn horizontal" style="position: absolute; display: inline-block; top: 24px; right: 24px;">
                   <a class="btn-floating btn-large red">
@@ -46,6 +44,16 @@
             </div>
             <div class="divider"></div>
             <div class ="row">
+
+            <div class="match-container">
+              <div ng-repeat="match in matches |  orderBy:'-score' | limitTo:1" ng-hide="match.score<0.7">
+                <div class="subtitle">
+                  People who might be interested in your offer
+                </div>
+                <match-card match="match"></match-card>
+              </div>
+            </div>
+
               <div class="section">
                 <h5>Street Address</h5>
               </div>
