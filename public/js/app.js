@@ -583,9 +583,9 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
                             text: x.long
                         }
                     });
-                    console.log("results:", mapped.map(function (x) {
-                        return x.text;
-                    }));
+                    // console.log("results:", mapped.map(function (x) {
+                    //     return x.text;
+                    // }));
                     callback(value, mapped);
                 });
             }
@@ -661,6 +661,40 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
             $('input#input_text, textarea#comments').characterCounter();
             $('label').addClass('active');
         });
+    });
+    var search = $('#address');
+    search.materialize_autocomplete({
+        multiple: { enable: false },
+        dropdown: { el: '#search-dropdown' },
+        getData: function(value, callback) {
+            Geocoder.search(value, function (data) {
+                var mapped = data.map(function (x, idx) {
+                    return {
+                        id: x.latlong,
+                        text: x.long
+                    }
+                });
+                // console.log("results:", mapped.map(function (x) {
+                //     return x.text;
+                // }));
+                callback(value, mapped);
+            });
+        }
+    });
+    search.on("change paste input", function() {
+        var value = $scope.formData.address = $(this).val();
+        var id = $(this).data('value');
+        console.log("createoffersearch:", value, id);
+        if(id) {
+            var pos = JSON.parse('[' + id + ']');
+            $scope.formData.coordinates = pos;
+            // $scope.location = pos;
+            $scope.$apply();
+        }
+    });
+
+    $scope.$watch('formData.coordinates', function (newVal) {
+        $scope.pin = newVal;
     });
 
     // calling our submit function.
@@ -886,7 +920,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
                     "description": room.address,
                     "marker-color": "#fc4353",
                     "marker-size": "large",
-                    "marker-symbol": Math.min(99, Math.round(room.score) || 0),
+                    "marker-symbol": Math.min(99, Math.round(room.score * 100) || 0),
                     url: '/room/' + room._id
                 }
             }
@@ -920,9 +954,10 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
 
     var deferredCoords = null;
     function moveTo(coordinates, zoom) {
-        console.log("move to", coordinates);
+        console.log("move to", coordinates, zoom);
         if(map == null) {
             deferredCoords = coordinates;
+            console.log('deferred');
         } else {
             map.setView(coordinates, zoom || 12, {animate: true});
         }
@@ -1002,7 +1037,10 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
                 // already moving
             } else {
                 setTimeout(function () {
-                    map.setZoom(11, {animate: true});
+                    if(!$scope.pin) {
+                        console.log('deferred zoom');
+                        map.setZoom(11, {animate: true});
+                    }
                 }, 1000);
             }
         }

@@ -244,6 +244,11 @@ margin-top: 5px;
   margin-right: 5px;
   box-shadow: 2px 0 2px -2px black;
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.search-left.grow {
+    flex: 1 1 400px;
 }
 
 .customicon {
@@ -254,7 +259,7 @@ margin-top: 5px;
 }
 
 .search-map {
-  flex: 1 0 auto;
+  flex: 2 0 auto;
 }
 
 personality-test .dim {
