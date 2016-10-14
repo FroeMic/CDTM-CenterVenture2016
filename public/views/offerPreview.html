@@ -8,14 +8,14 @@
 				<span ng-if="!owner" style="padding-right: 20px;">Match Rate: {{room.score * 100 | number:0 }}%</span>
 				<span style="padding-right: 20px;">Cost: {{room.price}}&euro;</span>
 			</span>
-			<span ng-if="!bookmarked" class="card-title card-button">
+			<span ng-if="!owner && !bookmarked" class="card-title card-button">
 				<button ng-click="submitBookmark()"  type="submit" class="btn-floating waves-effect waves-light">
 					<i class="material-icons">
 						thumb_up
 					</i>
 				</button>
 			</span>
-			<span ng-if="bookmarked" class="card-title card-button">
+			<span ng-if="!owner && bookmarked" class="card-title card-button">
 				<button ng-click="removeBookmark(bookmark._id)"  type="submit" class="btn-floating waves-effect waves-light btn-red">
 					<i class="material-icons">
 						delete
