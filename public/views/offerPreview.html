@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="card">
 		<div class="card-image">
-			<a href="#/DEINEMUDDA">
+			<a href="#/room/{{room._id}}">
 				<img src="{{room.pictures[0].img}}">
 			</a>
 			<span class="card-title card-titel-new">
@@ -9,11 +9,13 @@
 				<span style="padding-right: 20px;">Cost: {{room.price}}&euro;</span>
 			</span>
 			<span class="card-title card-button">
-				<span ng-click="count = count + 1" ng-init="count=0" class="btn-floating waves-effect waves-light">
+				<form name="bookmarkForm" ng-submit="bookmark()">
+				<button ng-click="count = count + 1" ng-init="count=0" type="submit" class="btn-floating waves-effect waves-light">
 					<i class="material-icons">
 						thumb_up
 					</i>
-				</span>
+				</button>
+				</form>
 			</span>
 		</div>
 		<div class="card-content">

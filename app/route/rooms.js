@@ -73,7 +73,7 @@ router.get('/owner/:user_id', function(req, res, next) {
 /* PUT /rooms/:id */
 router.use('/:room_id', auth.sessionRequired);
 router.put('/:room_id', function(req, res, next) {
-    Room.where({_id: req.params.room_id, owner: req.session.user.id}).update(req.body, function (err, post) {
+    Room.where({_id: req.params.room_id, owner: req.session.dbuser._id}).update(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -82,7 +82,7 @@ router.put('/:room_id', function(req, res, next) {
 /* DELETE /rooms/:id */
 router.use('/:id', auth.sessionRequired);
 router.delete('/:id', function(req, res, next) {
-    Room.find({_id: req.params.id, owner: req.session.user.id}).remove(function (err, post) {
+    Room.find({_id: req.params.id, owner: req.session.dbuser._id}).remove(function (err, post) {
         if (err) return next(err);
         res.json(post);
     });

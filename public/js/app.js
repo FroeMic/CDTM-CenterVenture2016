@@ -121,7 +121,7 @@ cvApp.directive("personalityTest", function () {
 cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
-      controller: "offerPreviewController",
+      controller: "offerPreviewController"
    };
 });
 
@@ -335,19 +335,29 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
   $scope.room.createdAt = new Date($scope.room.createdAt).toUTCString();
 
   $scope.room.pictures = [
-                {
-                  img: '/img/room_indoor2.jpeg',
-                  description: "Spacious Kitchen",
-                },
-                {
-                  img: '/img/houses.jpg',
-                  description: "Quiet Neighbourhood",
-                },
-                {
-                  img: '/img/room_indoor1.jpeg',
-                  description: "German Style Dungeon",
-                }
-              ]
+    {
+      img: '/img/room_indoor2.jpeg',
+      description: "Spacious Kitchen",
+    },
+    {
+      img: '/img/houses.jpg',
+      description: "Quiet Neighbourhood",
+    },
+    {
+      img: '/img/room_indoor1.jpeg',
+      description: "German Style Dungeon",
+    }
+  ];
+
+    $scope.bookmark = function() {
+        // Posting data to php file
+        $http({
+            method  : 'POST',
+            url     : '/bookmarks',
+            data    : JSON.stringify({room: $scope.room._id}), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
 });
 
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
@@ -436,7 +446,11 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
 cvApp.controller('profileController', function($scope) {
 });
 
-cvApp.controller('bookmarksController', function($scope) {
+cvApp.controller('bookmarksController', function($scope, $http) {
+    $http.get('/bookmarks').
+    then(function(response) {
+        $scope.bookmarks = response.data;
+    });
 });
 
 cvApp.controller('messagesController', function($scope) {
