@@ -1029,7 +1029,8 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             'Districts': loadDistricts,
             'Test': loadUrl.bind(undefined, dataset.url, markers),
             'Rents': loadUrl.bind(undefined, dataset.url, rent),
-            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster)
+            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster),
+            'Bars': loadUrl.bind(undefined, dataset.url, heatmap)
         };
 
         if(!(datasetId in actions)) {
@@ -1209,6 +1210,18 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             marker.bindPopup(title);
             layer.addLayer(marker);
         }
+
+        map.addLayer(layer);
+        return layer;
+    }
+
+    function heatmap(data) {
+        var layer = new L.heatLayer([], { maxZoom: 18, radius: 30, blur: 30, max: 0.95 })
+
+        data.forEach( function(element, index) {
+          layer.addLatLng(element.latlong);
+          // statements
+        });
 
         map.addLayer(layer);
         return layer;
