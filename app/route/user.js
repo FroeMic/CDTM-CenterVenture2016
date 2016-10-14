@@ -64,6 +64,7 @@ router.post('/personalitySurvey', function (req, res) {
     personalityProfile.birthday = new Date(survey.sections[0].questions[2].answer);
     personalityProfile.gender = survey.sections[0].questions[3].answer;
     personalityProfile.occupation = survey.sections[0].questions[4].answer;
+    personalityProfile.about = survey.sections[0].question[5].answer;
 
     personalityProfile.values = [];
 
