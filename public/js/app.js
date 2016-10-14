@@ -171,7 +171,7 @@ cvApp.directive("messageView", function () {
 cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
-    $scope.notifications = 10;
+    $scope.notifications = 0;
     $scope.needsPersonalityTest = false;
     $scope.user = null;
 
@@ -189,6 +189,19 @@ cvApp.controller('mainController', function($scope, $location, $http, $window, $
                      $scope.needsPersonalityTest = true
                    }
                  }
+
+                 $http.get(HOSTSTRING + '/pokes/to/' + $scope.user._id)
+                      .then(
+                          function(response){
+                            // success callback
+                            $scope.notifications = response.data.length;
+                          },
+                          function(response){
+                            // failure callback
+                            console.log(response.data);
+                         }
+                       );
+
                },
                function(response){
                  // failure callback
@@ -567,6 +580,7 @@ cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$windo
     $http.get('/user/profile/'+$routeParams.user_id)
         .then(function(response){
                 $scope.profile = response.data;
+                console.log($scope.profile)
             }
         );
     $http.get('/rooms/owner/'+$routeParams.user_id).
