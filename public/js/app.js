@@ -57,7 +57,12 @@ cvApp.config(function($routeProvider) {
             controller: 'searchController'
         })
 
-        .when('/profile', {
+        .when('/account', {
+            templateUrl : '../views/account.html',
+            controller  : 'accountController'
+        })
+
+        .when('/profile/:user_id', {
             templateUrl : '../views/profile.html',
             controller  : 'profileController'
         })
@@ -473,10 +478,16 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
     }
 });
 
-
-
-cvApp.controller('profileController', function($scope) {
+cvApp.controller('accountController', function($scope) {
 });
+
+cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
+    $http.get('/user/'+$routeParams.user_id)
+        .then(function(response){
+                $scope.profile = response.data;
+            }
+        );
+}]);
 
 cvApp.controller('bookmarksController', function($scope, $http) {
     $http.get('/bookmarks').
