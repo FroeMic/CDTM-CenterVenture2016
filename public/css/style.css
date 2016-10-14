@@ -88,6 +88,14 @@ nav .input-field label i {
   color: rgba(0, 0, 0, 0.8);
 }
 
+nav .dropdown-content li > a, .dropdown-content li > span {
+    font-size: 16px;
+    color: #0d1b2a;
+    display: block;
+    line-height: 22px;
+    padding: 14px 16px;
+}
+
 .parallax-container {
   min-height: 380px;
   line-height: 0;
@@ -128,7 +136,7 @@ nav .input-field label i {
   overflow: hidden;
   z-index: 0;
   transition: height .5s;
-  height: calc(50vh)
+  height: calc(60vh)
 }
 
 .search--image .search--container {
