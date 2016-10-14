@@ -2,6 +2,9 @@
  * Created by cwoebker on 12.10.16.
  */
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+require('./User');
 
 var picture = new mongoose.Schema({
     img: {type : String, default: ''},
@@ -9,7 +12,7 @@ var picture = new mongoose.Schema({
 });
 
 var schema = new mongoose.Schema({
-    user_id: {type: String, default: ''},
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
     address: {type: String, default: ''},
     price: {type: Number, default: 0},
     deposit: {type: Number, default: 0},
