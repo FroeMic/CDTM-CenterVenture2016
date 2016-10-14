@@ -1,6 +1,5 @@
 <div class="search-flex">
-  <div class="search-left" id="search-left">
-    <form class="col s12">
+    <form class="search-left" id="search-left">
       <div class ="row">
         <div class="section col s12" style="margin-top: 10px;">
           <h5>Find your perfect Apartment:</h5>
@@ -23,8 +22,10 @@
 
       <div class="row">
         <div class="input-field col s12">
-          <h6>Price range</h6>
-          <div id="price_range"></div>
+          <h6>Price range (€)</h6>
+          <rzslider rz-slider-model="price_slider.minValue"
+                    rz-slider-high="price_slider.maxValue"
+                    rz-slider-options="price_slider.options"></rzslider>
         </div>
       </div>
 
@@ -42,8 +43,10 @@
 
       <div class="row">
         <div class="input-field col s12">
-          <h6>How long are you willing to travel to university?</h6>
-          <div id="traveltime_range"></div>
+          <h6>How long are you willing to travel to university? (min)</h6>
+          <rzslider rz-slider-model="travel_slider.minValue"
+                    rz-slider-high="travel_slider.maxValue"
+                    rz-slider-options="travel_slider.options"></rzslider>
         </div>
       </div>
 
@@ -58,8 +61,10 @@
                 <div class="col s12">
 
                   <div class="col s12">
-                    <h6>Room size</h6>
-                    <div id="room_range"></div>
+                    <h6>Room size (m<sup>2</sup>)</h6>
+                    <rzslider rz-slider-model="room_slider.minValue"
+                              rz-slider-high="room_slider.maxValue"
+                              rz-slider-options="room_slider.options"></rzslider>
                   </div>
                 </div>
               </div>
@@ -69,8 +74,10 @@
               <div class="row">
                 <div class="col s12">
                   <div class="input-field col s12">
-                    <h6>Apartment size</h6>
-                    <div id="apartment_range"></div>
+                    <h6>Apartment size (m<sup>2</sup>)</h6>
+                    <rzslider rz-slider-model="apartment_slider.minValue"
+                              rz-slider-high="apartment_slider.maxValue"
+                              rz-slider-options="apartment_slider.options"></rzslider>
                   </div>
                 </div>
               </div>
@@ -131,7 +138,7 @@
                   </div>
                   <div class="input-field col s12 form-group">
                     <input id="max_nr_of_roommates" type="number" class="validate" ng-model="formData.max_nr_of_roommates">
-                    <label for="max_nr_of_roommates">Number of Male Roommates:</label>
+                    <label for="max_nr_of_roommates">Number of Roommates:</label>
                   </div>
                   <div class="input-field col s12 form-group" style="">
                     <input type="checkbox" class="filled-in form-control" id="male_roommates" ng-model="formData.male_roommates"/>
@@ -146,16 +153,15 @@
             </div>
           </div></li>
       </ul>
-      <div class="row">
-        <div class="col s12 right-align" style="margin-top:25px">
-          <div class="btn">
-            <span>Find Offer</span>
-          </div>
-        </div>
-      </div>
+      <!--<div class="row">-->
+        <!--<div class="col s12 right-align" style="margin-top:25px">-->
+          <!--<div class="btn">-->
+            <!--<span>Find Offer</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </form>
-  </div>
   <div class="search-map mapcontainer nomargins">
-    <flatling-map coordinates="{{city}}" toggle-left="#search-left"></flatling-map>
+    <flatling-map rooms="{{rooms}}" coordinates="{{city}}" toggle-left="#search-left"></flatling-map>
   </div>
 </div>

@@ -5,7 +5,7 @@
 
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var cvApp = angular.module('cvApp', ['sticky', 'ngRoute', 'leaflet-directive']);
+var cvApp = angular.module('cvApp', ['sticky', 'ngRoute', 'leaflet-directive', 'rzModule']);
 var HOSTSTRING = ""
 
 function shake(element) {
@@ -77,6 +77,16 @@ cvApp.config(function($routeProvider) {
             controller  : 'offerDetailController'
         })
 
+        .when('/rooms', {
+            templateUrl : '../views/rooms.html',
+            controller  : 'roomListController'
+        })
+
+        .when('/room/:room_id', {
+            templateUrl : '../views/room.html',
+            controller  : 'roomDetailController'
+        })
+
         .when('/bookmarks', {
             templateUrl : '../views/bookmarks.html',
             controller  : 'bookmarksController'
@@ -104,6 +114,14 @@ cvApp.directive("personalityTest", function () {
    return {
       templateUrl: "/views/personalityTest.html",
       controller: "personalityTestController"
+   };
+});
+
+
+cvApp.directive("offerPreview", function () {
+   return {
+      templateUrl: "/views/offerPreview.html",
+      controller: "offerPreviewController"
    };
 });
 
@@ -151,7 +169,7 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
         $('select').material_select();
 
         var search = $('#main-search-bar');
-        $('#main-search-bar').materialize_autocomplete({
+        search.materialize_autocomplete({
             multiple: { enable: false },
             dropdown: { el: '#search-dropdown' },
             getData: function(value, callback) {
@@ -166,7 +184,7 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
                 });
             }
         });
-        $('#main-search-bar').on("change paste keyup input", function() {
+        search.on("change paste keyup input", function() {
             $scope.query = $(this).val();
             var id = $(this).data('value');
             if(id) {
@@ -181,31 +199,39 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
     };
 });
 
-var Geocoder = {
-    init: function () {
-        L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
-        this._geocoderCtrl = L.mapbox.geocoderControl('mapbox.places', {});
-    },
-    search: function(value, cb) {
-        this._geocoderCtrl.geocoder.query({query: value}, function(err, res) {
-            if(err) {
-                console.error(err);
-            } else {
-                var results = res.results.features.map(function (x) {
-                    return {
-                        latlong: x.center.concat().reverse(),
-                        long: x.place_name,
-                        short: x.text
+function _getGeocoder(id) {
+    var obj = {
+        init: function (id) {
+            L.mapbox.accessToken = 'pk.eyJ1IjoiYnJhbmRuZXJiIiwiYSI6ImNpdTQzYWZqNjAwMjQyeXFqOWR2a2tnZ2MifQ.LrcRwH1Vm-JsYR1zBb0Q9Q';
+            this._geocoder = L.mapbox.geocoder(id || 'mapbox.places');
+        },
+        search: function(value, cb) {
+            this._geocoder.query({
+                query: value,
+                proximity: [48.1345,11.571]
+            }, function(err, res) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    var results = res.results.features.map(function (x) {
+                        return {
+                            latlong: x.center.concat().reverse(),
+                            long: x.place_name,
+                            short: x.text
+                        }
+                    });
+                    if(results.length > 0) {
+                        cb(results);
                     }
-                });
-                if(results.length > 0) {
-                    cb(results);
                 }
-            }
-        });
-    }
-};
-Geocoder.init();
+            });
+        }
+    };
+    obj.init(id);
+    return obj;
+}
+
+var Geocoder = _getGeocoder();
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
@@ -304,6 +330,54 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
 
 });
 
+cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
+
+  $timeout(initMaterialize, 0);
+
+  function initMaterialize() {
+    $(document).ready(function(){
+      $('.slider').slider();
+    });
+  }
+
+  $scope.room.createdAt = new Date($scope.room.createdAt).toUTCString();
+
+  $scope.room.pictures = [
+    {
+      img: '/img/room_indoor2.jpeg',
+      description: "Spacious Kitchen",
+    },
+    {
+      img: '/img/houses.jpg',
+      description: "Quiet Neighbourhood",
+    },
+    {
+      img: '/img/room_indoor1.jpeg',
+      description: "German Style Dungeon",
+    }
+  ];
+
+    $scope.submitBookmark = function() {
+        // Posting data to php file
+        $http({
+            method  : 'POST',
+            url     : '/bookmarks',
+            data    : JSON.stringify({room: $scope.room._id}), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
+
+    $scope.removeBookmark = function(bookmark_id) {
+        // Posting data to php file
+        $http({
+            method  : 'DELETE',
+            url     : '/bookmarks/' + bookmark_id,
+            data    : JSON.stringify({}), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
+});
+
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
   $(document).ready(function(){
@@ -315,120 +389,126 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
     //Price-Range
-    var dragSlider = document.getElementById('price_range');
-    noUiSlider.create(dragSlider, {
-      start: [ 200, 600 ],
-      behaviour: 'drag',
-      connect: true,
-      step:1,
-      range: {
-        'min':  100,
-        'max':  1000
-      },
-      format: wNumb({
-        decimals: 0,
-        thousand: '.',
-        //postfix: ' (€)',
-      })
-    });
+    $scope.price_slider = {
+      minValue: 100,
+      maxValue: 900,
+      options:{
+        floor:0,
+        ceil:1000,
+        step:1,
+      }
+    };
 
-    var dragSlider = document.getElementById('room_range');
-    noUiSlider.create(dragSlider, {
-      start: [ 10, 20 ],
-      behaviour: 'drag',
-      connect: true,
-      step:1,
-      range: {
-        'min':  1,
-        'max':  35
-      },
-      format: wNumb({
-        decimals: 0,
-        thousand: '.',
-        //postfix: ' (€)',
-      })
-    });
+    //Room-Range
+    $scope.room_slider = {
+      minValue: 10,
+      maxValue: 30,
+      options:{
+        floor:0,
+        ceil:40,
+        step:1,
+      }
+    };
+    //Price-Range
+    $scope.apartment_slider = {
+      minValue: 10,
+      maxValue: 135,
+      options:{
+        floor:0,
+        ceil:150,
+        step:1,
+      }
+    };
 
-    var dragSlider = document.getElementById('apartment_range');
-    noUiSlider.create(dragSlider, {
-      start: [ 30, 70 ],
-      behaviour: 'drag',
-      connect: true,
-      step:1,
-      range: {
-        'min':  5,
-        'max':  150
-      },
-      format: wNumb({
-        decimals: 0,
-        thousand: '.',
-        //postfix: ' (€)',
-      })
-    });
+    //travel-Range
+    $scope.travel_slider = {
+      minValue: 10,
+      maxValue: 75,
+      options:{
+        floor:0,
+        ceil:90,
+        step:1,
+      }
+    };
 
-    var dragSlider = document.getElementById('traveltime_range');
-    noUiSlider.create(dragSlider, {
-      start: [ 5, 40 ],
-      behaviour: 'drag',
-      connect: true,
-      step:1,
-      range: {
-        'min':  1,
-        'max':  60
-      },
-      format: wNumb({
-        decimals: 0,
-        thousand: '.',
-        //postfix: ' (€)',
-      })
-    });
   });
    $scope.city = $routeParams.city;
     console.log($scope.city);
+    $scope.rooms = [];
+    $http.get('/rooms').then(function (rooms) {
+        $scope.rooms = rooms.data;
+    });
 });
-
-
-
-
-
 
 cvApp.controller('profileController', function($scope) {
 });
 
-cvApp.controller('bookmarksController', function($scope) {
+cvApp.controller('bookmarksController', function($scope, $http) {
+    $http.get('/bookmarks').
+    then(function(response) {
+        $scope.bookmarks = response.data;
+    });
 });
 
 cvApp.controller('messagesController', function($scope) {
   $(document).ready(function(){
-  $('ul.tabs').tabs();
-});
+    $('ul.tabs').tabs();
+  });
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+    $scope.$watch('coordinates', console.log);
+
     angular.element(document).ready(function () {
         $('select').material_select();
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 15 // Creates a dropdown of 15 years to control year
         });
-        $(document).ready(function() {
-            $('input#input_text, textarea#comments').characterCounter();
-        });
+        $('input#input_text, textarea#comments').characterCounter();
 
-        //Price-Range
-        var dragSlider = document.getElementById('age_range');
 
-        noUiSlider.create(dragSlider, {
-            start: [ 18, 45 ],
-            behaviour: 'drag',
-            connect: true,
-            step: 1,
-            range: {
-                'min':  0,
-                'max':  99
-            },
-            tooltips: true
+        var search = $('#address');
+        search.materialize_autocomplete({
+            multiple: { enable: false },
+            dropdown: { el: '#search-dropdown' },
+            getData: function(value, callback) {
+                Geocoder.search(value, function (data) {
+                    var mapped = data.map(function (x, idx) {
+                        return {
+                            id: x.latlong,
+                            text: x.long
+                        }
+                    });
+                    console.log("results:", mapped.map(function (x) {
+                        return x.text;
+                    }));
+                    callback(value, mapped);
+                });
+            }
         });
+        search.on("change paste input", function() {
+            var value = $scope.formData.address = $(this).val();
+            var id = $(this).data('value');
+            console.log("createoffersearch:", value, id);
+            if(id) {
+                var pos = JSON.parse('[' + id + ']');
+                $scope.formData.coordinates = pos;
+                $scope.location = pos;
+                $scope.$apply();
+            }
+        });
+        //age_range-Range
+        $scope.age_slider = {
+          minValue: 10,
+          maxValue: 75,
+          options:{
+            floor:0,
+            ceil:90,
+            step:1,
+          }
+      };
+
     });
 
     // create a blank object to handle form data.
@@ -436,7 +516,6 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
     // calling our submit function.
     $scope.submitForm = function() {
         console.log($scope.formData);
-        // Posting data to php file
         $http({
             method  : 'POST',
             url     : '/rooms',
@@ -445,18 +524,20 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
         })
             .success(function(data) {
                 if (data.errors) {
-                    // Showing errors.
-                    $scope.errorName = data.errors.name;
-                    $scope.errorUserName = data.errors.username;
-                    $scope.errorEmail = data.errors.email;
+                  // Showing errors.
+                  $scope.errorName = data.errors.name;
+                  $scope.errorUserName = data.errors.username;
+                  $scope.errorEmail = data.errors.email;
+                  Materialize.toast('Error: Room couldn\'t be saved!', 4000)
+                  $window.location.href = '/#/offers/';
                 } else {
-                    $scope.message = data.message;
+                  $scope.message = data.message;
+                  var $toastContent = $('<span class=\"center-align\">Room Saved!</span>');
+                  Materialize.toast($toastContent, 4000)
+                  $window.location.href = '/#/offer/'+data._id;
                 }
             });
-
-        $window.location.href = '/#/offers';
     };
-
 }]);
 
 cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
@@ -474,24 +555,8 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
         });
         $(document).ready(function() {
             $('input#input_text, textarea#comments').characterCounter();
+            $('label').addClass('active');
         });
-
-        //Price-Range
-        var dragSlider = document.getElementById('age_range');
-
-        noUiSlider.create(dragSlider, {
-            start: [ 18, 45 ],
-            behaviour: 'drag',
-            connect: true,
-            step: 1,
-            range: {
-                'min':  0,
-                'max':  99
-            },
-            tooltips: true
-        });
-
-        $('label').addClass('active');
     });
 
     // calling our submit function.
@@ -509,8 +574,11 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
                     $scope.errorName = data.errors.name;
                     $scope.errorUserName = data.errors.username;
                     $scope.errorEmail = data.errors.email;
+                    Materialize.toast('Error: Room couldn\'t be updated!', 4000)
                 } else {
                     $scope.message = data.message;
+                  var $toastContent = $('<span class=\"center-align\">Room Updated!</span>');
+                  Materialize.toast($toastContent, 4000)
                 }
             });
 
@@ -519,7 +587,22 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
 }]);
 
 cvApp.controller('offerListController', function($scope, $http) {
-    $http.get('/rooms/owner/'+$scope.user.fb_id).
+    $http.get('/rooms/owner/'+$scope.user._id).
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
+});
+
+
+cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
+    $http.get('/rooms/'+$routeParams.room_id).
+    then(function(response) {
+        $scope.formData = response.data; // load data into the form Object
+    });
+}]);
+
+cvApp.controller('roomListController', function($scope, $http) {
+    $http.get('/rooms').
     then(function(response) {
         $scope.rooms = response.data;
     });
@@ -550,7 +633,7 @@ cvApp.directive('flatlingMap', function () {
 });
 
 
-cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', function($scope, $http, leafletData) {
+cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'leafletData', function($scope, $http, $location, leafletData) {
     angular.extend($scope, {
         center: {
             lat: 48.143763,
@@ -588,6 +671,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
 
     function onLocation(newValue, oldValue) {
         // try to parse json:
+        console.log('try set location', newValue);
         if(typeof(newValue) == 'string') {
             try {
                 var json = JSON.parse(newValue);
@@ -613,8 +697,56 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
     }
 
     $scope.$watch("location", onLocation);
+    var roomsLayer = null;
     $scope.$watch('rooms', function (newrooms, oldrooms) {
         console.log('rooms:', oldrooms, '->', newrooms);
+        // make geojson
+        var geojson = {
+            type: 'FeatureCollection'
+        };
+
+        function makeFeature(room) {
+            return {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": room.coordinates.concat().reverse()
+                },
+                "properties": {
+                    "title": room.price + '€ / ' + room.size_room + 'qm',
+                    "description": room.address,
+                    "marker-color": "#fc4353",
+                    "marker-size": "large",
+                    "marker-symbol": Math.min(99, Math.round(room.score) || 0),
+                    url: '/room/' + room._id
+                }
+            }
+        }
+
+        if(!newrooms.map) {
+            console.log(newrooms);
+            return;
+        }
+
+        geojson.features = newrooms.map(makeFeature);
+        if(!roomsLayer) {
+            roomsLayer = L.mapbox.featureLayer(geojson, {
+                pointToLayer: function (feature, latlang) {
+                    var marker = L.mapbox.marker.style(feature, latlang);
+                    return marker;
+                }
+            }).addTo(map);
+            roomsLayer.on('mouseover', function(e) {
+                e.layer.openPopup();
+            });
+            roomsLayer.on('mouseout', function(e) {
+                e.layer.closePopup();
+            });
+            roomsLayer.on('click', function(e) {
+                $location.path(e.layer.feature.properties.url);
+            });
+        }
+        roomsLayer.setGeoJSON(geojson);
     });
 
     var deferredCoords = null;
@@ -623,12 +755,16 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
         if(map == null) {
             deferredCoords = coordinates;
         } else {
-            map.setView(newValue, 12, {animate: true});
+            map.setView(coordinates, 12, {animate: true});
         }
     }
 
     $http.get('/map/plugins').then(function(resp) {
         $scope.datasets = resp.data;
+        setTimeout(function () {
+            var thing = $('.leaflet-top.leaflet-right>.leaflet-control');
+            shake(thing[1]);
+        }, 2000);
     });
     $scope.datasetClicked = function (dataset) {
         // console.log('datasetclicked', dataset);
@@ -890,4 +1026,10 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', 'leafletData', f
 
         return omnivore.kml('/maps/public/munich-districts.kml', null, customLayer).addTo(map);
     }
+
+    // return {
+    //     scope: {
+    //         location: '=coordinates'
+    //     }
+    // };
 }]);

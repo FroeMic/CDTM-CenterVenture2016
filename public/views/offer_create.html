@@ -9,7 +9,9 @@
                   <h5>Street Address</h5>
                 </div>
                 <div class="input-field col s12 form-group">
-                  <input id="address" type="text" class="validate form-control" ng-model="formData.address">
+                  <input id="address" type="text" class="validate form-control" ng-model="formData.address"
+                         data-activates="search-dropdown" data-beloworigin="true" autocomplete="off">
+                  <ul id="search-dropdown" class="dropdown-content ac-dropdown active"></ul>
                   <label for="address">Street Address</label>
                 </div>
               </div>
@@ -46,7 +48,7 @@
                     <option value="" disabled selected>Choose your option</option>
                     <option value="1">Shared room</option>
                     <option value="2">Private room</option>
-                    <option value="3">Private room + Shared apartment</option>
+                    <option value="3">Private room in Shared apartment</option>
                     <option value="4">Whole apartment</option>
                   </select>
                   <label>Type</label>
@@ -137,8 +139,10 @@
 
               <div class="row">
                 <div class="input-field col s12">
-                  <slider-hack>Age Range of Roommates</slider-hack>
-                  <div id="age_range"></div>
+                  <slider-hack>Age range of roommates</slider-hack>
+                  <rzslider rz-slider-model="age_slider.minValue"
+                            rz-slider-high="age_slider.maxValue"
+                            rz-slider-options="age_slider.options"></rzslider>
                 </div>
               </div>
 
@@ -173,7 +177,7 @@
     </div>
 
     <div sticky unsticky-class="unstuck" sticky-class="stuck" use-placeholder="false" offset="10"
-         class="col s4 mapcontainer stick">
+          class="col s4 mapcontainer stick">
       <flatling-map></flatling-map>
     </div>
   </div>

@@ -2,11 +2,20 @@
  * Created by cwoebker on 12.10.16.
  */
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+require('./User');
+
+var picture = new mongoose.Schema({
+    img: {type : String, default: ''},
+    description: {type : String, default: ''},
+});
 
 var schema = new mongoose.Schema({
-    user_id: {type: String, default: ''},
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
     address: {type: String, default: ''},
     price: {type: Number, default: 0},
+    coordinates: {type: [Number], default: [] },
     deposit: {type: Number, default: 0},
     size_room: {type: Number, default: 0},
     size_apartment: {type: Number, default: 0},
@@ -28,6 +37,10 @@ var schema = new mongoose.Schema({
     nr_of_female_roomates: {type: Number, default: 0},
     nr_of_other_roomates: {type: Number, default: 0},
     comments: {type: String, default: ''},
+    pictures: [ picture ]
+},
+{
+    timestamps: true
 });
 
 // define our nerd model
