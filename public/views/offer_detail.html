@@ -1,9 +1,5 @@
- <div class="row">
-  <div class="col s8">
-    <div class="container">
-      <div class="row">
-        <div class="col s12"; style="margin-top: 10px">
-          <form name="offerForm" ng-submit="submitForm()" class="col s12">
+<div class="search-flex">
+  <form name="offerForm" ng-submit="submitForm()" class="search-left grow" id="search-left">
             <div class ="row">
               <div class="section">
                 <h5>Pictures</h5>
@@ -64,21 +60,21 @@
               </div>
               <div class="row">
                 <div class="input-field col s12 m12 l6 form-group">
-                  <input id="price" type="number" class="validate form-control" ng-model="formData.price">
+                  <input id="price" type="number" class="validate form-control" ng-model="formData.price" min="0">
                   <label for="price">Price (€) including utilities</label>
                 </div>
                 <div class="input-field col s12 m12 l6 form-group">
-                  <input id="deposit" type="number" class="validate form-control" ng-model="formData.deposit">
+                  <input id="deposit" type="number" class="validate form-control" ng-model="formData.deposit" min="0">
                   <label for="deposit">Deposit (€)</label>
                 </div>
               </div>
               <div class="row">
                 <div class="input-field col s12 m12 l6 form-group">
-                  <input id="size_room" type="number" class="validate form-control" ng-model="formData.size_room">
+                  <input id="size_room" type="number" class="validate form-control" ng-model="formData.size_room" min="0">
                   <label for="size_room">Room Size (m<sup>2</sup>)</label>
                 </div>
                 <div class="input-field col s12 m12 l6 form-group">
-                  <input id="size_apartment" type="number" class="validate form-control" ng-model="formData.size_apartment">
+                  <input id="size_apartment" type="number" class="validate form-control" ng-model="formData.size_apartment"  min="0">
                   <label for="size_apartment">Apartment Size (m<sup>2</sup>)</label>
                 </div>
               </div>
@@ -164,15 +160,15 @@
 
               <div class="row">
                 <div class="input-field col s12 m12 l4 form-group">
-                  <input id="nr_of_male_roommates" type="number" class="validate" ng-model="formData.nr_of_male_roommates">
+                  <input id="nr_of_male_roommates" type="number" class="validate" ng-model="formData.nr_of_male_roommates" min="0">
                   <label for="nr_of_male_roommates">Number of Male Roommates:</label>
                 </div>
                 <div class="input-field col s12 m12 l4 form-group">
-                  <input id="nr_of_female_roommates" type="number" class="validate" ng-model="formData.nr_of_female_roommates">
+                  <input id="nr_of_female_roommates" type="number" class="validate" ng-model="formData.nr_of_female_roommates" min="0">
                   <label for="nr_of_female_roommates">Number of Female Roommates:</label>
                 </div>
                 <div class="input-field col s12 m12 l4 form-group">
-                  <input id="nr_of_other_roommates" type="number" class="validate" ng-model="formData.nr_of_other_roommates">
+                  <input id="nr_of_other_roommates" type="number" class="validate" ng-model="formData.nr_of_other_roommates" min="0">
                   <label for="nr_of_other_roommates">Number of Other Roommates:</label>
                 </div>
               </div>
@@ -209,13 +205,7 @@
                 </div>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
- <div  sticky unsticky-class="unstuck" sticky-class="stuck" use-placeholder="false" offset="10"
-       class="col s4 mapcontainer stick">
-   <flatling-map></flatling-map>
- </div>
+   <div class="search-map mapcontainer nomargins">
+     <flatling-map></flatling-map>
+   </div>
   </div>

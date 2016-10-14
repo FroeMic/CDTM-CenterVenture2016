@@ -60,6 +60,13 @@ var surveys = [
             questionType: "TEXT",
             number: 5,
             answerOptions: null
+          },
+          {
+            title: "About",
+            question: "Tell us something about yourself:",
+            questionType: "TEXT",
+            number: 6,
+            answerOptions: null
           }
         ]
       },

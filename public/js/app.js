@@ -46,6 +46,12 @@ cvApp.config(function($routeProvider) {
             controller  : 'aboutController'
         })
 
+        // route for the about page
+        .when('/matches', {
+            templateUrl : '../views/matching.html',
+            controller  : 'matchController'
+        })
+
         // route for the contact page
         .when('/contact', {
             templateUrl : '../views/contact.html',
@@ -57,7 +63,12 @@ cvApp.config(function($routeProvider) {
             controller: 'searchController'
         })
 
-        .when('/profile', {
+        .when('/account', {
+            templateUrl : '../views/account.html',
+            controller  : 'accountController'
+        })
+
+        .when('/profile/:user_id', {
             templateUrl : '../views/profile.html',
             controller  : 'profileController'
         })
@@ -117,6 +128,17 @@ cvApp.directive("personalityTest", function () {
    };
 });
 
+cvApp.directive("matchCard", function () {
+  return {
+      scope: {
+          match: '=' //Two-way data binding
+      },
+      templateUrl: '/views/matchCard.html',
+      controller: function ($scope){
+        $scope.Math = Math;
+      }
+  };
+});
 
 cvApp.directive("offerPreview", function () {
    return {
@@ -126,8 +148,15 @@ cvApp.directive("offerPreview", function () {
 });
 
 
+cvApp.directive("messageView", function () {
+    return {
+        templateUrl: "/views/messageView.html",
+        controller: "messageViewController"
+    };
+});
+
 // create the controller and inject Angular's $scope
-cvApp.controller('mainController', function($scope, $location, $http, $window) {
+cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
     $scope.needsPersonalityTest = false;
@@ -135,7 +164,6 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
 
     // globally available
     HOSTSTRING = "http://" + $location.host()+":"+$location.port()
-
       $http.get(HOSTSTRING + '/user')
            .then(
                function(response){
@@ -237,6 +265,29 @@ cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
 });
 
+cvApp.controller('matchController', function($scope, $http, $timeout) {
+    $scope.Math = Math;
+    $scope.matches = null;
+
+    $timeout(function() {
+        $http.get(HOSTSTRING + '/user/matches')
+             .then(
+                 function(response){
+                   // success callback
+                   $timeout(function(){
+                     $scope.matches = response.data;
+                   },0);
+                 },
+                 function(response){
+                   // TODO: Handle Error
+                   // failure callback
+                }
+              );
+    },0);
+
+
+});
+
 cvApp.controller('contactController', function($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
@@ -330,7 +381,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
 
 });
 
-cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
+cvApp.controller('offerPreviewController', ['$scope', '$timeout', '$http', '$route', function($scope, $timeout, $http, $route) {
 
   $timeout(initMaterialize, 0);
 
@@ -364,7 +415,15 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
             url     : '/bookmarks',
             data    : JSON.stringify({room: $scope.room._id}), //forms user object
             headers : {'Content-Type': 'application/json'}
-        });
+        }).then(
+            function(response){
+                var $toastContent = $('<span class=\"center-align\">Bookmark Saved</span>');
+                Materialize.toast($toastContent, 4000);
+            },
+            function(response){
+                Materialize.toast('Error: Bookmark couldn\'t be updated!', 4000);
+            }
+        );
     };
 
     $scope.removeBookmark = function(bookmark_id) {
@@ -374,9 +433,18 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
             url     : '/bookmarks/' + bookmark_id,
             data    : JSON.stringify({}), //forms user object
             headers : {'Content-Type': 'application/json'}
-        });
+        }).then(
+            function(response){
+                var $toastContent = $('<span class=\"center-align\">Bookmark Removed</span>');
+                Materialize.toast($toastContent, 4000);
+                $route.reload();
+            },
+            function(response){
+                Materialize.toast('Error: Bookmark couldn\'t be updated!', 4000);
+            }
+        );
     };
-});
+}]);
 
 cvApp.controller('searchController', function($scope, $routeParams, $http) {
   $('select').material_select();
@@ -466,10 +534,20 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
     }
 });
 
-
-
-cvApp.controller('profileController', function($scope) {
+cvApp.controller('accountController', function($scope) {
 });
+
+cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
+    $http.get('/user/'+$routeParams.user_id)
+        .then(function(response){
+                $scope.profile = response.data;
+            }
+        );
+    $http.get('/rooms/owner/'+$routeParams.user_id).
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
+}]);
 
 cvApp.controller('bookmarksController', function($scope, $http) {
     $http.get('/bookmarks').
@@ -482,6 +560,20 @@ cvApp.controller('messagesController', function($scope) {
   $(document).ready(function(){
     $('ul.tabs').tabs();
   });
+});
+
+cvApp.controller('messageViewController', function($scope, $timeout, $http) {
+
+    $scope.submitMessage = function(to) {
+        // Posting data to php file
+        $scope.formData.to = to;
+        $http({
+            method  : 'POST',
+            url     : '/messages',
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
@@ -508,9 +600,9 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
                             text: x.long
                         }
                     });
-                    console.log("results:", mapped.map(function (x) {
-                        return x.text;
-                    }));
+                    // console.log("results:", mapped.map(function (x) {
+                    //     return x.text;
+                    // }));
                     callback(value, mapped);
                 });
             }
@@ -557,12 +649,12 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
                   $scope.errorName = data.errors.name;
                   $scope.errorUserName = data.errors.username;
                   $scope.errorEmail = data.errors.email;
-                  Materialize.toast('Error: Room couldn\'t be saved!', 4000)
+                  Materialize.toast('Error: Room couldn\'t be saved!', 4000);
                   $window.location.href = '/#/offers/';
                 } else {
                   $scope.message = data.message;
                   var $toastContent = $('<span class=\"center-align\">Room Saved!</span>');
-                  Materialize.toast($toastContent, 4000)
+                  Materialize.toast($toastContent, 4000);
                   $window.location.href = '/#/offer/'+data._id;
                 }
             });
@@ -573,6 +665,7 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
+        search.val(response.data.address);
     });
 
     angular.element(document).ready(function () {
@@ -586,6 +679,40 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
             $('input#input_text, textarea#comments').characterCounter();
             $('label').addClass('active');
         });
+    });
+    var search = $('#address');
+    search.materialize_autocomplete({
+        multiple: { enable: false },
+        dropdown: { el: '#search-dropdown' },
+        getData: function(value, callback) {
+            Geocoder.search(value, function (data) {
+                var mapped = data.map(function (x, idx) {
+                    return {
+                        id: x.latlong,
+                        text: x.long
+                    }
+                });
+                // console.log("results:", mapped.map(function (x) {
+                //     return x.text;
+                // }));
+                callback(value, mapped);
+            });
+        }
+    });
+    search.on("change paste input", function() {
+        var value = $scope.formData.address = $(this).val();
+        var id = $(this).data('value');
+        console.log("createoffersearch:", value, id);
+        if(id) {
+            var pos = JSON.parse('[' + id + ']');
+            $scope.formData.coordinates = pos;
+            // $scope.location = pos;
+            $scope.$apply();
+        }
+    });
+
+    $scope.$watch('formData.coordinates', function (newVal) {
+        $scope.pin = newVal;
     });
 
     // calling our submit function.
@@ -635,7 +762,7 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
     $http.get('/rooms/'+$routeParams.room_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
-        console.log($scope.formData)
+        console.log($scope.formData);
 
         $scope.formData.createdAt = new Date($scope.formData.createdAt).toUTCString();
         $scope.formData.pictures = [
@@ -811,7 +938,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
                     "description": room.address,
                     "marker-color": "#fc4353",
                     "marker-size": "large",
-                    "marker-symbol": Math.min(99, Math.round(room.score) || 0),
+                    "marker-symbol": Math.min(99, Math.round(room.score * 100) || 0),
                     url: '/room/' + room._id
                 }
             }
@@ -845,9 +972,10 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
 
     var deferredCoords = null;
     function moveTo(coordinates, zoom) {
-        console.log("move to", coordinates);
+        console.log("move to", coordinates, zoom);
         if(map == null) {
             deferredCoords = coordinates;
+            console.log('deferred');
         } else {
             map.setView(coordinates, zoom || 12, {animate: true});
         }
@@ -927,7 +1055,10 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
                 // already moving
             } else {
                 setTimeout(function () {
-                    map.setZoom(11, {animate: true});
+                    if(!$scope.pin) {
+                        console.log('deferred zoom');
+                        map.setZoom(11, {animate: true});
+                    }
                 }, 1000);
             }
         }

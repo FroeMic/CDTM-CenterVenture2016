@@ -1,17 +1,19 @@
 /**
- * Created by cwoebker on 12.10.16.
+ * Created by cwoebker on 14.10.16.
  */
-
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+require('./User');
 
 var schema = new mongoose.Schema({
-    id : {type: String, default: ''},
-    sender_id: {type: String, default: ''},
-    receiver_id: {type: String, default: ''},
-    subject: {type: String, default: ''},
-    content: {flat: String, default: ''}
-});
+        from: { type: Schema.Types.ObjectId, ref: 'User' },
+        to: { type: Schema.Types.ObjectId, ref: 'User' },
+        text: { type: String, default: '' },
+        inbox: { type: Boolean, default: false }
+    },
+    {
+        timestamps: true
+    });
 
-// define our nerd model
-// module.exports allows us to pass this to other files when it is called
 module.exports = mongoose.model('Message', schema);
