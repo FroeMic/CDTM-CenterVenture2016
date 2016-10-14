@@ -1,7 +1,9 @@
-<div class="row">
+<div class="search-flex">
+
+<div class="search-left grow" id="search-left">
     <div class="col s8">
         <div class="container">
-            <div class"row">
+            <div class="row" >
                 <div class="col s12"; style="margin-top: 10px">
                     <div class="row">
                         <h4>{{formData.address}}</h4>
@@ -118,10 +120,9 @@
     </div>
 </div>
 
-<div  sticky unsticky-class="unstuck" sticky-class="stuck" use-placeholder="false" offset="10"
-class="col s4 mapcontainer stick">
-<flatling-map></flatling-map>
-</div>
+    <div class="search-map mapcontainer nomargins">
+        <flatling-map></flatling-map>
+    </div>
 </div>
 
 

@@ -791,6 +791,10 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
       });
     }
 
+    $scope.$watch('coordinates', function (val) {
+        $scope.pin = val;
+    });
+
     $http.get('/rooms/'+$routeParams.room_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
@@ -811,6 +815,10 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
                         description: "German Style Dungeon",
                       }
                     ]
+    });
+
+    $scope.$watch('formData.coordinates', function (val) {
+        $scope.pin = val;
     });
 
 
@@ -873,7 +881,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
     });
 
     angular.element(document).ready(function () {
-        $('.sidebar').hide();
+        // $('.sidebar').hide();
     });
 
     var toggle = function () {
@@ -978,8 +986,7 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             return feature;
         }
 
-        if(!newrooms.map) {
-            console.log(newrooms);
+        if(!newrooms) {
             return;
         }
 
