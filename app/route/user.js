@@ -56,6 +56,27 @@ router.get('/profile/:user_id', function (req, res) {
   });
 });
 
+router.use('/profile/fb/:user_id', auth.sessionRequired);
+router.get('/profile/fb/:user_id', function (req, res) {
+  User.findOne({fb_id: req.params.user_id}, function (err, user) {
+    if(err) {
+      console.log(err);
+      res.status(500).send(
+          JSON.stringify({
+            status: 500,
+            description: 'Internal Server Error'
+          })
+      );
+    } else {
+      res.setHeader('Content-Type', 'application/json');
+      // don't send the profile to the user
+      res.send(JSON.stringify(
+          user
+      ));
+    }
+  });
+});
+
 router.use('/personalitySurvey', auth.sessionRequired);
 router.post('/personalitySurvey', function (req, res) {
   // console.log(req.data);
