@@ -487,6 +487,10 @@ cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$windo
                 $scope.profile = response.data;
             }
         );
+    $http.get('/rooms/owner/'+$routeParams.user_id).
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
 }]);
 
 cvApp.controller('bookmarksController', function($scope, $http) {

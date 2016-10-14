@@ -51,9 +51,17 @@ router.get('/:room_id', function(req, res, next) {
 /* GET /rooms/id */
 router.use('/owner/:user_id', auth.sessionRequired);
 router.get('/owner/:user_id', function(req, res, next) {
-    Room.find({owner: req.params.user_id}, function (err, rooms) {
+    Room.find({owner: req.params.user_id}).populate('owner').exec(function (err, rooms) {
         if (err) return next(err);
-        res.json(rooms);
+        var results = [];
+        var i;
+        for (i = 0; i < rooms.length; ++i) {
+            var room = rooms[i].toObject();
+            var score = calculatePersonalityMatching(req.session.dbuser, room.owner);
+            room.score = score;
+            results.push(room);
+        }
+        res.json(results);
     });
 });
 
