@@ -565,14 +565,13 @@ cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$windo
         // Posting data to php file
         $http({
             method  : 'Post',
-            url     : '/poke/' + profile_id,
+            url     : '/pokes/' + profile_id,
             data    : JSON.stringify({}), //forms user object
             headers : {'Content-Type': 'application/json'}
         }).then(
             function(response){
-                var $toastContent = $('<span class=\"center-align\">' + $scope.profile.display_name + 'poked</span>');
+                var $toastContent = $('<span class=\"center-align\">' + $scope.profile.display_name + ' has ben poked</span>');
                 Materialize.toast($toastContent, 4000);
-                $route.reload();
             },
             function(response){
                 Materialize.toast('Error: User couldn\'t be poked!', 4000);
@@ -693,12 +692,31 @@ cvApp.controller('offerCreateController', ['$scope', '$http', '$window', functio
     };
 }]);
 
-cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
+cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
+    $scope.matches = null;
+
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
         search.val(response.data.address);
     });
+
+    $timeout(function() {
+        $http.get(HOSTSTRING + '/user/matches')
+             .then(
+                 function(response){
+                   // success callback
+                   $timeout(function(){
+                     $scope.matches = response.data;
+                   },0);
+                 },
+                 function(response){
+                   console.log(response);
+                   // TODO: Handle Error
+                   // failure callback
+                }
+              );
+    },0);
 
     angular.element(document).ready(function () {
         $('.slider').slider();

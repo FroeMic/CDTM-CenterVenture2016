@@ -20,9 +20,10 @@ router.get('/', function(req, res, next) {
 });
 
 /* POST /rooms */
-router.use('/', auth.sessionRequired);
-router.post('/', function(req, res, next) {
+router.use('/:profile_id', auth.sessionRequired);
+router.post('/:profile_id', function(req, res, next) {
     req.body.from = req.session.dbuser._id;
+    req.body.to = req.params.profile_id;
     Poke.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
