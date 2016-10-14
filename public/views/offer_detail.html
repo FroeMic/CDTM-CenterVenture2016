@@ -1,9 +1,16 @@
 <div class="search-flex">
+
   <form name="offerForm" ng-submit="submitForm()" class="search-left grow" id="search-left">
-            <div class ="row">
-              <div class="section">
-                <h5>Pictures</h5>
-              </div>
+    <div class ="row">
+        <div class="col s12" style="margin-left:10px;margin-top:30px;margin-bottom:20px">
+          <h2>Your offer</h2>
+        </div>
+    </div>
+
+
+    <div class="card" style="margin:20px; padding: 20px">
+
+    <div class ="row">
 
               <div style="position: relative;">
                 <div class="fixed-action-btn horizontal" style="position: absolute; display: inline-block; top: 24px; right: 24px;">
@@ -38,24 +45,28 @@
 
             <div class="match-container">
               <div ng-repeat="match in matches |  orderBy:'-score' | limitTo:1" ng-hide="match.score<0.7">
-                <div class="subtitle">
-                  People who might be interested in your offer
+                <div class="section col s12">
+                  <h5>People who might be interested in your offer</h5>
                 </div>
+                <div class="col s12">
                 <match-card match="match"></match-card>
+              </div>
               </div>
             </div>
 
-              <div class="section">
+              <div class="section col s12">
                 <h5>Street Address</h5>
               </div>
               <div class="input-field col s12 form-group">
-                <input id="address" type="text" class="validate form-control" ng-model="formData.address">
+                <input id="address" type="text" class="validate form-control" ng-model="formData.address"
+                       data-activates="search-dropdown" data-beloworigin="true" autocomplete="off">
                 <label for="address">Street Address</label>
               </div>
+              <ul id="search-dropdown" class="dropdown-content ac-dropdown active"></ul>
             </div>
 
             <div class="row">
-              <div class="section">
+              <div class="section col s12">
                 <h5>Facts</h5>
                 <p>Provide some details about the room to improve your matches.<p>
                 </div>
@@ -206,6 +217,7 @@
                   <button class="btn waves-effect waves-light" type="submit" name="action">Update Offer</button>
                 </div>
               </div>
+            </div>
             </form>
    <div class="search-map mapcontainer nomargins">
      <flatling-map></flatling-map>

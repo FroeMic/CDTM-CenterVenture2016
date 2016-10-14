@@ -140,6 +140,18 @@ cvApp.directive("matchCard", function () {
   };
 });
 
+cvApp.directive("badge", function () {
+  return {
+      scope: {
+          notifications: '=' //Two-way data binding
+      },
+      templateUrl: '/views/badge.html?2',
+      controller: function ($scope){
+        $scope.Math = Math;
+      }
+  };
+});
+
 cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
@@ -159,6 +171,7 @@ cvApp.directive("messageView", function () {
 cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+    $scope.notifications = 10;
     $scope.needsPersonalityTest = false;
     $scope.user = null;
 
@@ -1060,7 +1073,8 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             'Districts': loadDistricts,
             'Test': loadUrl.bind(undefined, dataset.url, markers),
             'Rents': loadUrl.bind(undefined, dataset.url, rent),
-            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster)
+            'Playgrounds': loadUrl.bind(undefined, dataset.url, cluster),
+            'Bars': loadUrl.bind(undefined, dataset.url, heatmap)
         };
 
         if(!(datasetId in actions)) {
@@ -1240,6 +1254,18 @@ cvApp.controller("flatlingMapController",  [ '$scope', '$http', '$location', 'le
             marker.bindPopup(title);
             layer.addLayer(marker);
         }
+
+        map.addLayer(layer);
+        return layer;
+    }
+
+    function heatmap(data) {
+        var layer = new L.heatLayer([], { maxZoom: 18, radius: 30, blur: 30, max: 0.95 })
+
+        data.forEach( function(element, index) {
+          layer.addLatLng(element.latlong);
+          // statements
+        });
 
         map.addLayer(layer);
         return layer;

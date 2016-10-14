@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var RentModel = require('./models/rentNiveau');
 var DatasetModel = require('./models/dataset');
 var POIModel = require('./models/POI');
+var FSModel = require('./models/FSCheckIns');
 var Survey = require('./models/survey');
 var User = require('./models/User');
 
@@ -127,6 +128,30 @@ module.exports = function(app) {
                         properties: {
                             name: x.value,
                             age: x.altersgruppe
+                        }
+                    }
+                });
+
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify(data));
+            });
+        });
+    });
+
+    app.get('/map/bars', function (req, res) {
+        DatasetModel.findOne({name: 'Foursquare Checked-In Munich-Pruned'}, function (err, dataset) {
+            var refId = dataset._id;
+            FSModel.find({ ods_ref_id: refId}, function (err, data) {
+                if(err) {
+                    console.error(err);
+                }
+
+                data = data.map(function (x, idx, arr) {
+                    return {
+                        latlong: x.latlong(),
+                        properties: {
+                            name: x.value,
+                            venue_type: x.venue_type
                         }
                     }
                 });
