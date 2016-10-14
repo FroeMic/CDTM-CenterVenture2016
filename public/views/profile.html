@@ -42,13 +42,20 @@
 
         <div class="row">
             <div class="col s12">
+                <h5>About Me</h5>
+                <p nf-if="profile.about">{{ profile.about }}</p>
+                <p nf-if="!profile.about">No offers available.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h5>My Offers</h5>
                 <div ng-repeat="room in rooms" class="col s6 m6 l4">
                      <offer-preview class="col s12"></offer-preview>
                 </div>
             </div>
         </div>
-
-
 
     </div>
 </div>
