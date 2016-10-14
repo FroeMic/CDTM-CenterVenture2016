@@ -648,6 +648,7 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
     $http.get('/rooms/'+$routeParams.offer_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
+        search.val(response.data.address);
     });
 
     angular.element(document).ready(function () {
@@ -744,7 +745,7 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
     $http.get('/rooms/'+$routeParams.room_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
-        console.log($scope.formData)
+        console.log($scope.formData);
 
         $scope.formData.createdAt = new Date($scope.formData.createdAt).toUTCString();
         $scope.formData.pictures = [
