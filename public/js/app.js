@@ -874,9 +874,9 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
         $scope.formData.checkbox_barrier_free = true;
         $scope.formData.checkbox_pets = true;
         $scope.formData.checkbox_smoking = true;
-        $scope.formData.checkbox_balcony = true;
-        $scope.formData.checkbox_basement = true;
-        $scope.formData.checkbox_garden = true;
+        // $scope.formData.checkbox_balcony = true;
+        // $scope.formData.checkbox_basement = true;
+        // $scope.formData.checkbox_garden = true;
     });
 
     $scope.$watch('formData.coordinates', function (val) {
