@@ -1,29 +1,45 @@
 <nav class="white" role="navigation">
     <ul id="nav-mobile" class="dropdown-content">
-        <li><a href="#profile">My Profile</a></li>
+        <li class="black-text" style="vertical-align:middle;">
+          <a href="#profile" style="padding:0;">
+            <img class="circular-image" src="http://graph.facebook.com/{{user.id}}/picture?type=large" alt="" height="40px" style="margin: 12px; vertical-align:middle;"/>
+            {{user.displayName}}
+          </a>
+        </li>
         <li class="divider"></li>
-        <li><a href="#rooms">All Rooms</a></li>
-        <li class="divider"></li>
-        <li><a href="#bookmarks">My Bookmarks</a></li>
         <li><a href="#messages">My Messages</a></li>
         <li><a href="#offers">My Offers</a></li>
+        <li><a href="#rooms">All Rooms</a></li>
+        <li><a href="#bookmarks">My Bookmarks</a></li>
         <li class="divider"></li>
-        <li><a href="/logout" target="_self">Logout {{user.displayName}}</a></li>
+        <li><a href="/logout" target="_self">Logout</a></li>
     </ul>
     <div class="nav-wrapper container">
         <a href="#/"><img src="img/logo.png" style="height:60px;"></a><a id="logo-container" href="#/" class="brand-logo"> flatling</a>
         <ul class="right valign-wrapper" style="height: 100%;">
-            <li class="valign">
+            <li class="valign" style="height:100%">
                 {{#if user}}
-                    <li class="black-text">Welcome, {{user.displayName}}!</li>
-                    <li><a class="dropdown-button" href="#!" data-activates="nav-mobile"><i class="material-icons">menu</i></a></li>
+                <form>
+                  <div class="input-field search-bar">
+                    <input id="search" type="search" required>
+                    <label for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                  </div>
+                </form>
+                <li><a class="dropdown-button" href="#!" data-activates="nav-mobile">
+                  <img class="circular-image" src="http://graph.facebook.com/{{user.id}}/picture?type=large" alt="" height="50px" style="vertical-align:middle;"/>
+                </a>
+                </li>
                 {{else}}
-                    <a href="/auth/facebook" target="_self" class="btn waves-effect waves-light teal lighten-1">Login</a>
+                    <a href="/auth/facebook/offer" target="_self" class="btn waves-effect waves-light teal lighten-1">Offer Room</a>
+                    <a href="/auth/facebook" target="_self" class="btn waves-effect waves-light grey lighten-5 grey-text text-darken-4">Login</a>
                 {{/if}}
             </li>
         </ul>
     </div>
 </nav>
+
+<span></span>
 
 <personality-test hide ng-show="needsPersonalityTest && survey != null"></personality-test>
 
