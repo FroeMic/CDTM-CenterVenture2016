@@ -597,7 +597,7 @@ cvApp.controller('offerDetailController', ['$scope', '$routeParams','$http', '$w
 }]);
 
 cvApp.controller('offerListController', function($scope, $http) {
-    $http.get('/rooms/owner/'+$scope.user.fb_id).
+    $http.get('/rooms/owner/'+$scope.user._id).
     then(function(response) {
         $scope.rooms = response.data;
     });

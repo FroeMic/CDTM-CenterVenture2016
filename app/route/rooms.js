@@ -15,9 +15,8 @@ var User = require('../models/User');
 /* GET /rooms listing. */
 router.use('/', auth.sessionRequired);
 router.get('/', function(req, res, next) {
-    Room.find(function (err, rooms) {
+    Room.find().populate('owner').exec(function (err, rooms) {
         if (err) return next(err);
-        console.log(req.session.user);
         User.findOne({fb_id: req.session.user.id}, function (err, user) {
             if(err) {
                 res.status(500).send(
@@ -30,14 +29,13 @@ router.get('/', function(req, res, next) {
                 var results = [];
                 var i;
                 for (i = 0; i < rooms.length; ++i) {
-                    //console.log(rooms[key]);
-                    var score = calculatePersonalityMatching(user, user);
                     var room = rooms[i].toObject();
+                    var score = calculatePersonalityMatching(user, room.owner);
                     room.score = score;
                     results.push(room);
-                    console.log(room.score);
+                    //console.log(room.owner);
                 }
-                console.log(results);
+                //console.log(user);
                 res.json(results);
             }
         });
@@ -47,8 +45,7 @@ router.get('/', function(req, res, next) {
 /* POST /rooms */
 router.use('/', auth.sessionRequired);
 router.post('/', function(req, res, next) {
-    req.body.user_id = req.session.user.id;
-    console.log(req.body);
+    req.body.owner = req.session.dbuser._id;
     Room.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -56,9 +53,9 @@ router.post('/', function(req, res, next) {
 });
 
 /* GET /rooms/id */
-router.use('/:id', auth.sessionRequired);
-router.get('/:id', function(req, res, next) {
-    Room.findById(req.params.id, function (err, room) {
+router.use('/:room_id', auth.sessionRequired);
+router.get('/:room_id', function(req, res, next) {
+    Room.findById(req.params.room_id, function (err, room) {
         if (err) return next(err);
         res.json(room);
     });
@@ -67,16 +64,16 @@ router.get('/:id', function(req, res, next) {
 /* GET /rooms/id */
 router.use('/owner/:user_id', auth.sessionRequired);
 router.get('/owner/:user_id', function(req, res, next) {
-    Room.find({user_id: req.params.user_id}, function (err, rooms) {
+    Room.find({owner: req.params.user_id}, function (err, rooms) {
         if (err) return next(err);
         res.json(rooms);
     });
 });
 
 /* PUT /rooms/:id */
-router.use('/:id', auth.sessionRequired);
-router.put('/:id', function(req, res, next) {
-    Room.where({_id: req.params.id, user_id: req.session.user.id}).update(req.body, function (err, post) {
+router.use('/:room_id', auth.sessionRequired);
+router.put('/:room_id', function(req, res, next) {
+    Room.where({_id: req.params.room_id, owner: req.session.user.id}).update(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -85,7 +82,7 @@ router.put('/:id', function(req, res, next) {
 /* DELETE /rooms/:id */
 router.use('/:id', auth.sessionRequired);
 router.delete('/:id', function(req, res, next) {
-    Room.find({_id: req.params.id, user_id: req.session.user.id}).remove(function (err, post) {
+    Room.find({_id: req.params.id, owner: req.session.user.id}).remove(function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
