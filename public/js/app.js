@@ -62,12 +62,6 @@ cvApp.config(function($routeProvider) {
             controller  : 'profileController'
         })
 
-        // route for the preview page
-        .when('/preview', {
-            templateUrl : '../views/offer_preview.html',
-            controller  : 'offerPreviewController'
-        })
-
         .when('/offers', {
             templateUrl : '../views/offer_list.html',
             controller  : 'offerListController'
@@ -128,8 +122,6 @@ cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
       controller: "offerPreviewController",
-      restrict: 'A',
-      scope: { room: '=' },
    };
 });
 
@@ -340,37 +332,9 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
     });
   }
 
-  $scope.match = {
-    percentage: 94,
-  };
+  $scope.room.createdAt = new Date($scope.room.createdAt).toUTCString();
 
-  $scope.room = {
-    createdAt: "Thu, 13 Oct 2016",
-    updatedAt: "Sat, 15 Oct 2016",
-    address: "Augustenstrasse 93, 80798 Muenchen",
-    price: 480,
-    deposit: 1050,
-    size_room: 25,
-    size_apartment: 80,
-    room_type: "Private Room",
-    start_date: "Tue, 15 Nov 2016",
-    end_date: "",
-    checkbox_shortterm: false,
-    checkbox_furnitured: true,
-    checkbox_kitchen: true,
-    checkbox_washing_machine: false,
-    checkbox_barrier_free: false,
-    checkbox_pets: true,
-    checkbox_smoking: true,
-    checkbox_balcony: true,
-    checkbox_garden: false,
-    checkbox_living_room: true,
-    checkbox_basement: true,
-    nr_of_male_roomates: 4,
-    nr_of_female_roomates: 2,
-    nr_of_other_roomates: 1,
-    comments: "This is the greatest apartment in Munich!!!",
-    pictures: [
+  $scope.room.pictures = [
                 {
                   img: '/img/room_indoor2.jpeg',
                   description: "Spacious Kitchen",
@@ -384,7 +348,6 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
                   description: "German Style Dungeon",
                 }
               ]
-    };
 });
 
 cvApp.controller('searchController', function($scope, $routeParams, $http) {

@@ -272,14 +272,12 @@ personality-test .likert-line {
 .card .card-title.card-titel-new {
   top: 5%;
   left: 5%;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 300;
 }
 
 .card .card-title.card-button{
   top: 5%;
-  left: 85%;
-  font-size: 24px;
-  font-weight: 300;
+  left: 70%;
 }
 
