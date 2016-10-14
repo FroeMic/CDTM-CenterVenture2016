@@ -33,6 +33,12 @@ html, body {
   display: none !important;
 }
 
+.img-container {
+  height: 50px;
+  width: 50px;
+  overflow: hidden;
+}
+
 .circular-image {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
@@ -331,6 +337,30 @@ personality-test .likert-line {
   left: 50%;
 }
 
+.match-container {
+  margin: 40px 0;
+}
+
+.match-container a{
+  color: black;
+}
+
+.match-card {
+  min-height: 85px;
+}
+
+.match-score {
+  font-size: 16pt;
+}
+
+.match-score.hot {
+  color: #07ad24;
+}
+
+.subtitle {
+  font-size: 14pt;
+  color: rgba(0,0,0,0.6);
+}
 .slider .indicators .indicator-item.active {
   background-color: #26a69a;
 }

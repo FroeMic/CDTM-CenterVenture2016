@@ -46,6 +46,12 @@ cvApp.config(function($routeProvider) {
             controller  : 'aboutController'
         })
 
+        // route for the about page
+        .when('/matches', {
+            templateUrl : '../views/matching.html',
+            controller  : 'matchController'
+        })
+
         // route for the contact page
         .when('/contact', {
             templateUrl : '../views/contact.html',
@@ -122,6 +128,17 @@ cvApp.directive("personalityTest", function () {
    };
 });
 
+cvApp.directive("matchCard", function () {
+  return {
+      scope: {
+          match: '=' //Two-way data binding
+      },
+      templateUrl: '/views/matchCard.html',
+      controller: function ($scope){
+        $scope.Math = Math;
+      }
+  };
+});
 
 cvApp.directive("offerPreview", function () {
    return {
@@ -139,7 +156,7 @@ cvApp.directive("messageView", function () {
 });
 
 // create the controller and inject Angular's $scope
-cvApp.controller('mainController', function($scope, $location, $http, $window) {
+cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
     $scope.needsPersonalityTest = false;
@@ -147,7 +164,6 @@ cvApp.controller('mainController', function($scope, $location, $http, $window) {
 
     // globally available
     HOSTSTRING = "http://" + $location.host()+":"+$location.port()
-
       $http.get(HOSTSTRING + '/user')
            .then(
                function(response){
@@ -247,6 +263,29 @@ var Geocoder = _getGeocoder();
 
 cvApp.controller('aboutController', function($scope) {
     $scope.message = 'Look! I am an about page.';
+});
+
+cvApp.controller('matchController', function($scope, $http, $timeout) {
+    $scope.Math = Math;
+    $scope.matches = null;
+
+    $timeout(function() {
+        $http.get(HOSTSTRING + '/user/matches')
+             .then(
+                 function(response){
+                   // success callback
+                   $timeout(function(){
+                     $scope.matches = response.data;
+                   },0);
+                 },
+                 function(response){
+                   // TODO: Handle Error
+                   // failure callback
+                }
+              );
+    },0);
+
+
 });
 
 cvApp.controller('contactController', function($scope) {
