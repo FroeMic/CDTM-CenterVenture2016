@@ -551,7 +551,7 @@ cvApp.controller('accountController', function($scope) {
 });
 
 cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
-    $http.get('/user/'+$routeParams.user_id)
+    $http.get('/user/profile/'+$routeParams.user_id)
         .then(function(response){
                 $scope.profile = response.data;
             }
@@ -560,6 +560,25 @@ cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$windo
     then(function(response) {
         $scope.rooms = response.data;
     });
+
+    $scope.submitPoke = function(profile_id) {
+        // Posting data to php file
+        $http({
+            method  : 'Post',
+            url     : '/poke/' + profile_id,
+            data    : JSON.stringify({}), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        }).then(
+            function(response){
+                var $toastContent = $('<span class=\"center-align\">' + $scope.profile.display_name + 'poked</span>');
+                Materialize.toast($toastContent, 4000);
+                $route.reload();
+            },
+            function(response){
+                Materialize.toast('Error: User couldn\'t be poked!', 4000);
+            }
+        );
+    };
 }]);
 
 cvApp.controller('bookmarksController', function($scope, $http) {
