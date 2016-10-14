@@ -326,7 +326,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
         max: new Date(new Date().getFullYear() - 16, new Date().getMonth(), new Date().getDate())
       });
     });
-}
+  }
 
 });
 
@@ -623,11 +623,42 @@ cvApp.controller('offerListController', function($scope, $http) {
 });
 
 
-cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
+cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
+    $timeout(initMaterialize, 0);
+
+    function initMaterialize() {
+      $(document).ready(function(){
+        $('.slider').slider();
+      });
+    }
+
     $http.get('/rooms/'+$routeParams.room_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
+        console.log($scope.formData)
+
+        $scope.formData.createdAt = new Date($scope.formData.createdAt).toUTCString();
+        $scope.formData.pictures = [
+                      {
+                        img: '/img/room_indoor2.jpeg',
+                        description: "Spacious Kitchen",
+                      },
+                      {
+                        img: '/img/houses.jpg',
+                        description: "Quiet Neighbourhood",
+                      },
+                      {
+                        img: '/img/room_indoor1.jpeg',
+                        description: "German Style Dungeon",
+                      }
+                    ]
     });
+
+
+    // angular.element(document).ready(function () {
+    // });
+
+
 }]);
 
 cvApp.controller('roomListController', function($scope, $http) {
