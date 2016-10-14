@@ -236,7 +236,7 @@ router.post('/personalitySurvey', function (req, res) {
     var query = { fb_id: req.session.user.id }
     var update = {
       personalityProfile: personalityProfile,
-      about: survey.sections[0].question[5].answer,
+      about: survey.sections[0].questions[5].answer,
     };
 
     User.findOneAndUpdate(query, update, {upsert:true, new:true}, function (err, dbuser) {
