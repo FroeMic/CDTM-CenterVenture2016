@@ -294,13 +294,15 @@ router.get('/matches', function (req, res) {
         } else {
           var matches = []
           users.forEach(function(other) {
-            matches.push({
-              id: other.id,
-              name: other.display_name,
-              score: helpers.calculatePersonalityMatching(user, other),
-              occupation: other.personalityProfile.occupation,
-              pictureUrl: other.pictureUrl
-            })
+            if(other.personalityProfile != null && other.personalityProfile != null) {
+              matches.push({
+                id: other.id,
+                name: other.display_name,
+                score: helpers.calculatePersonalityMatching(user, other),
+                occupation: other.personalityProfile.occupation,
+                pictureUrl: other.pictureUrl
+              })
+            }
           })
           res.setHeader('Content-Type', 'application/json');
           res.send(JSON.stringify(
