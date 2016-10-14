@@ -24,9 +24,10 @@
 			</span>
 		</div>
 		<div class="card-content">
-			<p>Bookmark: {{bookmark._id}}</p>
+			<p ng-if="bookmarked">Bookmark: {{bookmark._id}}</p>
 			<p>{{room.address}}</p>
 			<p>On Offer Since: {{room.createdAt}}</p>
+			<p>Provided by: <a ng-if="!owner" href="#/profile/{{room.owner._id}}">{{room.owner.display_name}}</a></p>
 		</div>
 		<div class="card-action">
 			<a ng-if="owner" href="#/offer/{{room._id}}">View Details</a>

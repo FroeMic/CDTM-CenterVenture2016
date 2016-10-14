@@ -63,7 +63,12 @@ cvApp.config(function($routeProvider) {
             controller: 'searchController'
         })
 
-        .when('/profile', {
+        .when('/account', {
+            templateUrl : '../views/account.html',
+            controller  : 'accountController'
+        })
+
+        .when('/profile/:user_id', {
             templateUrl : '../views/profile.html',
             controller  : 'profileController'
         })
@@ -142,6 +147,13 @@ cvApp.directive("offerPreview", function () {
    };
 });
 
+
+cvApp.directive("messageView", function () {
+    return {
+        templateUrl: "/views/messageView.html",
+        controller: "messageViewController"
+    };
+});
 
 // create the controller and inject Angular's $scope
 cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
@@ -365,7 +377,7 @@ cvApp.controller('personalityTestController', function($scope, $timeout, $http) 
         max: new Date(new Date().getFullYear() - 16, new Date().getMonth(), new Date().getDate())
       });
     });
-}
+  }
 
 });
 
@@ -505,10 +517,20 @@ cvApp.controller('searchController', function($scope, $routeParams, $http) {
     }
 });
 
-
-
-cvApp.controller('profileController', function($scope) {
+cvApp.controller('accountController', function($scope) {
 });
+
+cvApp.controller('profileController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
+    $http.get('/user/'+$routeParams.user_id)
+        .then(function(response){
+                $scope.profile = response.data;
+            }
+        );
+    $http.get('/rooms/owner/'+$routeParams.user_id).
+    then(function(response) {
+        $scope.rooms = response.data;
+    });
+}]);
 
 cvApp.controller('bookmarksController', function($scope, $http) {
     $http.get('/bookmarks').
@@ -521,6 +543,20 @@ cvApp.controller('messagesController', function($scope) {
   $(document).ready(function(){
     $('ul.tabs').tabs();
   });
+});
+
+cvApp.controller('messageViewController', function($scope, $timeout, $http) {
+
+    $scope.submitMessage = function(to) {
+        // Posting data to php file
+        $scope.formData.to = to;
+        $http({
+            method  : 'POST',
+            url     : '/messages',
+            data    : JSON.stringify($scope.formData), //forms user object
+            headers : {'Content-Type': 'application/json'}
+        });
+    };
 });
 
 cvApp.controller('offerCreateController', ['$scope', '$http', '$window', function($scope, $http, $window) {
@@ -662,11 +698,42 @@ cvApp.controller('offerListController', function($scope, $http) {
 });
 
 
-cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$window', function($scope, $routeParams, $http, $window) {
+cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$window', '$timeout', function($scope, $routeParams, $http, $window, $timeout) {
+    $timeout(initMaterialize, 0);
+
+    function initMaterialize() {
+      $(document).ready(function(){
+        $('.slider').slider();
+      });
+    }
+
     $http.get('/rooms/'+$routeParams.room_id).
     then(function(response) {
         $scope.formData = response.data; // load data into the form Object
+        console.log($scope.formData)
+
+        $scope.formData.createdAt = new Date($scope.formData.createdAt).toUTCString();
+        $scope.formData.pictures = [
+                      {
+                        img: '/img/room_indoor2.jpeg',
+                        description: "Spacious Kitchen",
+                      },
+                      {
+                        img: '/img/houses.jpg',
+                        description: "Quiet Neighbourhood",
+                      },
+                      {
+                        img: '/img/room_indoor1.jpeg',
+                        description: "German Style Dungeon",
+                      }
+                    ]
     });
+
+
+    // angular.element(document).ready(function () {
+    // });
+
+
 }]);
 
 cvApp.controller('roomListController', function($scope, $http) {

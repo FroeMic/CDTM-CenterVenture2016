@@ -361,3 +361,6 @@ personality-test .likert-line {
   font-size: 14pt;
   color: rgba(0,0,0,0.6);
 }
+.slider .indicators .indicator-item.active {
+  background-color: #26a69a;
+}
