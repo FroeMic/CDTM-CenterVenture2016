@@ -18,6 +18,14 @@ html, body {
   color:#000000 !important;
 }
 
+.rzslider .rz-bar.rz-selection {
+  background-color: #26a69a  !important;
+}
+
+.rzslider .rz-pointer {
+  background-color: #26a69a  !important;
+}
+
 .tabs .indicator {
   background-color:#0d1b2a !important;
 }
