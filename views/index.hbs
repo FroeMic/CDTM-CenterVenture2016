@@ -1,25 +1,31 @@
 <nav class="white" role="navigation">
     <ul id="nav-mobile" class="dropdown-content">
         <li class="black-text" style="vertical-align:middle;">
-          <img class="circular-image" src="http://graph.facebook.com/{{user.id}}/picture?type=large" alt="" height="40px" style="margin: 10px; vertical-align:middle;"/>
-          {{user.displayName}}
+          <a href="#profile" style="padding:0;">
+            <img class="circular-image" src="http://graph.facebook.com/{{user.id}}/picture?type=large" alt="" height="40px" style="margin: 12px; vertical-align:middle;"/>
+            {{user.displayName}}
+          </a>
         </li>
-        <li><a href="#profile">My Profile</a></li>
         <li class="divider"></li>
-        <li><a href="#rooms">All Rooms</a></li>
-        <li class="divider"></li>
-        <li><a href="#bookmarks">My Bookmarks</a></li>
         <li><a href="#messages">My Messages</a></li>
-        <li><a href="#matches">My Matches</a></li>
         <li><a href="#offers">My Offers</a></li>
+        <li><a href="#rooms">All Rooms</a></li>
+        <li><a href="#bookmarks">My Bookmarks</a></li>
         <li class="divider"></li>
         <li><a href="/logout" target="_self">Logout</a></li>
     </ul>
     <div class="nav-wrapper container">
         <a href="#/"><img src="img/logo.png" style="height:60px;"></a><a id="logo-container" href="#/" class="brand-logo"> flatling</a>
         <ul class="right valign-wrapper" style="height: 100%;">
-            <li class="valign">
+            <li class="valign" style="height:100%">
                 {{#if user}}
+                <form>
+                  <div class="input-field search-bar">
+                    <input id="search" type="search" required>
+                    <label for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                  </div>
+                </form>
                 <li><a class="dropdown-button" href="#!" data-activates="nav-mobile">
                   <img class="circular-image" src="http://graph.facebook.com/{{user.id}}/picture?type=large" alt="" height="50px" style="vertical-align:middle;"/>
                 </a>
