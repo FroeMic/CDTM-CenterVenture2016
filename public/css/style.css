@@ -10,6 +10,10 @@ html, body {
   font-family: Lato, Roboto, Arial;
 }
 
+.btn-red {
+  background-color: red !important;
+}
+
 .overlay {
    width: 100%;
    height: 100%;
