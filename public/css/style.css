@@ -330,3 +330,7 @@ personality-test .likert-line {
   bottom: 10%;
   left: 50%;
 }
+
+.slider .indicators .indicator-item.active {
+  background-color: #26a69a;
+}
