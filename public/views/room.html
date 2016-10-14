@@ -12,13 +12,8 @@
                         <div class="slider">
                             <ul class="slides activator">
                                 <li ng-repeat="(key, value) in formData.pictures">
-                                    <a ng-href="#/asdsads">
+                                    <a>
                                         <img src="{{value.img}}"> <!-- random image -->
-                                        <div class="caption caption_neu left-align">
-                                            <h5>
-                                                <span style="padding-right: 20px;">{{value.description}}</span>
-                                            </h5>
-                                        </div>
                                     </a>
                                 </li>
                             </ul>
@@ -40,8 +35,8 @@
                                 </span>
                                 <span style="display: inline-block;">
                                     <p hide ng-show='formData.checkbox_shortterm'>Until: {{formData.enddate}}</p>
-                                    <p>{{formData.price}}€</p>
-                                    <p>{{formData.deposit}}€</p>
+                                    <p>{{formData.price}} €</p>
+                                    <p>{{formData.deposit}} €</p>
                                 </span>
                             </div>
                         </div>
@@ -56,7 +51,7 @@
                                     <p>Apartment Size:</p>
                                 </span>
                                 <span style="display: inline-block;">
-                                    <p>{{formData.room_type}} TODO: FIX ME</p>
+                                    <p>{{formData.room_type}}</p>
                                     <p>{{formData.size_room}} m<sup>2</sup></p>
                                     <p>{{formData.size_apartment}} m<sup>2</sup></p>
                                 </span>
@@ -103,14 +98,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col s12">
+                    <!--<div class="col s12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-title">Additional Details</div>
                                 {{formData.comments}}
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

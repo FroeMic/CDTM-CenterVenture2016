@@ -840,16 +840,16 @@ cvApp.controller('roomDetailController', ['$scope', '$routeParams','$http', '$wi
         $scope.formData.createdAt = new Date($scope.formData.createdAt).toUTCString();
         $scope.formData.pictures = [
                       {
-                        img: '/img/room_indoor2.jpeg',
-                        description: "Spacious Kitchen",
+                        img: '/img/wg-1.jpg',
                       },
                       {
-                        img: '/img/houses.jpg',
-                        description: "Quiet Neighbourhood",
+                        img: '/img/wg-2.jpg',
                       },
                       {
-                        img: '/img/room_indoor1.jpeg',
-                        description: "German Style Dungeon",
+                        img: '/img/wg-4.jpg',
+                      },
+                      {
+                        img: '/img/wg-5.jpg',
                       }
                     ]
     });
