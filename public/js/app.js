@@ -140,6 +140,18 @@ cvApp.directive("matchCard", function () {
   };
 });
 
+cvApp.directive("badge", function () {
+  return {
+      scope: {
+          notifications: '=' //Two-way data binding
+      },
+      templateUrl: '/views/badge.html?2',
+      controller: function ($scope){
+        $scope.Math = Math;
+      }
+  };
+});
+
 cvApp.directive("offerPreview", function () {
    return {
       templateUrl: "/views/offerPreview.html",
@@ -159,6 +171,7 @@ cvApp.directive("messageView", function () {
 cvApp.controller('mainController', function($scope, $location, $http, $window, $timeout) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
+    $scope.notifications = 10;
     $scope.needsPersonalityTest = false;
     $scope.user = null;
 
