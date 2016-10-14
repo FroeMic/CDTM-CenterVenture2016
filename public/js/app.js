@@ -46,6 +46,12 @@ cvApp.config(function($routeProvider) {
             controller  : 'aboutController'
         })
 
+        // route for the about page
+        .when('/matches', {
+            templateUrl : '../views/matching.html',
+            controller  : 'matchController'
+        })
+
         // route for the contact page
         .when('/contact', {
             templateUrl : '../views/contact.html',
@@ -234,6 +240,10 @@ function _getGeocoder(id) {
 var Geocoder = _getGeocoder();
 
 cvApp.controller('aboutController', function($scope) {
+    $scope.message = 'Look! I am an about page.';
+});
+
+cvApp.controller('matchController', function($scope) {
     $scope.message = 'Look! I am an about page.';
 });
 
