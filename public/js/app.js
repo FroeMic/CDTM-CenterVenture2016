@@ -340,7 +340,7 @@ cvApp.controller('offerPreviewController', function($scope, $timeout, $http) {
     });
   }
 
-  $scope.room.createdAt = new Date($scope.room.createdAt).toUTCString();
+  $scope.room.createdAt = new Date($scope.room.createdAt).toLocaleDateString();
 
   $scope.room.pictures = [
     {
