@@ -20,7 +20,7 @@ function calculatePersonalityMatching(tenant, roomie) {
 
 // takes the tenants profile and calculates the perfect score
 function fullScore(tenantProfile) {
-  var sum = 1.0; // birthday
+  var sum = 2.0; // birthday
   tenantProfile.values.forEach(function(value) {
     sum = sum + 1 * value.weight;
   });
@@ -39,17 +39,18 @@ function matchingScore(tenantProfile, roomieProfile) {
 }
 
 function birthdayMatching(b1, b2) {
+  var weight = 2.0;
   var diff = Math.abs(b1.getFullYear() - b2.getFullYear());
   if (diff <= 2) {
-    return 1;
+    return 1 * weight;
   } else if (diff <= 4) {
-    return 0.75;
+    return 0.75 * weight;
   } else if (diff <= 6) {
-    return 0.5;
+    return 0.5 * weight;
   } else if (diff <= 8) {
-    return 0.25;
+    return 0.25 * weight;
   } else {
-    return 0.0;
+    return 0.0 * weight;
   }
   return 0;
 }
