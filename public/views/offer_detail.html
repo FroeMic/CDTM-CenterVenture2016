@@ -58,9 +58,11 @@
                 <h5>Street Address</h5>
               </div>
               <div class="input-field col s12 form-group">
-                <input id="address" type="text" class="validate form-control" ng-model="formData.address">
+                <input id="address" type="text" class="validate form-control" ng-model="formData.address"
+                       data-activates="search-dropdown" data-beloworigin="true" autocomplete="off">
                 <label for="address">Street Address</label>
               </div>
+              <ul id="search-dropdown" class="dropdown-content ac-dropdown active"></ul>
             </div>
 
             <div class="row">
