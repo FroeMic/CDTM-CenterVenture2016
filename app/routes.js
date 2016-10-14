@@ -11,6 +11,9 @@ var POIModel = require('./models/POI');
 var Survey = require('./models/survey');
 var User = require('./models/User');
 
+var fb_setts = require('../config/fb');
+
+var redirectTo = "";
 
 module.exports = function(app) {
 
@@ -148,7 +151,12 @@ module.exports = function(app) {
     });
 
     app.get('/auth/facebook',
-        passport.authenticate('facebook'));
+    function(req, res, next) { redirectTo = ""; next()},
+    passport.authenticate('facebook'));
+
+    app.get('/auth/facebook/offer',
+    function(req, res, next) { redirectTo = "#/offer"; next()},
+    passport.authenticate('facebook'));
 
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
@@ -160,11 +168,17 @@ module.exports = function(app) {
 
             // Successful authentication, redirect home.
             updateProfile(req.session.user);
-            res.redirect('/');
+            res.redirect('/' + redirectTo);
         });
 
+
+    app.get('/livestream', function(req, res) {
+        res.render('lifestream.hbs', {user: req.session.user});
+    });
+
+
     app.get('*', function(req, res) {
-        res.status(404).sendfile('./public/views/404.html'); // TODO: make compatible with Angular App Routing
+        res.redirect('/');
     });
 };
 

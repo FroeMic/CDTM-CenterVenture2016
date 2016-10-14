@@ -1,6 +1,9 @@
 
 // takes two user profile objects and calculates their matching
 function calculatePersonalityMatching(tenant, roomie) {
+  if (tenant == null || roomie == null) {
+    return 0.0
+  }
   var t = tenant.personalityProfile;
   var r = roomie.personalityProfile;
   if (t == null || t == undefined || t == '' || r == null || r == null || r == '') {
@@ -17,10 +20,10 @@ function calculatePersonalityMatching(tenant, roomie) {
 
 // takes the tenants profile and calculates the perfect score
 function fullScore(tenantProfile) {
-  var sum = 1.0 // birthday
+  var sum = 1.0; // birthday
   tenantProfile.values.forEach(function(value) {
     sum = sum + 1 * value.weight;
-  })
+  });
   return sum;
 }
 
