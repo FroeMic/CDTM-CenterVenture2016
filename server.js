@@ -139,7 +139,8 @@ app.use('/pokes', pokes);
 require('./app/routes')(app); // configure our route
 
 // start app ===============================================
-// startup our app at http://localhost:8080
+// startup our app at http://localhost:1337
+// replace 'localhost' with '0.0.0.0' to expose the server to the public
 app.listen(port, "localhost", function(err){
     // shoutout to the user
     console.log('Magic happens on port ' + port);
